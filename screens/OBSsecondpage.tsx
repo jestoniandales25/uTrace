@@ -13,6 +13,10 @@ export default function OBSfirstpage() {
 
   return (
     <View style={OBSsecondpageStyles.container}>
+        <View style={OBSsecondpageStyles.imageContainer}><Text style={OBSsecondpageStyles.imageText}>Image Container</Text></View>
+        <Text style={OBSsecondpageStyles.textOutside}>Permission Screen</Text>
+        <Text style={OBSsecondpageStyles.ViewFrame}>Permission Text</Text>
+        <TouchableOpacity style={OBSsecondpageStyles.button}><Text style={OBSsecondpageStyles.buttonText}>Continue</Text></TouchableOpacity>
         <TouchableOpacity style={OBSsecondpageStyles.button} onPress={handleFirstPage}><Text style={OBSsecondpageStyles.buttonText}>Back</Text></TouchableOpacity>
     </View>
   )
