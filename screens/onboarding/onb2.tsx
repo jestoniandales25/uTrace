@@ -14,8 +14,8 @@ export default function Onb2() {
     return (
         <View style={onbstyles.container}>
             <Image
-                source={require('../../assets/onb2.jpg')}
-                style={onbstyles.image}
+                source={require('../../assets/onb2.png')}
+                style={onbstyles.image2}
                 resizeMode="contain"
             />
             <Text style={onbstyles.header2}>Enable Location Access</Text>

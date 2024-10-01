@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import onbstyles from '../../styles/onbstyles';
@@ -11,8 +11,6 @@ export default function Onb3() {
         navigation.dispatch(
             StackActions.replace("AppName"))
     };
-
-    const [location, setLocation] = useState();
 
     useEffect(() => {
         const getPermissions = async () => {
@@ -28,7 +26,7 @@ export default function Onb3() {
     return (
         <View style={onbstyles.container}>
             <Image
-                source={require('../../assets/onb3.jpg')}
+                source={require('../../assets/onb3.png')}
                 style={onbstyles.image3}
                 resizeMode="contain"
             />
