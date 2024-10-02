@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 
-export default function TrailMap() {
+export default function AppName() {
   const INITIAL_REGION = {
     latitude: 8.485888641857303,
     longitude: 124.65667449267691,

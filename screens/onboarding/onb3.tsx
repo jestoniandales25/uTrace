@@ -16,7 +16,6 @@ export default function Onb3() {
         const getPermissions = async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
-                console.log("Please Grant Location Permissions.");
                 return;
             }
         };
