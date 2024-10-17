@@ -1,6 +1,12 @@
 import { StyleSheet } from 'react-native';
 
 const onbstyles = StyleSheet.create({
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fafafa',
+    },
     container: {
         flex: 1,
         justifyContent: 'center',
@@ -77,6 +83,15 @@ const onbstyles = StyleSheet.create({
     button: {
         position: 'absolute',
         bottom: 50,
+        paddingVertical: 15,
+        paddingHorizontal: 125,
+        backgroundColor: '#4dd76a',
+        borderRadius: 5,
+        alignItems: 'center',
+    },
+    buttonSample: {
+        position: 'absolute',
+        bottom: 130,
         paddingVertical: 15,
         paddingHorizontal: 125,
         backgroundColor: '#4dd76a',

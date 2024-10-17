@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import onbstyles from '../../styles/onbstyles';
 
+
 export default function Onb2() {
     const navigation = useNavigation();
 
@@ -10,6 +11,12 @@ export default function Onb2() {
         navigation.dispatch(
             StackActions.push("Let's Go"))
     };
+
+    const handleSample = () => {
+        navigation.dispatch(
+            StackActions.push("Sample"))
+    };
+
 
     return (
         <View style={onbstyles.container}>
@@ -23,6 +30,9 @@ export default function Onb2() {
                 We need your location to provide accurate directions{'\n'}
                 to guide you across the campus.
             </Text>
+            <TouchableOpacity style={onbstyles.buttonSample} onPress={handleSample}>
+                <Text style={onbstyles.buttonText}>Sample</Text>
+            </TouchableOpacity>
             <TouchableOpacity style={onbstyles.button} onPress={handlePress}>
                 <Text style={onbstyles.buttonText}>Continue</Text>
             </TouchableOpacity>
