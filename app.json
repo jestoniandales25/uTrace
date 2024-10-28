@@ -6,22 +6,24 @@
     "orientation": "portrait",
     "icon": "./assets/uTraceLogo.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/uTraceLogo.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.jheartandales25.TrailMap"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/uTraceLogo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.jheartandales25.TrailMap"
     },
     "web": {
       "favicon": "./assets/uTraceLogo.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "dfff7644-8408-42b5-bf9a-02d661471f03"
+      }
     }
   }
 }

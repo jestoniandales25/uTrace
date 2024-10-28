@@ -12,10 +12,6 @@ export default function Examplemap() {
   const containerHeight = useRef(new Animated.Value(200)).current;
   const [currentHeight, setCurrentHeight] = useState(200); 
 
-  const handlePress = () => {
-    navigation.dispatch(StackActions.push("Continue"));
-  };
-
   const handleTryPress = () => {
     setIsVisible(true);
     Animated.timing(slideAnim, {
@@ -67,10 +63,6 @@ export default function Examplemap() {
         <Ionicons style={navstyles.searchIcon} name="search" size={24} color="black" />
         <TextInput style={navstyles.userInputWithIcon} placeholder="Where do you want to go?" />
       </View>
-
-      <TouchableOpacity style={navstyles.button} onPress={handlePress}>
-        <Text style={navstyles.buttonText}>Back</Text>
-      </TouchableOpacity>
 
       <TouchableOpacity style={navstyles.tryButton} onPress={handleTryPress}>
         <Text style={navstyles.buttonText}>Try</Text>

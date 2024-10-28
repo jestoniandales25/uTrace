@@ -100,7 +100,9 @@ const styles = StyleSheet.create({
     resizableHeader: {
         top: 0,
         position: 'absolute',
-        width: '108%',
+        left: 0,
+        right: 0,
+        flexDirection: 'row',
         padding: 10,
         backgroundColor: '#4dd76a',
         alignItems: 'center',
