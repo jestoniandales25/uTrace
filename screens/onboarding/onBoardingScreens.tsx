@@ -13,19 +13,19 @@ const slides = [
         id: '1',
         image: require('../../assets/onb1.png'),
         title: 'Welcome to TrailMap',
-        description: 'Your personal guide to navigating the campus with ease.\n Let\'s help you get where you need to go!'
+        description: 'Your personal guide to navigating the campus with ease. Let\'s help you get where you need to go!'
     },
     {
         id: '2',
         image: require('../../assets/onb2.png'),
         title: 'Enable Location Access',
-        description: 'We need your location to provide accurate directions to \nguide you across the campus.'
+        description: 'We need your location to provide accurate directions to guide you across the campus.'
     },
     {
         id: '3',
         image: require('../../assets/onb3.png'),
         title: 'You\'re Ready To Explore!',
-        description: 'Start navigating the campus with our real-time interactive \nmap.'
+        description: 'Start navigating the campus with our real-time interactive map.'
     }
 ];
 
@@ -36,7 +36,9 @@ const Slide = ({item}) => {
             source={item.image} 
             style={{height: '50%', width, resizeMode: 'contain'}} />
             <Text style={styles.title}>{item.title}</Text>
-            <Text style={styles.description}>{item.description}</Text>
+            <View style={styles.descriptionContainer}>
+                <Text style={styles.description}>{item.description}</Text>
+            </View>
         </View>
     );
 };
@@ -69,10 +71,12 @@ const OnBoardingScreens = ({ navigation }) => {
                 }}>
                     
                     <TouchableOpacity style={styles.button} onPress={goNextSlide}>
-                        <Text style={styles.buttonText}>
-                            {currentSlideIndex == slides.length - 1 ? 'Let\'s Go' :
-                             currentSlideIndex == slides.length - 2 ? 'Continue' : 'Get Started'}
-                        </Text>
+                        <View style={styles.buttonTextContainer}>
+                            <Text style={styles.buttonText}>
+                                {currentSlideIndex == slides.length - 1 ? 'Let\'s Go' :
+                                currentSlideIndex == slides.length - 2 ? 'Continue' : 'Get Started'}
+                            </Text>
+                        </View>
                     </TouchableOpacity> 
                 </View>
             </View>

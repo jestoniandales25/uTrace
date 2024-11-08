@@ -2,7 +2,8 @@ import React, { useRef, useState } from 'react';
 import { Text, View, TouchableOpacity, TextInput, Animated, Easing, PanResponder } from 'react-native';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import navstyles from '../../styles/navstyles';
-import Ionicons from '@expo/vector-icons/Ionicons'
+import Ionicons from '@expo/vector-icons/Ionicons';
+import MapView from 'react-native-maps';
 
 export default function Examplemap() {
   const navigation = useNavigation();
@@ -20,6 +21,10 @@ export default function Examplemap() {
       easing: Easing.out(Easing.ease),
       useNativeDriver: false,
     }).start();
+  };
+
+  const handleMapPress = () => {
+    navigation.dispatch(StackActions.push('Map'));
   };
   
 
@@ -57,7 +62,15 @@ export default function Examplemap() {
 
   return (
     <View style={navstyles.container}>
-      <Text style={navstyles.header}>Example Map</Text>
+      <MapView
+        style={navstyles.absoluteFillObject}  // Ensures map fills the background
+        initialRegion={{
+          latitude: 8.485832488668247,
+          longitude: 124.65643097510551,
+          latitudeDelta: 0.0009,
+          longitudeDelta: 0.0009,
+        }}
+      />
 
       <View style={navstyles.searchContainer}>
         <Ionicons style={navstyles.searchIcon} name="search" size={24} color="black" />
@@ -67,6 +80,7 @@ export default function Examplemap() {
       <TouchableOpacity style={navstyles.tryButton} onPress={handleTryPress}>
         <Text style={navstyles.buttonText}>Try</Text>
       </TouchableOpacity>
+
       
       {isVisible && (
         <Animated.View 

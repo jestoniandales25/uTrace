@@ -8,10 +8,17 @@ const styles = StyleSheet.create({
         marginTop: 20,
         textAlign: 'center'
     },
+    descriptionContainer: {
+        justifyContent: 'center',
+        marginTop: 20,
+        flex: 0.3,
+        width: 350,
+        alignItems: 'center',
+    },
     description: {
-        fontSize: 13,
+        fontSize: 14,
         marginTop: 10,
-        maxWidth: '85%',
+        justifyContent: 'center',
         textAlign: 'center',
         lineHeight: 23,
     },
@@ -42,6 +49,13 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
     },
+    buttonTextContainer: {
+        width: 200,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    
 });
 
 export default styles;

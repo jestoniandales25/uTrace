@@ -1,24 +1,32 @@
 {
   "expo": {
-    "name": "TrailMap",
-    "slug": "TrailMap",
+    "name": "uTrace",
+    "slug": "uTrace",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/uTraceLogo.png",
+    "icon": "./assets/ic_launcher.png",
     "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/ic_launcher_foreground.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.jheartandales25.TrailMap"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/uTraceLogo.png",
+        "foregroundImage": "./assets/ic_launcher.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.jheartandales25.TrailMap"
     },
     "web": {
-      "favicon": "./assets/uTraceLogo.png"
+      "favicon": "./assets/ic_launcher_monochrome.png"
     },
     "extra": {
       "eas": {

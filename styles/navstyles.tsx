@@ -110,6 +110,22 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
       },      
+      mapButton: {
+        position: 'absolute',
+        paddingVertical: 15,
+        paddingHorizontal: 125,
+        backgroundColor: '#4dd76a',
+        borderRadius: 5,
+        alignItems: 'center',
+        top: '50%',
+      },
+      absoluteFillObject: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+    }
 
 });
 
