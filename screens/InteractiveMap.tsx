@@ -1,9 +1,9 @@
-import React, { useRef, useState } from 'react';
-import { Text, View, TouchableOpacity, TextInput, Animated, Easing, PanResponder } from 'react-native';
-import { StackActions, useNavigation } from '@react-navigation/native';
-import navstyles from '../../styles/navstyles';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import MapView from 'react-native-maps';
+import React, { useRef, useState } from "react";
+import {Text, View, TouchableOpacity, TextInput, Animated, Easing, PanResponder} from "react-native";
+import { StackActions, useNavigation } from "@react-navigation/native";
+import styles from "../styles/InteractiveMapStyles";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import MapView from "react-native-maps";
 
 export default function Examplemap() {
   const navigation = useNavigation();
@@ -11,7 +11,7 @@ export default function Examplemap() {
   const slideAnim = useRef(new Animated.Value(200)).current;
 
   const containerHeight = useRef(new Animated.Value(200)).current;
-  const [currentHeight, setCurrentHeight] = useState(200); 
+  const [currentHeight, setCurrentHeight] = useState(200);
 
   const handleTryPress = () => {
     setIsVisible(true);
@@ -24,9 +24,8 @@ export default function Examplemap() {
   };
 
   const handleMapPress = () => {
-    navigation.dispatch(StackActions.push('Map'));
+    navigation.dispatch(StackActions.push("Map"));
   };
-  
 
   const panResponder = useRef(
     PanResponder.create({
@@ -41,14 +40,14 @@ export default function Examplemap() {
       },
 
       onPanResponderRelease: (e, gestureState) => {
-        const finalHeight = gestureState.dy > 50 ? 200 : 400; 
+        const finalHeight = gestureState.dy > 50 ? 200 : 400;
         if (gestureState.dy > 50) {
           Animated.timing(slideAnim, {
-            toValue: 200, 
+            toValue: 200,
             duration: 300,
             easing: Easing.out(Easing.ease),
             useNativeDriver: false,
-          }).start(() => setIsVisible(false)); 
+          }).start(() => setIsVisible(false));
         } else {
           Animated.spring(containerHeight, {
             toValue: finalHeight,
@@ -61,9 +60,9 @@ export default function Examplemap() {
   ).current;
 
   return (
-    <View style={navstyles.container}>
+    <View style={styles.container}>
       <MapView
-        style={navstyles.absoluteFillObject}  // Ensures map fills the background
+        style={styles.absoluteFillObject} // Ensures map fills the background
         initialRegion={{
           latitude: 8.485832488668247,
           longitude: 124.65643097510551,
@@ -72,30 +71,36 @@ export default function Examplemap() {
         }}
       />
 
-      <View style={navstyles.searchContainer}>
-        <Ionicons style={navstyles.searchIcon} name="search" size={24} color="black" />
-        <TextInput style={navstyles.userInputWithIcon} placeholder="Where do you want to go?" />
+      <View style={styles.searchContainer}>
+        <Ionicons
+          style={styles.searchIcon}
+          name="search"
+          size={24}
+          color="black"
+        />
+        <TextInput
+          style={styles.userInputWithIcon}
+          placeholder="Where do you want to go?"
+        />
       </View>
 
-      <TouchableOpacity style={navstyles.tryButton} onPress={handleTryPress}>
-        <Text style={navstyles.buttonText}>Try</Text>
+      <TouchableOpacity style={styles.tryButton} onPress={handleTryPress}>
+        <Text style={styles.buttonText}>Try</Text>
       </TouchableOpacity>
 
-      
       {isVisible && (
-        <Animated.View 
+        <Animated.View
           style={[
-            navstyles.animatedContainer,
+            styles.animatedContainer,
             { transform: [{ translateY: slideAnim }], height: containerHeight },
           ]}
         >
-          <View
-            {...panResponder.panHandlers}
-            style={navstyles.resizableHeader}
-          >
+          <View {...panResponder.panHandlers} style={styles.resizableHeader}>
             <Ionicons name="remove-outline" size={24} color="black" />
           </View>
-          <Text style={navstyles.containerText}>I'm sliding from the bottom!</Text>
+          <Text style={styles.containerText}>
+            I'm sliding from the bottom!
+          </Text>
         </Animated.View>
       )}
     </View>

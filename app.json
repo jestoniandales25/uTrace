@@ -4,10 +4,10 @@
     "slug": "uTrace",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/ic_launcher.png",
+    "icon": "./assets/images/Favicon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/ic_launcher_foreground.png",
+      "image": "./assets/images/SplashScreen.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -20,18 +20,21 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/ic_launcher.png",
+        "foregroundImage": "./assets/images/Favicon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.jheartandales25.TrailMap"
     },
     "web": {
-      "favicon": "./assets/ic_launcher_monochrome.png"
+      "favicon": "./assets/images/Favicon.svg"
     },
     "extra": {
       "eas": {
         "projectId": "dfff7644-8408-42b5-bf9a-02d661471f03"
       }
-    }
+    },
+    "plugins": [
+      "expo-font"
+    ]
   }
 }

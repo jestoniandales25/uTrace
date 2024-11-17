@@ -1,20 +1,20 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+    view: {
+        gap: 8,
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
     },
-    splashScreen: {
-        height: 250,
-        width: 450,
-        resizeMode: 'contain',
+    text: {
+        fontFamily: "HankenGrotesk-Regular",
+        textAlign: "center"
     },
-    loadingIndicator: {
-        marginTop: 20,
-      },
+    loading: {
+        marginTop: 24
+    }
 });
 
-export default styles
+export default styles;
