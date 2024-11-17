@@ -4,7 +4,7 @@ import styles from "../styles/SplashScreenStyles";
 import Wrapper from "../components/Wrapper";
 import Logo from "../assets/images/Logo.svg";
 
-const SplashScreen = () => {
+export default function SplashScreen() {
   return (
     <Wrapper>
       <View style={styles.view}>
@@ -15,5 +15,3 @@ const SplashScreen = () => {
     </Wrapper>
   );
 };
-
-export default SplashScreen;
