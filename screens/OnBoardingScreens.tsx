@@ -1,13 +1,19 @@
 import React from "react";
-import {Dimensions, FlatList, SafeAreaView, StatusBar, View, Image, Text,TouchableOpacity} from "react-native";
-import styles from "../styles/OnBoardingStyles";
-import Wrapper from "../components/Wrapper";
+import {
+  Dimensions,
+  FlatList,
+  SafeAreaView,
+  View,
+  Text,
+  TouchableOpacity,
+} from "react-native";
+import styles from "../styles/OnBoardingScreensStyles";
 import Illustration1 from "../assets/images/OnBoardingIllustration1.svg";
 import Illustration2 from "../assets/images/OnBoardingIllustration2.svg";
 import Illustration3 from "../assets/images/OnBoardingIllustration3.svg";
 
 const { width, height } = Dimensions.get("window");
-const COLORS = { primary: "#4dd76a", white: "#fff" };
+const COLORS = { primary: "#FDB218", white: "#fff" };
 
 const slides = [
   {
@@ -29,25 +35,22 @@ const slides = [
     component: Illustration3,
     title: "You're Ready To Explore!",
     description:
-      "Start navigating the campus with our real-time interactive map.",
+      "Start navigating the campus with our real-time interactive map. Trace your way!",
   },
 ];
 
 const Slide = ({ item }) => {
   const Illustration = item.component;
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <View style={{ alignItems: 'center', justifyContent: 'center', width: width * 1, height: height * 0.4 }}>
-        <Illustration 
-          width="100%" 
-          height="100%" 
-          preserveAspectRatio="xMidYMid meet"
-          style={{ flex: 1 }}
-        />
-      </View>
-      <Text style={styles.title}>{item.title}</Text>
-      <View style={styles.descriptionContainer}>
+    <View style={styles.wrapper}>
+      <View style={styles.container}>
+        <View style={styles.illustrationContainer}>
+          <Illustration width="100%" height="100%" />
+        </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.title}>{item.title}</Text>
           <Text style={styles.description}>{item.description}</Text>
+        </View>
       </View>
     </View>
   );
@@ -59,52 +62,39 @@ export default function OnBoardingScreens({ navigation }) {
 
   const Footer = () => {
     return (
-      <View
-        style={{
-          height: height * 0.25,
-          justifyContent: "space-between",
-          paddingHorizontal: 20,
-        }}
-      >
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "center",
-            marginTop: 20,
-          }}
-        >
-          {slides.map((_, index) => (
-            <View
-              key={index}
-              style={[
-                styles.indicator,
-                currentSlideIndex == index && {
-                  backgroundColor: COLORS.primary,
-                },
-              ]}
-            />
-          ))}
-        </View>
-        <View
-          style={{
-            marginBottom: 20,
-          }}
-        >
-          <TouchableOpacity style={styles.button} onPress={goNextSlide}>
-            <View style={styles.buttonTextContainer}>
-              <Text style={styles.buttonText}>
-                {currentSlideIndex == slides.length - 1
-                  ? "Let's Go"
-                  : currentSlideIndex == slides.length - 2
-                  ? "Continue"
-                  : "Get Started"}
-              </Text>
-            </View>
-          </TouchableOpacity>
+      <View style={styles.wrapper}>
+        <View style={styles.bottomContainer}>
+          <View style={styles.indicatorContainer}>
+            {slides.map((_, index) => (
+              <View
+                key={index}
+                style={[
+                  styles.indicator,
+                  currentSlideIndex == index && {
+                    backgroundColor: COLORS.primary,
+                  },
+                ]}
+              />
+            ))}
+          </View>
+          <View>
+            <TouchableOpacity style={styles.button} onPress={goNextSlide}>
+              <View style={styles.buttonTextContainer}>
+                <Text style={styles.buttonText}>
+                  {currentSlideIndex == slides.length - 1
+                    ? "Let's Go"
+                    : currentSlideIndex == slides.length - 2
+                    ? "Continue"
+                    : "Get Started"}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
   };
+
   const updateCurrentSlideIndex = (e) => {
     const contentOffsetX = e.nativeEvent.contentOffset.x;
     const currentIndex = Math.round(contentOffsetX / width);
@@ -123,19 +113,22 @@ export default function OnBoardingScreens({ navigation }) {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
-      <StatusBar backgroundColor={COLORS.white} />
-      <FlatList
-        ref={ref}
-        onMomentumScrollEnd={updateCurrentSlideIndex}
-        pagingEnabled
-        data={slides}
-        contentContainerStyle={{ height: height * 0.75 }}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        renderItem={({ item }) => <Slide item={item} />}
-      />
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      <View>
+        <FlatList
+          ref={ref}
+          onMomentumScrollEnd={updateCurrentSlideIndex}
+          pagingEnabled
+          data={slides}
+          contentContainerStyle={{
+            height: height - 144,
+          }}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => <Slide item={item} />}
+        />
+      </View>
       <Footer />
     </SafeAreaView>
   );
-};
+}
