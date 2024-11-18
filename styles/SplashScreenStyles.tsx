@@ -1,6 +1,13 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
+    wrapper: {
+        flex: 1,
+        paddingHorizontal: 24,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderStyle: "dotted"
+    },
     view: {
         gap: 8,
         width: "100%",
@@ -10,7 +17,8 @@ const styles = StyleSheet.create({
     },
     text: {
         fontFamily: "HankenGrotesk-Regular",
-        textAlign: "center"
+        textAlign: "center",
+        color: "#151515"
     },
     loading: {
         marginTop: 24
