@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "uTrace",
-    "slug": "uTrace",
+    "slug": "TrailMap",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/Favicon.png",

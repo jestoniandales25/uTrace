@@ -12,21 +12,21 @@ const COLORS = { primary: "#4dd76a", white: "#fff" };
 const slides = [
   {
     id: "1",
-    image: require("../assets/images/onb1.png"),
+    component: Illustration1,
     title: "Welcome to uTrace",
     description:
       "Your personal guide to navigating the campus with ease. Let's help you get where you need to go!",
   },
   {
     id: "2",
-    image: require("../assets/images/onb1.png"),
+    component: Illustration2,
     title: "Enable Location Access",
     description:
       "We need your location to provide accurate directions to guide you across the campus.",
   },
   {
     id: "3",
-    image: require("../assets/images/onb1.png"),
+    component: Illustration3,
     title: "You're Ready To Explore!",
     description:
       "Start navigating the campus with our real-time interactive map.",
@@ -34,11 +34,17 @@ const slides = [
 ];
 
 const Slide = ({ item }) => {
+  const Illustration = item.component;
   return (
-    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-      <Image 
-      source={item.image} 
-      style={{height: '50%', width, resizeMode: 'contain'}} />
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{ alignItems: 'center', justifyContent: 'center', width: width * 1, height: height * 0.4 }}>
+        <Illustration 
+          width="100%" 
+          height="100%" 
+          preserveAspectRatio="xMidYMid meet"
+          style={{ flex: 1 }}
+        />
+      </View>
       <Text style={styles.title}>{item.title}</Text>
       <View style={styles.descriptionContainer}>
           <Text style={styles.description}>{item.description}</Text>
@@ -112,7 +118,7 @@ export default function OnBoardingScreens({ navigation }) {
       ref?.current?.scrollToOffset({ offset });
       setCurrentSlideIndex(nextSlideIndex);
     } else {
-      navigation.replace("Sample");
+      navigation.replace("InteractiveMap");
     }
   };
 

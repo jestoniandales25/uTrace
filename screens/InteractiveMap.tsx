@@ -3,7 +3,6 @@ import {Text, View, TouchableOpacity, TextInput, Animated, Easing, PanResponder}
 import { StackActions, useNavigation } from "@react-navigation/native";
 import styles from "../styles/InteractiveMapStyles";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import MapView from "react-native-maps";
 
 export default function Examplemap() {
   const navigation = useNavigation();
@@ -61,15 +60,6 @@ export default function Examplemap() {
 
   return (
     <View style={styles.container}>
-      <MapView
-        style={styles.absoluteFillObject} // Ensures map fills the background
-        initialRegion={{
-          latitude: 8.485832488668247,
-          longitude: 124.65643097510551,
-          latitudeDelta: 0.0009,
-          longitudeDelta: 0.0009,
-        }}
-      />
 
       <View style={styles.searchContainer}>
         <Ionicons
