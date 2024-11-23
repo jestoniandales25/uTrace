@@ -44,9 +44,9 @@
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
-    "@expo/metro-config": "^0.19.4",
+    "@expo/metro-config": "~0.18.11",
     "@types/leaflet": "^1.9.14",
-    "metro": "^0.81.0"
+    "metro": "~0.80.8"
   },
   "private": true
 }
