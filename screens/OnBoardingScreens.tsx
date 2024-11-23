@@ -108,7 +108,7 @@ export default function OnBoardingScreens({ navigation }) {
       ref?.current?.scrollToOffset({ offset });
       setCurrentSlideIndex(nextSlideIndex);
     } else {
-      navigation.replace("InteractiveMap");
+      navigation.replace("SigningAs");
     }
   };
 
