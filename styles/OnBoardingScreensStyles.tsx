@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "HankenGrotesk-Regular",
     color: "#151515",
-    backgroundColor: "white",
   },
   description: {
     fontSize: 12,
@@ -39,7 +38,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     width: "100%",
     fontFamily: "HankenGrotesk-Regular",
-    backgroundColor: "white",
+    color: "#151515",
   },
   bottomContainer: {
     height: 144,
