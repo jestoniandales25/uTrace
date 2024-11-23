@@ -1,6 +1,6 @@
   import React, { useEffect, useState } from "react";
   import { createNativeStackNavigator } from "@react-navigation/native-stack";
-  import InteractiveMap from "../screens/InteractiveMap";
+  import InteractiveMap from "../screens/InteractiveMapTest";
   import OnBoardingScreens from "../screens/OnBoardingScreens";
   import SplashScreen from "../screens/SplashScreen";
   import SigningAs from "../screens/SigningAsScreens";

@@ -10,7 +10,6 @@ web-build/
 /android
 /ios
 
-
 # Native
 *.orig.*
 *.jks

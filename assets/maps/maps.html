@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+        width: 100%;
+        background-color: #fafafa;
+      }
+
+      /* FONT DOESNT WORK*/
+      @font-face {
+        font-family: "HankenGrotesk-Regular";
+        src: url("../fonts/HankenGrotesk-Regular.ttf") format("truetype");
+      }
+      .leaflet-tooltip {
+        font-family: "HankenGrotesk-Regular", sans-serif !important;
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        color: #151515;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="map"></div>
+    <script>
+      var map = L.map("map", {
+        center: [8.485666189342737, 124.65650567039847],
+        zoom: 18,
+        minZoom: 17,
+        maxZoom: 19,
+        zoomControl: false,
+        crs: L.CRS.Simple,
+        maxBounds: [
+          [8.482920572161674, 124.65331426635385], // Bottom-left corner (lat, lng)
+          [8.48949408531189, 124.65996752679348], // Top-right corner (lat, lng)
+        ],
+        maxBoundsViscosity: 0.3,
+      });
+
+      const bounds = [
+        [8.484328889112989, 124.65466990222923], // Bottom-left corner (lat, lng)
+        [8.488068785899669, 124.6586974617094], // Top-right corner (lat, lng)
+      ];
+
+      L.imageOverlay("./assets/maps/maps.png", bounds).addTo(map);
+
+      map.on("click", function (e) {
+        const lat = e.latlng.lat;
+        const lng = e.latlng.lng;
+
+        window.ReactNativeWebView.postMessage(
+          JSON.stringify({ lat: lat, lng: lng })
+        );
+
+        L.marker([lat, lng])
+          .addTo(map)
+          .bindPopup(`<b>Coordinates</b><br>Lat: ${lat}<br>Lng: ${lng}`)
+          .openPopup();
+      });
+
+      const labels = [
+        { coords: [8.486217498779297, 124.65845108032227], name: "Arts and Culture", minZoom: 19  },
+        { coords: [8.48602294921875, 124.658203125], name: "College of Medicine", minZoom: 17  },
+        { coords: [8.485736152157187, 124.65754575282335], name: "<center>Old College of<br> Engineering and<br> Architecture<center/>", minZoom: 17 },
+        { coords: [8.486184849403799, 124.65736460592598], name: "<center>Information Communication<br> Technology Building<center/>", minZoom: 17 },
+        { coords: [8.485967411659658, 124.65722727682441], name: "Administration Building", minZoom: 18  },
+        { coords: [8.486304983496666, 124.6567681049928], name: "Building 14", minZoom: 18 },
+        { coords: [8.48607908654958, 124.65652301069349], name: "Gymnasium Lobby", minZoom: 17  },
+        { coords: [8.485770096071064, 124.65670230146497], name: "DRER Memorial Hall", minZoom: 17  },
+        { coords: [8.485339194536209, 124.65715148672462], name: "Culinary Building", minZoom: 18  },
+        { coords: [8.48506835103035, 124.65719344839454], name: "Building 19", minZoom: 19  },
+        { coords: [8.485168671235442, 124.65677652601153], name: "Cafeteria Building", minZoom: 17  },
+        { coords: [8.484918809495866, 124.65655957348645], name: "Guard House", minZoom: 18  },
+        { coords: [8.48655108641833, 124.65582003444433], name: "Learning Resource Center", minZoom: 17 },
+        { coords: [8.486314575187862, 124.65539198275656], name: "Girls Trade", minZoom: 18  },
+        { coords: [8.486245976760983, 124.65590948238969], name: "<center>Food Innovation<br> Center<center/>", minZoom: 17  },
+        { coords: [8.485913344658911, 124.65589855052531], name: "Old Science Building", minZoom: 18  },
+        { coords: [8.486458119004965, 124.65496782027185], name: "<center>Makeshift<br> Fabrication Laboratory<center/>", minZoom: 17 },
+        { coords: [8.485623427666724, 124.65606458671391], name: "<center>Science Complex<br> Building<center/>", minZoom: 17  },
+        { coords: [8.484849496744573, 124.6567744705826], name: "Engineering Complex A", minZoom: 19 },
+        { coords: [8.48478655423969, 124.65708098560572], name: "Engineering Complex B", minZoom: 17  },
+        { coords: [8.486816207878292, 124.6553538357839], name: "<center>College of<br> Technology Building<center/>", minZoom: 18  },
+        { coords: [8.485903210937977, 124.65834086760879], name: "Child Minding Building", minZoom: 19  },
+        { coords: [8.486390530131757, 124.65637742262334], name: "Modular Classroom 1", minZoom: 18  },
+        { coords: [8.486461102031171, 124.65653382521123], name: "Modular Classroom 1", minZoom: 19  },
+      ];
+
+      const tooltips = [];
+
+      const updateLabelsVisibility = () => {
+        const currentZoom = map.getZoom();
+
+        tooltips.forEach(({ tooltip, marker }) => {
+          map.removeLayer(marker);
+          tooltip.remove();
+        });
+
+        tooltips.length = 0;
+
+        labels.forEach(label => {
+          if (currentZoom >= label.minZoom) {
+            const marker = L.marker(label.coords, { opacity: 0 });
+            const tooltip = marker
+              .addTo(map)
+              .bindTooltip(label.name, {
+                permanent: true,
+                direction: "center",
+                offset: [0, 32],
+              })
+              .openTooltip();
+
+            tooltips.push({ marker, tooltip });
+          }
+        });
+      };
+
+      map.on("zoomend", updateLabelsVisibility);
+      updateLabelsVisibility();
+
+    </script>
+  </body>
+</html>

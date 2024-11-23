@@ -19,6 +19,10 @@
       "bundleIdentifier": "com.jheartandales25.TrailMap"
     },
     "android": {
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/Favicon.png",
         "backgroundColor": "#ffffff"
@@ -26,7 +30,7 @@
       "package": "com.jheartandales25.TrailMap"
     },
     "web": {
-      "favicon": "./assets/images/Favicon.svg"
+      "favicon": "./assets/images/Favicon.png"
     },
     "extra": {
       "eas": {
@@ -34,7 +38,14 @@
       }
     },
     "plugins": [
-      "expo-font"
+      "expo-font",
+      [
+      "@rnmapbox/maps",
+        {
+          "RNMapboxMapsImpl": "maplibre"
+        }
+      ],
+      "@maplibre/maplibre-react-native"
     ]
   }
 }
