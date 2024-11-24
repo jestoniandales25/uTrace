@@ -39,12 +39,6 @@
     },
     "plugins": [
       "expo-font",
-      [
-      "@rnmapbox/maps",
-        {
-          "RNMapboxMapsImpl": "maplibre"
-        }
-      ],
       "@maplibre/maplibre-react-native"
     ]
   }
