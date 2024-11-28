@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "uTrace",
-    "slug": "TrailMap",
+    "slug": "uTrace",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/Favicon.png",
@@ -16,7 +16,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.jheartandales25.TrailMap"
+      "bundleIdentifier": "com.jheartandales25.uTrace"
     },
     "android": {
       "permissions": [
@@ -27,7 +27,7 @@
         "foregroundImage": "./assets/images/Favicon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.jheartandales25.TrailMap"
+      "package": "com.jheartandales25.uTrace"
     },
     "web": {
       "favicon": "./assets/images/Favicon.png"
@@ -39,7 +39,12 @@
     },
     "plugins": [
       "expo-font",
-      "@maplibre/maplibre-react-native"
+      "@maplibre/maplibre-react-native",
+      ["expo-build-properties", {
+        "android": {
+          "usesCleartextTraffic": true
+        }
+      }]
     ]
   }
 }
