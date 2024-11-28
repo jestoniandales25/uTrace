@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Text, TextInput, View, TouchableOpacity } from "react-native";
+import React, { useState, useRef, useEffect } from "react";
+import { Text, TextInput, View, TouchableOpacity, Animated } from "react-native";
 import { WebView } from "react-native-webview";
 import styles from "../styles/InteractiveMapStyles";
 import SearchIcon from "../assets/images/magnifying-glass-solid.svg";
@@ -8,6 +8,46 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 
 export default function InteractiveMap() {
+  const [isFocused, setIsFocused] = useState(false); 
+  const searchContainerWidthAnim = useRef(new Animated.Value(250)).current; 
+  const userContainerAnim = useRef(new Animated.Value(1)).current; 
+  
+  const handleFocus = () => {
+    setIsFocused(true);
+  
+    //Animation for adjustments
+    Animated.timing(searchContainerWidthAnim, {
+      toValue: 330, 
+      duration: 300,
+      useNativeDriver: false, 
+    }).start();
+  
+    Animated.timing(userContainerAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
+  
+  const handleBlur = () => {
+    setIsFocused(false);
+  
+    //Default for adjustments
+    Animated.timing(searchContainerWidthAnim, {
+      toValue: 300, 
+      duration: 300,
+      useNativeDriver: false, 
+    }).start();
+  
+    Animated.timing(userContainerAnim, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
+  
+
+
   const today = new Date();
   const formattedDate = today.toLocaleDateString("en-US", {
     month: "short",
@@ -54,20 +94,28 @@ export default function InteractiveMap() {
         style={styles.map}
       />
       <View style={styles.topContainer}>
-        <View style={styles.searchContainer}>
+        <Animated.View
+          style={[
+            styles.searchContainer,
+            { width: searchContainerWidthAnim }, // Animated width
+          ]}
+        >
           <View style={styles.searchIconContainer}>
             <SearchIcon />
           </View>
           <TextInput
             style={styles.searchInput}
             placeholder="Where do you want to go?"
+            onFocus={handleFocus}
+            onBlur={handleBlur}
           />
-        </View>
-        <View style={styles.userContainer}>
+        </Animated.View>
+      
+        <Animated.View style={[styles.userContainer, { opacity: userContainerAnim, transform: [{ scale: userContainerAnim }], }]}>
           <TouchableOpacity style={styles.userButton} onPress={toggleUserPopup}>
             <UserIcon />
           </TouchableOpacity>
-        </View>
+        </Animated.View>
       </View>
 
       <TouchableOpacity style={styles.tryButton} onPress={handlePress}>

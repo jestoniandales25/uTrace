@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     flexDirection: "row",
-    flex: 1,
+    width: 300,  // Default width
     borderWidth: 1,
     borderColor: "#fff",
     backgroundColor: "#fff",
@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     height: 40,
   },
+
   searchIconContainer: {
     paddingVertical: 8,
     paddingRight: 8,
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
     color: "#FDB218",
   },
   searchInput: {
-    flex: 1,
+    width: "90%",
     height: "100%",
   },
   userContainer: {
