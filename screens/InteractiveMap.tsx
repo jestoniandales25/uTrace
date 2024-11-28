@@ -1,98 +1,53 @@
-import React, { useRef, useState } from "react";
-import {Text, View, TouchableOpacity, TextInput, Animated, Easing, PanResponder} from "react-native";
-import { StackActions, useNavigation } from "@react-navigation/native";
+import React, { useMemo, useRef, useState } from "react";
+import { Text, TextInput, View, TouchableOpacity, Button } from "react-native";
+import { WebView } from "react-native-webview";
 import styles from "../styles/InteractiveMapStyles";
-import Ionicons from "@expo/vector-icons/Ionicons";
+import SearchIcon from "../assets/images/magnifying-glass-solid.svg";
+import UserIcon from "../assets/images/circle-user-solid.svg";
 
-export default function Examplemap() {
-  const navigation = useNavigation();
-  const [isVisible, setIsVisible] = useState(false);
-  const slideAnim = useRef(new Animated.Value(200)).current;
-
-  const containerHeight = useRef(new Animated.Value(200)).current;
-  const [currentHeight, setCurrentHeight] = useState(200);
-
-  const handleTryPress = () => {
-    setIsVisible(true);
-    Animated.timing(slideAnim, {
-      toValue: 0,
-      duration: 500,
-      easing: Easing.out(Easing.ease),
-      useNativeDriver: false,
-    }).start();
+export default function InteractiveMap() {
+  //LOG DATA LOCATION TEST, will be removed after debugging
+  const handleWebViewMessage = (event: any) => {
+    const data = JSON.parse(event.nativeEvent.data);
+    console.log(`Latitude: ${data.lat}, Longitude: ${data.lng}`);
   };
+  // ============================================================
+  const [isOn, setIsOn] = useState(false);
 
-  const handleMapPress = () => {
-    navigation.dispatch(StackActions.push("Map"));
+  const handlePress = () => {
+    setIsOn(!isOn);
   };
-
-  const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-
-      onPanResponderMove: (e, gestureState) => {
-        const newHeight = 200 - gestureState.dy;
-        if (newHeight >= 100 && newHeight <= 600) {
-          containerHeight.setValue(newHeight);
-          setCurrentHeight(newHeight);
-        }
-      },
-
-      onPanResponderRelease: (e, gestureState) => {
-        const finalHeight = gestureState.dy > 50 ? 200 : 400;
-        if (gestureState.dy > 50) {
-          Animated.timing(slideAnim, {
-            toValue: 200,
-            duration: 300,
-            easing: Easing.out(Easing.ease),
-            useNativeDriver: false,
-          }).start(() => setIsVisible(false));
-        } else {
-          Animated.spring(containerHeight, {
-            toValue: finalHeight,
-            useNativeDriver: false,
-          }).start();
-        }
-        setCurrentHeight(finalHeight);
-      },
-    })
-  ).current;
 
   return (
     <View style={styles.container}>
-
-      <View style={styles.searchContainer}>
-        <Ionicons
-          style={styles.searchIcon}
-          name="search"
-          size={24}
-          color="black"
-        />
-        <TextInput
-          style={styles.userInputWithIcon}
-          placeholder="Where do you want to go?"
-        />
+      <WebView
+        originWhitelist={["*"]}
+        source={require("../assets/maps/maps.html")}
+        javaScriptEnabled={true}
+        domStorageEnabled={true}
+        onMessage={handleWebViewMessage}
+        style={styles.map}
+      />
+      <View style={styles.topContainer}>
+        <View style={styles.searchContainer}>
+          <View style={styles.searchIconContainer}>
+            <SearchIcon />
+          </View>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Where do you want to go?"
+          />
+        </View>
+        <View style={styles.userContainer}>
+          <TouchableOpacity style={styles.userButton}>
+            <UserIcon />
+          </TouchableOpacity>
+        </View>
       </View>
 
-      <TouchableOpacity style={styles.tryButton} onPress={handleTryPress}>
+      <TouchableOpacity style={styles.tryButton} onPress={handlePress}>
         <Text style={styles.buttonText}>Try</Text>
       </TouchableOpacity>
-
-      {isVisible && (
-        <Animated.View
-          style={[
-            styles.animatedContainer,
-            { transform: [{ translateY: slideAnim }], height: containerHeight },
-          ]}
-        >
-          <View {...panResponder.panHandlers} style={styles.resizableHeader}>
-            <Ionicons name="remove-outline" size={24} color="black" />
-          </View>
-          <Text style={styles.containerText}>
-            I'm sliding from the bottom!
-          </Text>
-        </Animated.View>
-      )}
     </View>
   );
 }
