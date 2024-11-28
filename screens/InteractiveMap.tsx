@@ -1,5 +1,5 @@
-import React, { useMemo, useRef, useState } from "react";
-import { Text, TextInput, View, TouchableOpacity, Button } from "react-native";
+import React, { useState } from "react";
+import { Text, TextInput, View, TouchableOpacity } from "react-native";
 import { WebView } from "react-native-webview";
 import styles from "../styles/InteractiveMapStyles";
 import SearchIcon from "../assets/images/magnifying-glass-solid.svg";
