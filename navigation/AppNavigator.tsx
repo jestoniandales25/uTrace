@@ -1,11 +1,11 @@
   import React, { useEffect, useState } from "react";
   import { createNativeStackNavigator } from "@react-navigation/native-stack";
-  import InteractiveMap from "../screens/InteractiveMapTest";
+  import InteractiveMap from "../screens/InteractiveMap";
   import OnBoardingScreens from "../screens/OnBoardingScreens";
   import SplashScreen from "../screens/SplashScreen";
-  import SigningAs from "../screens/SigningAsScreens";
-  import LoginScreens from "../screens/SigningLogin";
-  import Registration from "../screens/SigningRegister";
+  import SigningAs from "../screens/SigningAsScreen";
+  import LoginScreens from "../screens/LoginScreen";
+  import Registration from "../screens/RegisterScreen";
 
 
   const Stack = createNativeStackNavigator();
