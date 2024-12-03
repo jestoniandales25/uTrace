@@ -7,7 +7,7 @@ import UserIcon from "../assets/images/circle-user-solid.svg";
 import LogoutScreen from "./LogoutScreen";
 
 
-export default function InteractiveMap() {
+export default function InteractiveMap({navigation}) {
   const [isFocused, setIsFocused] = useState(false); 
   const searchContainerWidthAnim = useRef(new Animated.Value(250)).current; 
   const userContainerAnim = useRef(new Animated.Value(1)).current; 
@@ -62,6 +62,10 @@ export default function InteractiveMap() {
   const handlePress = () => {
     setIsOn(!isOn);
   };
+  const handleSample = () => {
+    navigation.push("Sample");
+  };
+
 
   return (
     <View style={styles.container}>
@@ -98,7 +102,7 @@ export default function InteractiveMap() {
         </Animated.View>
       </View>
 
-      <TouchableOpacity style={styles.tryButton} onPress={handlePress}>
+      <TouchableOpacity style={styles.tryButton} onPress={handleSample}>
         <Text style={styles.buttonText}>Try</Text>
       </TouchableOpacity>
 

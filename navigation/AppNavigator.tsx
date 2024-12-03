@@ -6,6 +6,8 @@
   import SigningAs from "../screens/SigningAsScreen";
   import LoginScreens from "../screens/LoginScreen";
   import Registration from "../screens/RegisterScreen";
+  import Sample from "../screens/SearchSample";
+
 
 
   const Stack = createNativeStackNavigator();
@@ -32,6 +34,7 @@
         <Stack.Screen name="SigningAs" component={SigningAs} />
         <Stack.Screen name="loginScreens" component={LoginScreens} />
         <Stack.Screen name="Registration" component={Registration} />
+        <Stack.Screen name="Sample" component={Sample} />
       </Stack.Navigator>
     );
   }
