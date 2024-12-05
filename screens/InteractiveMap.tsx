@@ -160,7 +160,8 @@ export default function InteractiveMap({ navigation }) {
         domStorageEnabled={true}
         onMessage={handleWebViewMessage}
         style={styles.map}
-        debuggingEnabled={true}r
+        debuggingEnabled={true}
+        r
       />
       <View style={styles.topContainer}>
         <Animated.View
@@ -249,7 +250,9 @@ export default function InteractiveMap({ navigation }) {
         </Animated.View>
       </View>
 
-      {isUserPopupVisible && <LogoutScreen onClose={toggleUserPopup} />}
+      {isUserPopupVisible && (
+        <LogoutScreen onClose={toggleUserPopup} navigation={navigation} />
+      )}
 
       <TouchableOpacity
         style={styles.tryButton}
