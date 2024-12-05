@@ -290,6 +290,38 @@ export default function InteractiveMap({ navigation }) {
           </Text>
         </BottomSheetView>
       </BottomSheet>
+
+      <BottomSheet
+        ref={bottomSheetRef}
+        snapPoints={snapPoints}
+        index={-1}
+        handleStyle={styles.handleStyle}
+      >
+        <BottomSheetView style={styles.contentContainer}>
+          {/* Main Text */}
+          <Text style={styles.mainText}>DRER Memorial Hall </Text>
+
+          {/* Sub Text */}
+          <Text style={styles.subText}>Gymnasium</Text>
+
+          {/* FlatList for Images */}
+          <FlatList
+            data={images}
+            horizontal
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <Image source={{ uri: item.uri }} style={styles.image} />
+            )}
+            contentContainerStyle={styles.flatlistContainer}
+          />
+
+          {/* Description Text */}
+          <Text style={styles.description}>
+            Dr. Ricardo E. Rotoras Memorial Hall is a multi-purpose gymnasium
+            for most academic and non-academic events involving large crowds.
+          </Text>
+        </BottomSheetView>
+      </BottomSheet>
     </GestureHandlerRootView>
   );
 }
