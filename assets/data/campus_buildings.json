@@ -1,0 +1,189 @@
+{
+    "buildings": [
+        {
+            "building_key": "01",
+            "building_name": "Arts and Culture",
+            "building_description": "The Arts and Culture building is located on the easternmost of the campus.",
+            "building_image": null,
+            "floors": [
+                {
+                    "floor_number": 1,
+                    "rooms": [
+                        {
+                            "room_id": "01-101",
+                            "room_name": "Accreditation Office",
+                            "room_type": "office",
+                            "room_images": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "building_key": "03",
+            "building_name": "College of Medicine / Integrated Technology Building",
+            "building_description": "College of Medicine is currently under renovation. Located on the eastern side of the campus.",
+            "building_image": null,
+            "floors": [
+                {
+                    "floor_number": 1,
+                    "rooms": [
+                        {
+                            "room_id": null,
+                            "room_name": "QUAAS",
+                            "room_type": "office",
+                            "room_images": null
+                        },
+                        {
+                            "room_id": null,
+                            "room_name": "Guidance Center",
+                            "room_type": "office",
+                            "room_images": null
+                        },
+                        {
+                            "room_id": null,
+                            "room_name": "Office of the Student Affairs (OSA)",
+                            "room_type": "office",
+                            "room_images": null
+                        },
+                        {
+                            "room_id": null,
+                            "room_name": "Audio Visual Room (AVR)",
+                            "room_type": "audio visual room",
+                            "room_images": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "building_key": "04",
+            "building_name": "Buildings and Ground Maintenance Unit",
+            "building_description": "This building contains 2 rooms, and is beside old engineering building.",
+            "building_image": null,
+            "floors": [
+                {
+                    "floor_number": 1,
+                    "rooms": [
+                        {
+                            "room_id": "04-101",
+                            "room_name": "Lecture Room",
+                            "room_type": "lecture room",
+                            "room_images": null
+                        },
+                        {
+                            "room_id": "04-102",
+                            "room_name": "BGMU Office and Storage",
+                            "room_type": "office",
+                            "room_images": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "building_key": "05",
+            "building_name": "Old College of Engineering and Architecture Building",
+            "building_description": "The Old Engineering Building is a one-story building, near ICT Building.",
+            "building_image": null,
+            "floors": [
+                {
+                    "floor_number": 1,
+                    "rooms": [
+                        {
+                            "room_id": "05-101",
+                            "room_name": "Garments Laboratory",
+                            "room_type": "laboratory",
+                            "room_images": null
+                        },
+                        {
+                            "room_id": "05-102",
+                            "room_name": "Laboratory Room",
+                            "room_type": "laboratory",
+                            "room_images": null
+                        },
+                        {
+                            "room_id": "05-103",
+                            "room_name": "Civil Engineering Laboratory",
+                            "room_type": "laboratory",
+                            "room_images": null
+                        },
+                        {
+                            "room_id": "05-104",
+                            "room_name": "Civil Engineering Laboratory",
+                            "room_type": "laboratory",
+                            "room_images": null
+                        },
+                        {
+                            "room_id": "05-105",
+                            "room_name": "Mechanical Engineering Laboratory",
+                            "room_type": "laboratory",
+                            "room_images": null
+                        },
+                        {
+                            "room_id": "05-106",
+                            "room_name": "Coop Office",
+                            "room_type": "office",
+                            "room_images": null
+                        },
+                        {
+                            "room_id": "05-107",
+                            "room_name": "Alumni Office",
+                            "room_type": "office",
+                            "room_images": null
+                        },
+                        {
+                            "room_id": "05-108",
+                            "room_name": "Lecture Room",
+                            "room_type": "lecture room",
+                            "room_images": null
+                        },
+                        {
+                            "room_id": "05-109",
+                            "room_name": "Lecture Room",
+                            "room_type": "lecture room",
+                            "room_images": null
+                        },
+                        {
+                            "room_id": "05-110",
+                            "room_name": "Civil Sanitary Works Unit",
+                            "room_type": "office",
+                            "room_images": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "building_key": "09",
+            "building_name": "Information Communication Technology Building",
+            "building_description": "ICT building is the home for College of Information Technology and Computing. Located behind Administration Building.",
+            "building_image": null,
+            "floors": [
+                {
+                    "floor_number": 1,
+                    "rooms": [
+                        {
+                            "room_id": "09-101",
+                            "room_name": "Strategic Communication",
+                            "room_type": "office",
+                            "room_images": null
+                        },
+                        {
+                            "room_id": "09-102",
+                            "room_name": "Vice President for Administration and Legal Affairs",
+                            "room_type": "office",
+                            "room_images": null
+                        },
+                        {
+                            "room_id": "09-103",
+                            "room_name": "Infrastructure Planning and Facilities Development",
+                            "room_type": "office",
+                            "room_images": null
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
