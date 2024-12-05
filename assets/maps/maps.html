@@ -5,12 +5,17 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-    crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
     <style>
       html,
       body {
@@ -81,30 +86,126 @@
       });
 
       const labels = [
-        { coords: [8.486217498779297, 124.65845108032227], name: "Arts and Culture", minZoom: 19  },
-        { coords: [8.48602294921875, 124.658203125], name: "College of Medicine", minZoom: 17  },
-        { coords: [8.485736152157187, 124.65754575282335], name: "<center>Old College of<br> Engineering and<br> Architecture<center/>", minZoom: 17 },
-        { coords: [8.486184849403799, 124.65736460592598], name: "<center>Information Communication<br> Technology Building<center/>", minZoom: 17 },
-        { coords: [8.485967411659658, 124.65722727682441], name: "Administration Building", minZoom: 18  },
-        { coords: [8.486304983496666, 124.6567681049928], name: "Building 14", minZoom: 18 },
-        { coords: [8.48607908654958, 124.65652301069349], name: "Gymnasium Lobby", minZoom: 17  },
-        { coords: [8.485770096071064, 124.65670230146497], name: "DRER Memorial Hall", minZoom: 17  },
-        { coords: [8.485339194536209, 124.65715148672462], name: "Culinary Building", minZoom: 18  },
-        { coords: [8.48506835103035, 124.65719344839454], name: "Building 19", minZoom: 19  },
-        { coords: [8.485168671235442, 124.65677652601153], name: "Cafeteria Building", minZoom: 17  },
-        { coords: [8.484918809495866, 124.65655957348645], name: "Guard House", minZoom: 18  },
-        { coords: [8.48655108641833, 124.65582003444433], name: "Learning Resource Center", minZoom: 17 },
-        { coords: [8.486314575187862, 124.65539198275656], name: "Girls Trade", minZoom: 18  },
-        { coords: [8.486245976760983, 124.65590948238969], name: "<center>Food Innovation<br> Center<center/>", minZoom: 17  },
-        { coords: [8.485913344658911, 124.65589855052531], name: "Old Science Building", minZoom: 18  },
-        { coords: [8.486458119004965, 124.65496782027185], name: "<center>Makeshift<br> Fabrication Laboratory<center/>", minZoom: 17 },
-        { coords: [8.485623427666724, 124.65606458671391], name: "<center>Science Complex<br> Building<center/>", minZoom: 17  },
-        { coords: [8.484849496744573, 124.6567744705826], name: "Engineering Complex A", minZoom: 19 },
-        { coords: [8.48478655423969, 124.65708098560572], name: "Engineering Complex B", minZoom: 17  },
-        { coords: [8.486816207878292, 124.6553538357839], name: "<center>College of<br> Technology Building<center/>", minZoom: 18  },
-        { coords: [8.485903210937977, 124.65834086760879], name: "Child Minding Building", minZoom: 19  },
-        { coords: [8.486390530131757, 124.65637742262334], name: "Modular Classroom 1", minZoom: 18  },
-        { coords: [8.486461102031171, 124.65653382521123], name: "Modular Classroom 1", minZoom: 19  },
+        {
+          coords: [8.486217498779297, 124.65845108032227],
+          name: "Arts and Culture",
+          minZoom: 19,
+        },
+        {
+          coords: [8.48602294921875, 124.658203125],
+          name: "College of Medicine",
+          minZoom: 17,
+        },
+        {
+          coords: [8.485736152157187, 124.65754575282335],
+          name: "<center>Old College of<br> Engineering and<br> Architecture<center/>",
+          minZoom: 17,
+        },
+        {
+          coords: [8.486184849403799, 124.65736460592598],
+          name: "<center>Information Communication<br> Technology Building<center/>",
+          minZoom: 17,
+        },
+        {
+          coords: [8.485967411659658, 124.65722727682441],
+          name: "Administration Building",
+          minZoom: 18,
+        },
+        {
+          coords: [8.486304983496666, 124.6567681049928],
+          name: "Building 14",
+          minZoom: 18,
+        },
+        {
+          coords: [8.48607908654958, 124.65652301069349],
+          name: "Gymnasium Lobby",
+          minZoom: 17,
+        },
+        {
+          coords: [8.485770096071064, 124.65670230146497],
+          name: "DRER Memorial Hall",
+          minZoom: 17,
+        },
+        {
+          coords: [8.485339194536209, 124.65715148672462],
+          name: "Culinary Building",
+          minZoom: 18,
+        },
+        {
+          coords: [8.48506835103035, 124.65719344839454],
+          name: "Building 19",
+          minZoom: 19,
+        },
+        {
+          coords: [8.485168671235442, 124.65677652601153],
+          name: "Cafeteria Building",
+          minZoom: 17,
+        },
+        {
+          coords: [8.484918809495866, 124.65655957348645],
+          name: "Guard House",
+          minZoom: 18,
+        },
+        {
+          coords: [8.48655108641833, 124.65582003444433],
+          name: "Learning Resource Center",
+          minZoom: 17,
+        },
+        {
+          coords: [8.486314575187862, 124.65539198275656],
+          name: "Girls Trade",
+          minZoom: 18,
+        },
+        {
+          coords: [8.486245976760983, 124.65590948238969],
+          name: "<center>Food Innovation<br> Center<center/>",
+          minZoom: 17,
+        },
+        {
+          coords: [8.485913344658911, 124.65589855052531],
+          name: "Old Science Building",
+          minZoom: 18,
+        },
+        {
+          coords: [8.486458119004965, 124.65496782027185],
+          name: "<center>Makeshift<br> Fabrication Laboratory<center/>",
+          minZoom: 17,
+        },
+        {
+          coords: [8.485623427666724, 124.65606458671391],
+          name: "<center>Science Complex<br> Building<center/>",
+          minZoom: 17,
+        },
+        {
+          coords: [8.484849496744573, 124.6567744705826],
+          name: "Engineering Complex A",
+          minZoom: 19,
+        },
+        {
+          coords: [8.48478655423969, 124.65708098560572],
+          name: "Engineering Complex B",
+          minZoom: 17,
+        },
+        {
+          coords: [8.486816207878292, 124.6553538357839],
+          name: "<center>College of<br> Technology Building<center/>",
+          minZoom: 18,
+        },
+        {
+          coords: [8.485903210937977, 124.65834086760879],
+          name: "Child Minding Building",
+          minZoom: 19,
+        },
+        {
+          coords: [8.486390530131757, 124.65637742262334],
+          name: "Modular Classroom 1",
+          minZoom: 18,
+        },
+        {
+          coords: [8.486461102031171, 124.65653382521123],
+          name: "Modular Classroom 1",
+          minZoom: 19,
+        },
       ];
 
       const tooltips = [];
@@ -119,7 +220,7 @@
 
         tooltips.length = 0;
 
-        labels.forEach(label => {
+        labels.forEach((label) => {
           if (currentZoom >= label.minZoom) {
             const marker = L.marker(label.coords, { opacity: 0 });
             const tooltip = marker
@@ -139,6 +240,123 @@
       map.on("zoomend", updateLabelsVisibility);
       updateLabelsVisibility();
 
+      // Define the coordinates of the campus boundary (use a polygon for campus area)
+      const campusBoundary = [
+        [8.4845, 124.655], // Coordinates of the campus boundary (sample points)
+        [8.485, 124.658],
+        [8.486, 124.659],
+        // Add all the relevant coordinates that form the campus boundary
+      ];
+
+      // Fallback location for the guard house
+      const fallbackLocation = {
+        latitude: 8.484939575195312,
+        longitude: 124.65656566619873,
+      };
+
+      // Function to check if the user's location is inside the campus
+      function isInsideCampus(lat, lng) {
+        const campusPolygon = L.polygon(campusBoundary);
+        return campusPolygon.contains(L.latLng(lat, lng));
+      }
+
+      // Check if geolocation is available
+      // Get the user's geolocation
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+
+            // Check if the user's location is within the campus boundary
+            if (isInsideCampus(latitude, longitude)) {
+              // Center the map on the user's location
+              map.setView([latitude, longitude], 18);
+
+              // Add a marker for the user's location
+              const userMarker = L.marker([latitude, longitude])
+                .addTo(map)
+                .bindPopup(
+                  `<b>Your Location</b><br>Lat: ${latitude}<br>Lng: ${longitude}`
+                )
+                .openPopup();
+            } else {
+              // If outside the campus, center the map on the fallback location (guard house)
+              map.setView(
+                [fallbackLocation.latitude, fallbackLocation.longitude],
+                18
+              );
+
+              // Add a marker for the fallback location
+              const fallbackMarker = L.marker([
+                fallbackLocation.latitude,
+                fallbackLocation.longitude,
+              ])
+                .addTo(map)
+                .bindPopup(
+                  `<b>Guard House</b><br>Lat: ${fallbackLocation.latitude}<br>Lng: ${fallbackLocation.longitude}`
+                )
+                .openPopup();
+            }
+          },
+          (error) => {
+            console.error("Geolocation error:", error.message);
+
+            // If geolocation fails, set the map to the fallback location
+            map.setView(
+              [fallbackLocation.latitude, fallbackLocation.longitude],
+              18
+            );
+
+            // Add a marker for the fallback location
+            const fallbackMarker = L.marker([
+              fallbackLocation.latitude,
+              fallbackLocation.longitude,
+            ])
+              .addTo(map)
+              .bindPopup(
+                `<b>Guard House</b><br>Lat: ${fallbackLocation.latitude}<br>Lng: ${fallbackLocation.longitude}`
+              )
+              .openPopup();
+          }
+        );
+      } else {
+        alert("Geolocation is not supported by your browser.");
+
+        // If geolocation is not supported, set the map to the fallback location
+        map.setView(
+          [fallbackLocation.latitude, fallbackLocation.longitude],
+          18
+        );
+
+        // Add a marker for the fallback location
+        const fallbackMarker = L.marker([
+          fallbackLocation.latitude,
+          fallbackLocation.longitude,
+        ])
+          .addTo(map)
+          .bindPopup(
+            `<b>Guard House</b><br>Lat: ${fallbackLocation.latitude}<br>Lng: ${fallbackLocation.longitude}`
+          )
+          .openPopup();
+      }
+
+      navigator.geolocation.watchPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          map.setView([latitude, longitude]);
+
+          if (userMarker) {
+            userMarker.setLatLng([latitude, longitude]);
+          }
+        },
+        (error) => {
+          console.error("Geolocation error:", error.message);
+        },
+        {
+          enableHighAccuracy: true, // Improve accuracy
+          maximumAge: 0, // No caching
+        }
+      );
     </script>
   </body>
 </html>
