@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@devvie/bottom-sheet": "^0.4.3",
     "@expo/config-plugins": "^9.0.10",
     "@expo/metro-runtime": "~3.2.3",
     "@gorhom/bottom-sheet": "^5.0.4",
@@ -43,14 +44,14 @@
     "react-native-svg": "^15.2.0",
     "react-native-svg-transformer": "^1.5.0",
     "react-native-web": "~0.19.10",
-    "react-native-webview": "13.8.6",
-    "typescript": "~5.3.3"
+    "react-native-webview": "13.8.6"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
     "@expo/metro-config": "~0.18.11",
     "@types/leaflet": "^1.9.14",
-    "metro": "~0.80.8"
+    "metro": "~0.80.8",
+    "typescript": "^5.7.2"
   },
   "private": true
 }
