@@ -66,6 +66,11 @@ export default function InteractiveMap({navigation}) {
     navigation.push("Sample");
   };
 
+  const handleSearch = () => {
+    
+  };
+
+
 
   return (
     <View style={styles.container}>
@@ -107,7 +112,7 @@ export default function InteractiveMap({navigation}) {
       </TouchableOpacity>
 
       {isUserPopupVisible && (
-      <LogoutScreen onClose={toggleUserPopup} />
+      <LogoutScreen onClose={toggleUserPopup} navigation={navigation}  />
     )}
 
     </View>

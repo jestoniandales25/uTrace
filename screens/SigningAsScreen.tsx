@@ -7,7 +7,7 @@ export default function SigningAs({ navigation }) {
     navigation.push("loginScreens");
   };
   const handleGuest = () => {
-    navigation.push("InteractiveMap");
+    navigation.push("InteractiveMap", { username: "Guest" });
   };
   return (
     <View style={styles.wrapper}>
