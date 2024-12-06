@@ -134,6 +134,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FDB218",
     borderTopLeftRadius: 32,
     borderTopRightRadius: 32,
+    height: 30,
   },
   mainText: {
     fontSize: 24,
@@ -150,13 +151,18 @@ const styles = StyleSheet.create({
     fontFamily: "HankenGrotesk-Regular",
   },
   flatlistContainer: {
-
+    paddingVertical: 8, // Add some padding for better aesthetics
+  },
+  imageWrapper: {
+    width: 200, // Adjust width as needed
+    aspectRatio: 16 / 9, // Ensure the aspect ratio is 16:9
+    marginRight: 8, // Add spacing between images
   },
   image: {
-    width: 120,
-    height: 120,
-    marginRight: 8,
-    borderRadius: 8,
+    width: "100%",
+    height: "100%",
+    borderRadius: 8, // Rounded corners
+    resizeMode: "cover", // Ensure the image fills the container
   },
   description: {
     fontSize: 14,
