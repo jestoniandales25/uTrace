@@ -8,7 +8,7 @@ import {
   Dimensions,
   FlatList,
   Image,
-  Button,
+  Keyboard,
 } from "react-native";
 import { WebView } from "react-native-webview";
 import styles from "../styles/InteractiveMapStyles";
@@ -37,13 +37,14 @@ export default function InteractiveMap({ navigation }) {
   const inputRef = useRef(null); // Ref for the TextInput
   const [selection, setSelection] = useState({ start: 0, end: 0 }); // Controlled selection
   const [selectedItem, setSelectedItem] = useState(null);
+  const [isSearchActive, setIsSearchActive] = useState(false); // Track if search suggestion was clicked
 
   const openBottomSheet = () => {
-    bottomSheetRef.current?.snapToIndex(0); // Open the BottomSheet
+    bottomSheetRef.current.snapToIndex(0); // Open the BottomSheet
   };
 
   const closeBottomSheet = () => {
-    bottomSheetRef.current?.snapToIndex(-1); // Close the BottomSheet
+    bottomSheetRef.current.close(); // Close the BottomSheet
   };
 
   const data = require("../assets/data/campus_buildings.json");
@@ -88,6 +89,7 @@ export default function InteractiveMap({ navigation }) {
             location: `${building.building_name} | ${ordinalSuffixOf(
               floor.floor_number
             )} floor`,
+            room_type: room.room_type,
           }))
       )
     );
@@ -112,11 +114,11 @@ export default function InteractiveMap({ navigation }) {
   const snapPoints = useMemo(() => ["25%", "40%"], []);
 
   const handleFocus = () => {
-    closeBottomSheet();
     setIsFocused(true);
     setSearchText(""); // Clear the search input
     setFilteredSuggestions([]); // Clear suggestions on focus
     setSelection({ start: 0, end: 0 }); // Reset cursor to the start
+    closeBottomSheet(); // Close bottom sheet if no search suggestion was clicked
 
     Animated.timing(searchContainerWidthAnim, {
       toValue: width - 48,
@@ -148,6 +150,8 @@ export default function InteractiveMap({ navigation }) {
       duration: 300,
       useNativeDriver: true,
     }).start();
+
+    openBottomSheet();
   };
 
   const toggleUserPopup = () => {
@@ -215,22 +219,26 @@ export default function InteractiveMap({ navigation }) {
                   setSearchText(formattedText);
                   setFilteredSuggestions([]); // Clear suggestions after selection
                   inputRef.current?.blur(); // Blur the input field
+                  setIsSearchActive(true);
+                  openBottomSheet();
 
                   if (item.type === "building") {
                     setSelectedItem({
+                      type: "building",
                       name: item.name,
                       key: item.key,
-                      type: item.type,
                       image: item.image,
                       description: item.description,
                     });
                   } else {
                     setSelectedItem({
+                      type: item.type,
                       id: item.id,
                       name: item.name,
+                      location: item.location,
+                      room_type: item.room_type,
                     });
                   }
-                  openBottomSheet();
                 }}
               >
                 <View style={styles.suggestionContent}>
@@ -291,7 +299,7 @@ export default function InteractiveMap({ navigation }) {
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
-        index={-1} // Control visibility with this prop
+        index={-1}
         handleStyle={styles.handleStyle}
       >
         <BottomSheetView style={styles.contentContainer}>
@@ -300,7 +308,9 @@ export default function InteractiveMap({ navigation }) {
             {selectedItem
               ? selectedItem.type === "building"
                 ? selectedItem.name // Display building name
-                : `${selectedItem.id} | ${selectedItem.name}` // Display room info
+                : selectedItem.id
+                ? `${selectedItem.id} | ${selectedItem.name}` // Display room info with ID
+                : selectedItem.name // Display room name only if ID is null
               : "Select a building or room"}
           </Text>
 
@@ -310,10 +320,7 @@ export default function InteractiveMap({ navigation }) {
           ) : (
             selectedItem &&
             selectedItem.type === "room" && (
-              <Text style={styles.subText}>
-                {selectedItem.floor_number} | {selectedItem.name} //
-                Show floor and building name
-              </Text>
+              <Text style={styles.subText}>{selectedItem.location}</Text> // Show room location
             )
           )}
 
@@ -340,16 +347,11 @@ export default function InteractiveMap({ navigation }) {
 
           {/* Description Text */}
           {selectedItem && selectedItem.type === "building" ? (
-            <Text style={styles.description}>
-              {selectedItem.description}
-            </Text> // Show building description
+            <Text style={styles.description}>{selectedItem.description}</Text> // Show building description
           ) : (
             selectedItem &&
             selectedItem.type === "room" && (
-              <Text style={styles.description}>
-                {selectedItem.room_type} room located in{" "}
-                {selectedItem.building_name}
-              </Text> // Show room description
+              <Text style={styles.description}>{selectedItem.room_type}</Text> // Show room type (or other details)
             )
           )}
         </BottomSheetView>
