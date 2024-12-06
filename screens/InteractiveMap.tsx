@@ -8,7 +8,7 @@ import {
   Dimensions,
   FlatList,
   Image,
-  Button,
+  Keyboard,
 } from "react-native";
 import { WebView } from "react-native-webview";
 import styles from "../styles/InteractiveMapStyles";
@@ -18,24 +18,40 @@ import LogoutScreen from "./LogoutScreen";
 import BuildingIcon from "../assets/images/building-solid.svg";
 import RoomIcon from "../assets/images/door-closed-solid.svg";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import BottomSheet, {
+  BottomSheetFlatList,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet";
 
 const { width, height } = Dimensions.get("window");
-const searchWidth = width - 48 - 48;
 
 export default function InteractiveMap({ navigation }) {
   const [isFocused, setIsFocused] = useState(false);
   const searchContainerWidthAnim = useRef(
-    new Animated.Value(searchWidth)
+    new Animated.Value(width - 48 - 48)
   ).current;
   const userContainerAnim = useRef(new Animated.Value(1)).current;
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const [isUserPopupVisible, setUserPopupVisible] = useState(false);
+  const inputRef = useRef(null); // Ref for the TextInput
+  const [selection, setSelection] = useState({ start: 0, end: 0 }); // Controlled selection
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [isSearchActive, setIsSearchActive] = useState(false); // Track if search suggestion was clicked
+
+  const openBottomSheet = () => {
+    bottomSheetRef.current.snapToIndex(0); // Open the BottomSheet
+  };
+
+  const closeBottomSheet = () => {
+    bottomSheetRef.current.close(); // Close the BottomSheet
+  };
 
   const data = require("../assets/data/campus_buildings.json");
   // Handle search
   const handleSearch = (text) => {
     setSearchText(text);
+    setSelection({ start: text.length, end: text.length });
     const searchQuery = text.toLowerCase();
 
     // If text is empty, clear filtered suggestions
@@ -54,6 +70,8 @@ export default function InteractiveMap({ navigation }) {
         type: "building",
         key: building.building_key,
         name: building.building_name,
+        image: building.building_image,
+        description: building.building_description,
       }));
 
     const filteredRooms = data.buildings.flatMap((building) =>
@@ -71,6 +89,7 @@ export default function InteractiveMap({ navigation }) {
             location: `${building.building_name} | ${ordinalSuffixOf(
               floor.floor_number
             )} floor`,
+            room_type: room.room_type,
           }))
       )
     );
@@ -94,16 +113,15 @@ export default function InteractiveMap({ navigation }) {
 
   const snapPoints = useMemo(() => ["25%", "40%"], []);
 
-  const openBottomSheet = useCallback(() => {
-    bottomSheetRef.current.expand();
-    bottomSheetRef.current.snapToIndex(0);
-  }, []);
-
   const handleFocus = () => {
     setIsFocused(true);
+    setSearchText(""); // Clear the search input
+    setFilteredSuggestions([]); // Clear suggestions on focus
+    setSelection({ start: 0, end: 0 }); // Reset cursor to the start
+    closeBottomSheet(); // Close bottom sheet if no search suggestion was clicked
 
     Animated.timing(searchContainerWidthAnim, {
-      toValue: searchWidth + 48,
+      toValue: width - 48,
       duration: 300,
       useNativeDriver: false,
     }).start();
@@ -117,10 +135,12 @@ export default function InteractiveMap({ navigation }) {
 
   const handleBlur = () => {
     setIsFocused(false);
+    setFilteredSuggestions([]);
+    setSelection({ start: 0, end: 0 });
 
     //Default for adjustments
     Animated.timing(searchContainerWidthAnim, {
-      toValue: searchWidth,
+      toValue: width - 48 - 48,
       duration: 300,
       useNativeDriver: false,
     }).start();
@@ -130,9 +150,10 @@ export default function InteractiveMap({ navigation }) {
       duration: 300,
       useNativeDriver: true,
     }).start();
+
+    openBottomSheet();
   };
 
-  const [isUserPopupVisible, setUserPopupVisible] = useState(false);
   const toggleUserPopup = () => {
     setUserPopupVisible(!isUserPopupVisible);
   };
@@ -143,13 +164,6 @@ export default function InteractiveMap({ navigation }) {
     console.log(`Latitude: ${data.lat}, Longitude: ${data.lng}`);
   };
   // ============================================================
-  const images = [
-    { id: "1", uri: "https://via.placeholder.com/150" },
-    { id: "2", uri: "https://via.placeholder.com/150" },
-    { id: "3", uri: "https://via.placeholder.com/150" },
-    { id: "4", uri: "https://via.placeholder.com/150" },
-    { id: "5", uri: "https://via.placeholder.com/150" },
-  ];
 
   return (
     <GestureHandlerRootView style={styles.container}>
@@ -174,15 +188,14 @@ export default function InteractiveMap({ navigation }) {
             <SearchIcon />
           </View>
           <TextInput
+            ref={inputRef}
             style={styles.searchInput}
             placeholder="Where do you want to go?"
             value={searchText}
             onChangeText={handleSearch}
+            selection={selection}
             onFocus={handleFocus}
-            onBlur={() => {
-              handleBlur();
-              setFilteredSuggestions([]);
-            }}
+            onBlur={handleBlur}
           />
         </Animated.View>
         {filteredSuggestions.length > 0 && (
@@ -191,12 +204,41 @@ export default function InteractiveMap({ navigation }) {
             keyExtractor={(item, index) => index.toString()}
             style={styles.suggestionsContainer}
             contentContainerStyle={{ paddingBottom: 20 }}
+            keyboardShouldPersistTaps="handled"
             renderItem={({ item }) => (
               <TouchableOpacity
                 style={styles.suggestionItem}
                 onPress={() => {
-                  setSearchText(item.name); // Or set the room/building data
+                  const formattedText =
+                    item.type === "building"
+                      ? `${item.key} | ${item.name}`
+                      : item.id
+                      ? `${item.id} | ${item.name}`
+                      : `${item.name}`;
+
+                  setSearchText(formattedText);
                   setFilteredSuggestions([]); // Clear suggestions after selection
+                  inputRef.current?.blur(); // Blur the input field
+                  setIsSearchActive(true);
+                  openBottomSheet();
+
+                  if (item.type === "building") {
+                    setSelectedItem({
+                      type: "building",
+                      name: item.name,
+                      key: item.key,
+                      image: item.image,
+                      description: item.description,
+                    });
+                  } else {
+                    setSelectedItem({
+                      type: item.type,
+                      id: item.id,
+                      name: item.name,
+                      location: item.location,
+                      room_type: item.room_type,
+                    });
+                  }
                 }}
               >
                 <View style={styles.suggestionContent}>
@@ -254,14 +296,6 @@ export default function InteractiveMap({ navigation }) {
         <LogoutScreen onClose={toggleUserPopup} navigation={navigation} />
       )}
 
-      <TouchableOpacity
-        style={styles.tryButton}
-        onPress={openBottomSheet}
-        activeOpacity={0.7}
-      >
-        <Text style={styles.buttonText}>TITS AND BITCHES</Text>
-      </TouchableOpacity>
-
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
@@ -270,59 +304,56 @@ export default function InteractiveMap({ navigation }) {
       >
         <BottomSheetView style={styles.contentContainer}>
           {/* Main Text */}
-          <Text style={styles.mainText}>DRER Memorial Hall </Text>
+          <Text style={styles.mainText}>
+            {selectedItem
+              ? selectedItem.type === "building"
+                ? selectedItem.name // Display building name
+                : selectedItem.id
+                ? `${selectedItem.id} | ${selectedItem.name}` // Display room info with ID
+                : selectedItem.name // Display room name only if ID is null
+              : "Select a building or room"}
+          </Text>
 
           {/* Sub Text */}
-          <Text style={styles.subText}>Gymnasium</Text>
+          {selectedItem && selectedItem.type === "building" ? (
+            <Text style={styles.subText}>Building {selectedItem.key}</Text> // Show building key
+          ) : (
+            selectedItem &&
+            selectedItem.type === "room" && (
+              <Text style={styles.subText}>{selectedItem.location}</Text> // Show room location
+            )
+          )}
 
-          {/* FlatList for Images */}
-          <FlatList
-            data={images}
-            horizontal
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <Image source={{ uri: item.uri }} style={styles.image} />
+          {/* Images */}
+          {selectedItem &&
+            selectedItem.type === "building" &&
+            selectedItem.image && (
+              <BottomSheetFlatList
+                data={[{ uri: selectedItem.image }]} // Display the building image
+                horizontal
+                keyExtractor={(item) => item.uri}
+                renderItem={({ item }) => (
+                  <View style={styles.imageWrapper}>
+                    <Image source={{ uri: item.uri }} style={styles.image} />
+                  </View>
+                )}
+                contentContainerStyle={styles.flatlistContainer}
+                showsHorizontalScrollIndicator={false}
+                snapToAlignment="start"
+                snapToInterval={200 + 8}
+                scrollEnabled
+              />
             )}
-            contentContainerStyle={styles.flatlistContainer}
-          />
 
           {/* Description Text */}
-          <Text style={styles.description}>
-            Dr. Ricardo E. Rotoras Memorial Hall is a multi-purpose gymnasium
-            for most academic and non-academic events involving large crowds.
-          </Text>
-        </BottomSheetView>
-      </BottomSheet>
-
-      <BottomSheet
-        ref={bottomSheetRef}
-        snapPoints={snapPoints}
-        index={-1}
-        handleStyle={styles.handleStyle}
-      >
-        <BottomSheetView style={styles.contentContainer}>
-          {/* Main Text */}
-          <Text style={styles.mainText}>DRER Memorial Hall </Text>
-
-          {/* Sub Text */}
-          <Text style={styles.subText}>Gymnasium</Text>
-
-          {/* FlatList for Images */}
-          <FlatList
-            data={images}
-            horizontal
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <Image source={{ uri: item.uri }} style={styles.image} />
-            )}
-            contentContainerStyle={styles.flatlistContainer}
-          />
-
-          {/* Description Text */}
-          <Text style={styles.description}>
-            Dr. Ricardo E. Rotoras Memorial Hall is a multi-purpose gymnasium
-            for most academic and non-academic events involving large crowds.
-          </Text>
+          {selectedItem && selectedItem.type === "building" ? (
+            <Text style={styles.description}>{selectedItem.description}</Text> // Show building description
+          ) : (
+            selectedItem &&
+            selectedItem.type === "room" && (
+              <Text style={styles.description}>{selectedItem.room_type}</Text> // Show room type (or other details)
+            )
+          )}
         </BottomSheetView>
       </BottomSheet>
     </GestureHandlerRootView>
