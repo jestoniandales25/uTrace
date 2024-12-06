@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, TouchableOpacity, Alert } from "react-native";
+import { Text, View, TouchableOpacity, Alert, ScrollView } from "react-native";
 import styles from "../styles/LogoutStyles";
 import UserIcon from "../assets/images/circle-user-solid.svg";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { signOut } from "firebase/auth";
 import { auth } from "../.firebase/firebaseConfig";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../.firebase/firebaseConfig";
 
 
 export default function LogoutScreen({onClose, navigation}) {
@@ -42,6 +44,34 @@ export default function LogoutScreen({onClose, navigation}) {
       fetchUser();
     }, []);
 
+    const [history, setHistory] = useState<
+          { room: string; timestamp: string }[]
+        >([]);
+    // Fetch user history from Firestore
+    useEffect(() => {
+      const fetchHistory = async () => {
+        try {
+          const user = auth.currentUser;
+          if (!user) return;
+
+          const userRef = doc(db, "users", user.uid);
+          const docSnap = await getDoc(userRef);
+
+          if (docSnap.exists()) {
+            const userData = docSnap.data();
+            setHistory(userData.history || []);
+          } else {
+            console.log("No history found for the user.");
+            setHistory([]);
+          }
+        } catch (error) {
+          console.error("Error fetching user history:", error.message);
+        }
+      };
+
+      fetchHistory();
+    }, []);
+
     const handleLogout = async () => {
       try {
         await signOut(auth);
@@ -70,19 +100,19 @@ export default function LogoutScreen({onClose, navigation}) {
             </View>
             <Text style={styles.historyText}>History</Text>
             <Divider />
-            <Text style={styles.todayText}>
-              Today - {formattedDate}
-            </Text>
-            <View style={styles.popupHistoryContainer}>
-                <Text style={styles.popupHistoryText}>Room 09 - 202 | ICT Building | 2nd Floor</Text>
-                <Text style={styles.popupHistoryText}>Room 09 - 306 | ICT Building | 3rd Floor</Text> 
-            </View>
-            <Text style={styles.todayText}>
-              Yesterday - {formattedYesterday}
-            </Text>
-            <View style={styles.popupHistoryContainer}>
-                <Text style={styles.popupHistoryText}>Room 09 - 202 | ICT Building | 2nd Floor</Text> 
-            </View>
+            <ScrollView>
+            {history.length > 0 ? (
+              history.map((entry, index) => (
+                <View key={index} style={styles.popupHistoryContainer}>
+                  <Text style={styles.popupHistoryText}>
+                    {entry.room} - {new Date(entry.timestamp).toLocaleString()}
+                  </Text>
+                </View>
+              ))
+            ) : (
+              <Text style={styles.noHistoryText}>No history available</Text>
+            )}
+          </ScrollView>
             <Divider /> 
             <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
               <Text style={styles.logoutButtonText}>Log Out</Text>

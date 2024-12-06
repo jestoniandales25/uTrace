@@ -104,6 +104,12 @@ const styles = StyleSheet.create({
         color: "#fff",
         fontSize: 14,
       },
+    noHistoryText: {
+      color: "#999",
+      textAlign: "center",
+      marginVertical: 10,
+      fontSize: 16,
+    },
 });
 
 export default styles;

@@ -1,11 +1,13 @@
-import React, { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Alert, Platform } from "react-native";
 import styles from "../styles/LoginSystemStyles";
 import Logo from "../assets/images/Logo.svg";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signInWithCredential, GoogleAuthProvider } from "firebase/auth";
 import { firebaseConfig } from "../.firebase/firebaseConfig";
 import { initializeApp } from "firebase/app";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import * as Google from "expo-auth-session/providers/google";
+import { makeRedirectUri } from "expo-auth-session";
 
 
 const app = initializeApp(firebaseConfig);
@@ -15,8 +17,31 @@ export default function LoginScreens({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const redirectUri = makeRedirectUri({
+    scheme: "uTrace", // Replace with your app's custom scheme if applicable
+  });
   const auth = getAuth(app);
+  const WEB_CLIENT_ID = "58186438501-g46i1b1vv26ul64nog3pr8b31u0j1mg2.apps.googleusercontent.com";
+  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+    clientId: WEB_CLIENT_ID,
+    redirectUri,
+  });
 
+    // Handle Google Sign-In Respo  nse
+    React.useEffect(() => {
+      if (response?.type === "success") {
+        const { id_token } = response.params;
+  
+        const credential = GoogleAuthProvider.credential(id_token);
+        signInWithCredential(auth, credential)
+          .then(() => {
+            navigation.replace("InteractiveMap");
+          })
+          .catch((error) => {
+            Alert.alert("Error", error.message);
+          });
+      }
+    }, [response]);
 
   const handleLogin = async () => {
     if (email === "" || password === "") {
@@ -68,8 +93,11 @@ export default function LoginScreens({ navigation }) {
         <Text style={styles.buttonTextLogin}>Login</Text>
       </TouchableOpacity>
       <Divider />
-      <TouchableOpacity style={styles.googleButton}>
-        <Ionicons
+      <TouchableOpacity 
+        style={styles.googleButton}
+        onPress={() => {promptAsync();}}
+        disabled={!request}>
+        <Ionicons 
           name="logo-google"
           size={24}
           color="black"
