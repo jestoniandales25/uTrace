@@ -2,12 +2,20 @@ import { View, Text, TextInput, TouchableOpacity, Alert, Platform } from "react-
 import styles from "../styles/LoginSystemStyles";
 import Logo from "../assets/images/Logo.svg";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { getAuth, signInWithEmailAndPassword, signInWithCredential, GoogleAuthProvider } from "firebase/auth";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithRedirect,
+  signInWithPopup,
+  signInWithCredential,
+} from "firebase/auth";
 import { firebaseConfig } from "../.firebase/firebaseConfig";
 import { initializeApp } from "firebase/app";
 import React, { useState, useEffect } from "react";
 import * as Google from "expo-auth-session/providers/google";
 import { makeRedirectUri } from "expo-auth-session";
+
 
 
 const app = initializeApp(firebaseConfig);
@@ -17,31 +25,34 @@ export default function LoginScreens({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const redirectUri = makeRedirectUri({
-    scheme: "uTrace", // Replace with your app's custom scheme if applicable
-  });
   const auth = getAuth(app);
-  const WEB_CLIENT_ID = "58186438501-g46i1b1vv26ul64nog3pr8b31u0j1mg2.apps.googleusercontent.com";
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
-    clientId: WEB_CLIENT_ID,
-    redirectUri,
+    clientId: Platform.select({
+      android: "58186438501-1hija01jr43os2gjvpguu6johjgiqhlt.apps.googleusercontent.com",
+      web: "58186438501-1hija01jr43os2gjvpguu6johjgiqhlt.apps.googleusercontent.com",
+    }),
+    redirectUri: makeRedirectUri(),
   });
-
-    // Handle Google Sign-In Respo  nse
-    React.useEffect(() => {
+  
+  const handleGoogleLogin = async () => {
+    try {
       if (response?.type === "success") {
         const { id_token } = response.params;
-  
+        const auth = getAuth(app);
         const credential = GoogleAuthProvider.credential(id_token);
-        signInWithCredential(auth, credential)
-          .then(() => {
-            navigation.replace("InteractiveMap");
-          })
-          .catch((error) => {
-            Alert.alert("Error", error.message);
-          });
+  
+        await signInWithCredential(auth, credential);
+        navigation.replace("InteractiveMap"); // Navigate on success
+      } else {
+        promptAsync(); // Start Google OAuth flow
       }
-    }, [response]);
+    } catch (error) {
+      Alert.alert("Error", "Failed to log in with Google. Please try again.");
+      console.error("Google Auth Error: ", error.message);
+    }
+  };
+  
 
   const handleLogin = async () => {
     if (email === "" || password === "") {
@@ -95,15 +106,22 @@ export default function LoginScreens({ navigation }) {
       <Divider />
       <TouchableOpacity 
         style={styles.googleButton}
-        onPress={() => {promptAsync();}}
-        disabled={!request}>
+        onPress={() => {
+          if (request) {
+            promptAsync();
+          } else {
+            Alert.alert("Error", "Google Sign-In is not initialized. Please try again.");
+          }
+        }}
+        disabled={!request}
+        >
         <Ionicons 
           name="logo-google"
           size={24}
           color="black"
           style={styles.googleIcon}
         />
-        <Text style={styles.buttonTextGuest}>Continue with Google</Text>
+        <Text style={styles.buttonTextGuest}>{isLoggingIn ? "Logging in..." : "Continue with Google"}</Text>
       </TouchableOpacity>
       <View style={styles.accountTextContainer}>
         <Text style={styles.textForAccount}>Don't have an account yet?</Text>
