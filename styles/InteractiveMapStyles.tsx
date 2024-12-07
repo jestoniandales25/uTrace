@@ -124,7 +124,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
-  bottomSheet: {},
+  bottomSheet: {
+    borderTopLeftRadius: 32,
+    borderTopRightRadius: 32,
+  },
   contentContainer: {
     paddingHorizontal: 24,
     alignItems: "flex-start",
@@ -150,19 +153,15 @@ const styles = StyleSheet.create({
     width: "100%",
     fontFamily: "HankenGrotesk-Regular",
   },
-  flatlistContainer: {
-    paddingVertical: 8, // Add some padding for better aesthetics
-  },
   imageWrapper: {
-    width: 200, // Adjust width as needed
-    aspectRatio: 16 / 9, // Ensure the aspect ratio is 16:9
-    marginRight: 8, // Add spacing between images
+    width: "100%",
+    aspectRatio: 16 / 9, // Ensures 16:9 aspect ratio
+    borderRadius: 16, // Optional: Apply border-radius for rounded corners
   },
   image: {
     width: "100%",
-    height: "100%",
-    borderRadius: 8, // Rounded corners
-    resizeMode: "cover", // Ensure the image fills the container
+    height: "100%", // Makes the image fill the container
+    borderRadius: 16, // Optional: Apply border-radius for rounded corners
   },
   description: {
     fontSize: 14,
