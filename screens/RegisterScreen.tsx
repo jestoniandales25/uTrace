@@ -2,9 +2,10 @@ import React, { View, Text, TextInput, TouchableOpacity, Alert } from "react-nat
 import styles from "../styles/LoginSystemStyles";
 import Logo from "../assets/images/Logo.svg";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { firebaseConfig } from "../.firebase/firebaseConfig"; // Update the path based on your file structure
+import { db, firebaseConfig } from "../.firebase/firebaseConfig"; // Update the path based on your file structure
 import { initializeApp } from "firebase/app";
 import { useState } from "react";
+import { doc, setDoc } from "firebase/firestore";
 
 const app = initializeApp(firebaseConfig);
 
@@ -24,21 +25,30 @@ export default function SigningRegister({ navigation }) {
       Alert.alert("Error", "Please fill in all fields.");
       return;
     }
-
+  
     if (password !== confirmPassword) {
       Alert.alert("Error", "Passwords do not match.");
       return;
     }
-
+  
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      // Create the user with Firebase Authentication
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+  
+      // Create a user document in Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        email: user.email,
+        createdAt: new Date().toISOString(),
+      });
+  
       Alert.alert("Success", "Account created successfully!");
-
+  
       setEmail("");
       setPassword("");
       setConfirmPassword("");
-
-      navigation.push("loginScreens"); 
+  
+      navigation.push("loginScreens");
     } catch (error) {
       Alert.alert("Error", error.message);
     }

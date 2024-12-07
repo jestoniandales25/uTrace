@@ -22,6 +22,9 @@ import BottomSheet, {
   BottomSheetFlatList,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
+import { addDoc, collection, doc, getDoc, Timestamp, updateDoc } from "firebase/firestore";
+import { auth, db } from "../.firebase/firebaseConfig";
+import { getAuth } from "firebase/auth";
 
 const { width, height } = Dimensions.get("window");
 
@@ -165,6 +168,44 @@ export default function InteractiveMap({ navigation }) {
   };
   // ============================================================
 
+  const logSelectionHistory = async (selection) => {
+    const user = auth.currentUser; // Get the currently authenticated user
+  
+    // If no user is logged in, return
+    if (!user) {
+      console.log("No user logged in. History not saved.");
+      return;
+    }
+  
+    const historyData = {
+      searchTerm: selection.name, // Store the name of the selected building or room
+      timestamp: new Date().toISOString(), // Store the timestamp of when the selection was made
+    };
+  
+    try {
+      const userRef = doc(db, "users", user.uid);
+      const userDoc = await getDoc(userRef);
+  
+      // If the user's document exists, update the history array
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        const updatedHistory = userData.history
+          ? [...userData.history, historyData] // Append to existing history
+          : [historyData]; // If history is not set, start with this entry
+  
+        // Update the user's document with the new history
+        await updateDoc(userRef, { history: updatedHistory });
+        console.log("History saved successfully.");
+      } else {
+        console.log("User document not found.");
+      }
+    } catch (error) {
+      console.error("Error saving search history: ", error.message);
+    }
+  };
+  
+  
+  
   return (
     <GestureHandlerRootView style={styles.container}>
       <WebView
@@ -222,6 +263,10 @@ export default function InteractiveMap({ navigation }) {
                   setIsSearchActive(true);
                   openBottomSheet();
 
+                  logSelectionHistory({
+                    name: formattedText, // Use the formatted selection name
+                  });
+
                   if (item.type === "building") {
                     setSelectedItem({
                       type: "building",
@@ -234,6 +279,14 @@ export default function InteractiveMap({ navigation }) {
                     setSelectedItem({
                       type: item.type,
                       id: item.id,
+                      name: item.name,
+                      location: item.location,
+                      room_type: item.room_type,
+                    });
+
+                    // Log the selection history to Firestore
+                    logSelectionHistory({
+                      type: item.type,
                       name: item.name,
                       location: item.location,
                       room_type: item.room_type,

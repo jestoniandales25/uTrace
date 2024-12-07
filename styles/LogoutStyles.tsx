@@ -68,17 +68,15 @@ const styles = StyleSheet.create({
         paddingBottom: 20,
       },
     popupHistoryContainer: {
-        paddingTop: 10,
-        paddingBottom: 10,
+        paddingTop: 2,
+        paddingBottom: 2,
       },
     popupHistoryText: {
-        paddingTop: 5,
-        paddingBottom: 5,
         fontSize: 12,
         textAlign: "left",
         alignSelf: "stretch",
-        paddingLeft: 10,
-        paddingRight: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
       },
     historyText: {
         marginHorizontal: 10,
