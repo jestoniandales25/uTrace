@@ -22,7 +22,7 @@
       "building_key": "03",
       "building_name": "College of Medicine / Integrated Technology Building",
       "building_description": "College of Medicine is currently under renovation. Located on the eastern side of the campus.",
-      "building_image": "../assets/data/03_CollegeOfMedicine(2).jpg",
+      "building_image": "03_CollegeOfMedicine(2).jpg",
       "floors": [
         {
           "floor_number": 1,
