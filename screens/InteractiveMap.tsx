@@ -9,6 +9,7 @@ import {
   FlatList,
   Image,
   Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { WebView } from "react-native-webview";
 import styles from "../styles/InteractiveMapStyles";
@@ -22,7 +23,14 @@ import BottomSheet, {
   BottomSheetFlatList,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
-import { addDoc, collection, doc, getDoc, Timestamp, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  Timestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { auth, db } from "../.firebase/firebaseConfig";
 import { getAuth } from "firebase/auth";
 
@@ -92,6 +100,7 @@ export default function InteractiveMap({ navigation }) {
             location: `${building.building_name} | ${ordinalSuffixOf(
               floor.floor_number
             )} floor`,
+            image: building.building_image,
             room_type: room.room_type,
           }))
       )
@@ -114,7 +123,7 @@ export default function InteractiveMap({ navigation }) {
 
   const bottomSheetRef = useRef<BottomSheet>(null);
 
-  const snapPoints = useMemo(() => ["25%", "40%"], []);
+  const snapPoints = useMemo(() => ["25%", "50%"], []);
 
   const handleFocus = () => {
     setIsFocused(true);
@@ -140,6 +149,12 @@ export default function InteractiveMap({ navigation }) {
     setIsFocused(false);
     setFilteredSuggestions([]);
     setSelection({ start: 0, end: 0 });
+    if (inputRef.current) {
+      inputRef.current.blur(); // Ensure blur is triggered
+    }
+    setTimeout(() => {
+      Keyboard.dismiss(); // Ensure keyboard is dismissed
+    }, 100);
 
     //Default for adjustments
     Animated.timing(searchContainerWidthAnim, {
@@ -170,29 +185,29 @@ export default function InteractiveMap({ navigation }) {
 
   const logSelectionHistory = async (selection) => {
     const user = auth.currentUser; // Get the currently authenticated user
-  
+
     // If no user is logged in, return
     if (!user) {
       console.log("No user logged in. History not saved.");
       return;
     }
-  
+
     const historyData = {
       searchTerm: selection.name, // Store the name of the selected building or room
       timestamp: new Date().toISOString(), // Store the timestamp of when the selection was made
     };
-  
+
     try {
       const userRef = doc(db, "users", user.uid);
       const userDoc = await getDoc(userRef);
-  
+
       // If the user's document exists, update the history array
       if (userDoc.exists()) {
         const userData = userDoc.data();
         const updatedHistory = userData.history
           ? [...userData.history, historyData] // Append to existing history
           : [historyData]; // If history is not set, start with this entry
-  
+
         // Update the user's document with the new history
         await updateDoc(userRef, { history: updatedHistory });
         console.log("History saved successfully.");
@@ -203,9 +218,41 @@ export default function InteractiveMap({ navigation }) {
       console.error("Error saving search history: ", error.message);
     }
   };
-  
-  
-  
+
+  const handleWebViewClick = () => {
+    // Prevent the keyboard from showing when interacting with WebView
+    Keyboard.dismiss();
+  };
+
+  const imageMap = {
+    "01_ArtsAndCulture(1).jpg": require("../assets/data/01_ArtsAndCulture(1).jpg"),
+    "02_ModularClassroom(1).jpg": require("../assets/data/02_ModularClassroom(1).jpg"),
+    "03_CollegeOfMedicine(2).jpg": require("../assets/data/03_CollegeOfMedicine(2).jpg"),
+    "04_BuildingsAndGroundMaintenanceUnit(1).jpg": require("../assets/data/04_BuildingsAndGroundMaintenanceUnit(1).jpg"),
+    "05_OldEngineeringBuilding(2).jpg": require("../assets/data/05_OldEngineeringBuilding(2).jpg"),
+    "06_ChildMindingBuilding(1).jpg": require("../assets/data/06_ChildMindingBuilding(1).jpg"),
+    "09_ICTBuilding(1).jpg": require("../assets/data/09_ICTBuilding(1).jpg"),
+    "10_AdministrationBuilding(1).jpg": require("../assets/data/10_AdministrationBuilding(1).jpg"),
+    "14_FinanceAndAccounting(1).jpg": require("../assets/data/14_FinanceAndAccounting(1).jpg"),
+    "15_GymnasiumLobby(1).jpg": require("../assets/data/15_GymnasiumLobby(1).jpg"),
+    "16_DRERMemorialHall.jpg": require("../assets/data/16_DRERMemorialHall.jpg"),
+    "18_CulinaryBuilding.jpg": require("../assets/data/18_CulinaryBuilding.jpg"),
+    "19_ROTCBuilding(1).jpg": require("../assets/data/19_ROTCBuilding(1).jpg"),
+    "20_CafeteriaBuilding(1).jpg": require("../assets/data/20_CafeteriaBuilding(1).jpg"),
+    "21_GuardHouse(1).jpg": require("../assets/data/21_GuardHouse(1).jpg"),
+    "23_LearningResourceCenter(1).jpg": require("../assets/data/23_LearningResourceCenter(1).jpg"),
+    "24_FoodTradeBuilding(1).jpg": require("../assets/data/24_FoodTradeBuilding(1).jpg"),
+    "25_FoodInnovationCenter(2).jpg": require("../assets/data/25_FoodInnovationCenter(2).jpg"),
+    "28_OldScienceBuilding(1).jpg": require("../assets/data/28_OldScienceBuilding(1).jpg"),
+    "36_MakeshiftFabricationLaboratory(1).jpg": require("../assets/data/36_MakeshiftFabricationLaboratory(1).jpg"),
+    "41_ScienceComplexBuilding(1).jpg": require("../assets/data/41_ScienceComplexBuilding(1).jpg"),
+    "42_EngineeringComplexA(1).jpg": require("../assets/data/42_EngineeringComplexA(1).jpg"),
+    "43_EngineeringComplexB(1).jpg": require("../assets/data/43_EngineeringComplexB(1).jpg"),
+    "45_SupplyBuilding.jpg": require("../assets/data/45_SupplyBuilding.jpg"),
+    "47_CollegeOfTechnologyBuilding(1).jpg": require("../assets/data/47_CollegeOfTechnologyBuilding(1).jpg"),
+    "48_EngineeringDesignFabricationLaboratory(1).jpg": require("../assets/data/48_EngineeringDesignFabricationLaboratory(1).jpg"),
+  };
+
   return (
     <GestureHandlerRootView style={styles.container}>
       <WebView
@@ -216,7 +263,7 @@ export default function InteractiveMap({ navigation }) {
         onMessage={handleWebViewMessage}
         style={styles.map}
         debuggingEnabled={true}
-        r
+        onTouchStart={handleWebViewClick}
       />
       <View style={styles.topContainer}>
         <Animated.View
@@ -277,10 +324,11 @@ export default function InteractiveMap({ navigation }) {
                     });
                   } else {
                     setSelectedItem({
-                      type: item.type,
+                      type: "room",
                       id: item.id,
                       name: item.name,
                       location: item.location,
+                      image: item.image,
                       room_type: item.room_type,
                     });
 
@@ -353,6 +401,7 @@ export default function InteractiveMap({ navigation }) {
         ref={bottomSheetRef}
         snapPoints={snapPoints}
         index={-1}
+        backgroundStyle={styles.bottomSheet}
         handleStyle={styles.handleStyle}
       >
         <BottomSheetView style={styles.contentContainer}>
@@ -377,26 +426,21 @@ export default function InteractiveMap({ navigation }) {
             )
           )}
 
-          {/* Images */}
-          {selectedItem &&
-            selectedItem.type === "building" &&
-            selectedItem.image && (
-              <BottomSheetFlatList
-                data={[{ uri: selectedItem.image }]} // Display the building image
-                horizontal
-                keyExtractor={(item) => item.uri}
-                renderItem={({ item }) => (
-                  <View style={styles.imageWrapper}>
-                    <Image source={{ uri: item.uri }} style={styles.image} />
-                  </View>
-                )}
-                contentContainerStyle={styles.flatlistContainer}
-                showsHorizontalScrollIndicator={false}
-                snapToAlignment="start"
-                snapToInterval={200 + 8}
-                scrollEnabled
+          {/* Image */}
+
+          {selectedItem && selectedItem.image && (
+            <TouchableOpacity
+              onPress={() => {
+                console.log(selectedItem.image);
+              }}
+              style={styles.imageWrapper}
+            >
+              <Image
+                source={imageMap[selectedItem.image]} // Use the mapped image
+                style={styles.image}
               />
-            )}
+            </TouchableOpacity>
+          )}
 
           {/* Description Text */}
           {selectedItem && selectedItem.type === "building" ? (
