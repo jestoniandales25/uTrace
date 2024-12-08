@@ -5,7 +5,7 @@ import UserIcon from "../assets/images/circle-user-solid.svg";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { signOut } from "firebase/auth";
 import { auth } from "../.firebase/firebaseConfig";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, orderBy, query, setDoc, Timestamp } from "firebase/firestore";
 import { db } from "../.firebase/firebaseConfig";
 
 
@@ -50,83 +50,49 @@ export default function LogoutScreen({onClose, navigation}) {
       };
 
       const fetchUserHistory = async (user) => {
-        const userRef = doc(db, "users", user.uid);
-        const docSnap = await getDoc(userRef);
-    
-        if (docSnap.exists()) {
-          const userData = docSnap.data();
-          setHistory(userData.history || []); // Set history if it exists, otherwise set as empty
-        } else {
-          setHistory([]); // No history found
+        try {
+          const historyRef = collection(db, "users", user.uid, "history");
+          const historyQuery = query(historyRef, orderBy("timestamp", "desc"));
+          const querySnapshot = await getDocs(historyQuery);
+      
+          const historyData = querySnapshot.docs.map((doc) => ({
+            id: doc.id, // Include document ID if needed
+            searchTerm: doc.data().searchTerm,
+            timestamp: doc.data().timestamp,
+          })).slice(0, 4);;
+      
+          setHistory(historyData);
+        } catch (error) {
+          console.error("Error fetching user history:", error.message);
+          setHistory([]); // Set an empty history in case of error
         }
       };
       
     
       useEffect(() => {
-        const fetchUser = () => {
-          const user = auth.currentUser;
+        const unsubscribe = auth.onAuthStateChanged(async (user) => {
           if (user && user.email) {
-            const extractedUsername = user.email.split("@")[0]; // Extract username before '@'
+            const extractedUsername = user.email.split("@")[0];
             setUsername(extractedUsername);
-    
-            // Fetch user history
-            fetchUserHistory(user);
-          } else {
-            setUsername(null); // Handle if no user is logged in
-          }
-        };
-    
-        const unsubscribe = auth.onAuthStateChanged((user) => {
-          if (user) {
-            fetchUser();
+      
+            try {
+              // Fetch user history
+              await fetchUserHistory(user);
+            } catch (error) {
+              console.error("Error fetching user history:", error.message);
+              setHistory([]); // Clear history in case of error
+            }
           } else {
             setUsername(null);
-            setHistory([]); // Clear history when user logs out
+            setHistory([]); // Clear state when no user is logged in
           }
         });
-    
+      
         return () => unsubscribe(); // Cleanup listener on unmount
       }, []);
     
       // Initialize user history if it doesn't exist
-      const initializeUserHistory = async (userUid) => {
-        const userRef = doc(db, "users", userUid);
-    
-        // Check if the document exists
-        const docSnap = await getDoc(userRef);
-        if (!docSnap.exists()) {
-          // Create the user document with an empty history array if it doesn't exist
-          await setDoc(userRef, { history: [] });
-        }
-      };
-    
-      // Fetch user history from Firestore
-      useEffect(() => {
-        const fetchHistory = async () => {
-          try {
-            const user = auth.currentUser;
-            if (!user) return;
-    
-            // Ensure user document exists and has history initialized
-            await initializeUserHistory(user.uid);
-    
-            const userRef = doc(db, "users", user.uid);
-            const docSnap = await getDoc(userRef);
-    
-            if (docSnap.exists()) {
-              const userData = docSnap.data();
-              setHistory(userData.history || []);
-            } else {
-              setHistory([]);  // Set an empty history
-            }
-          } catch (error) {
-            console.error("Error fetching user history:", error.message);
-          }
-        };
-    
-        fetchHistory();
-      }, []);
-
+      
     const handleLogout = async () => {
       try {
         await signOut(auth);
