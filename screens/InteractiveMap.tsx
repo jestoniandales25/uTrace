@@ -448,7 +448,7 @@ export default function InteractiveMap({ navigation }) {
           ) : (
             selectedItem &&
             selectedItem.type === "room" && (
-              <Text style={styles.description}>{selectedItem.room_type}</Text> // Show room type (or other details)
+              <Text style={styles.description}>This {selectedItem.room_type} is located on the {selectedItem.location}.</Text> // Show room type (or other details)
             )
           )}
         </BottomSheetView>
