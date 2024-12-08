@@ -8,9 +8,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import styles from "../styles/OnBoardingScreensStyles";
-import Illustration1 from "../assets/images/OnBoardingIllustration1.svg";
-import Illustration2 from "../assets/images/OnBoardingIllustration2.svg";
-import Illustration3 from "../assets/images/OnBoardingIllustration3.svg";
+import Illustration1 from "../assets/images/onboardingIllustrations/OnBoardingIllustration1.svg";
+import Illustration2 from "../assets/images/onboardingIllustrations/OnBoardingIllustration2.svg";
+import Illustration3 from "../assets/images/onboardingIllustrations/OnBoardingIllustration3.svg";
 
 const { width, height } = Dimensions.get("window");
 const COLORS = { primary: "#FDB218", white: "#fff" };

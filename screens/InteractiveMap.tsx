@@ -12,11 +12,11 @@ import {
 } from "react-native";
 import { WebView } from "react-native-webview";
 import styles from "../styles/InteractiveMapStyles";
-import SearchIcon from "../assets/images/magnifying-glass-solid.svg";
-import UserIcon from "../assets/images/circle-user-solid.svg";
+import SearchIcon from "../assets/images/icons/magnifying-glass-solid.svg";
+import UserIcon from "../assets/images/icons/circle-user-solid.svg";
 import LogoutScreen from "./LogoutScreen";
-import BuildingIcon from "../assets/images/building-solid.svg";
-import RoomIcon from "../assets/images/door-closed-solid.svg";
+import BuildingIcon from "../assets/images/icons/building-solid.svg";
+import RoomIcon from "../assets/images/icons/door-closed-solid.svg";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { addDoc, collection } from "firebase/firestore";
@@ -64,32 +64,32 @@ export default function InteractiveMap({ navigation }) {
   const data = require("../assets/data/campus_buildings.json");
 
   const imageMap = {
-    "01_ArtsAndCulture(1).jpg": require("../assets/data/01_ArtsAndCulture(1).jpg"),
-    "02_ModularClassroom(1).jpg": require("../assets/data/02_ModularClassroom(1).jpg"),
-    "03_CollegeOfMedicine(2).jpg": require("../assets/data/03_CollegeOfMedicine(2).jpg"),
-    "04_BuildingsAndGroundMaintenanceUnit(1).jpg": require("../assets/data/04_BuildingsAndGroundMaintenanceUnit(1).jpg"),
-    "05_OldEngineeringBuilding(2).jpg": require("../assets/data/05_OldEngineeringBuilding(2).jpg"),
-    "06_ChildMindingBuilding(1).jpg": require("../assets/data/06_ChildMindingBuilding(1).jpg"),
-    "09_ICTBuilding(1).jpg": require("../assets/data/09_ICTBuilding(1).jpg"),
-    "10_AdministrationBuilding(1).jpg": require("../assets/data/10_AdministrationBuilding(1).jpg"),
-    "14_FinanceAndAccounting(1).jpg": require("../assets/data/14_FinanceAndAccounting(1).jpg"),
-    "15_GymnasiumLobby(1).jpg": require("../assets/data/15_GymnasiumLobby(1).jpg"),
-    "16_DRERMemorialHall.jpg": require("../assets/data/16_DRERMemorialHall.jpg"),
-    "18_CulinaryBuilding.jpg": require("../assets/data/18_CulinaryBuilding.jpg"),
-    "19_ROTCBuilding(1).jpg": require("../assets/data/19_ROTCBuilding(1).jpg"),
-    "20_CafeteriaBuilding(1).jpg": require("../assets/data/20_CafeteriaBuilding(1).jpg"),
-    "21_GuardHouse(1).jpg": require("../assets/data/21_GuardHouse(1).jpg"),
-    "23_LearningResourceCenter(1).jpg": require("../assets/data/23_LearningResourceCenter(1).jpg"),
-    "24_FoodTradeBuilding(1).jpg": require("../assets/data/24_FoodTradeBuilding(1).jpg"),
-    "25_FoodInnovationCenter(2).jpg": require("../assets/data/25_FoodInnovationCenter(2).jpg"),
-    "28_OldScienceBuilding(1).jpg": require("../assets/data/28_OldScienceBuilding(1).jpg"),
-    "36_MakeshiftFabricationLaboratory(1).jpg": require("../assets/data/36_MakeshiftFabricationLaboratory(1).jpg"),
-    "41_ScienceComplexBuilding(1).jpg": require("../assets/data/41_ScienceComplexBuilding(1).jpg"),
-    "42_EngineeringComplexA(1).jpg": require("../assets/data/42_EngineeringComplexA(1).jpg"),
-    "43_EngineeringComplexB(1).jpg": require("../assets/data/43_EngineeringComplexB(1).jpg"),
-    "45_SupplyBuilding.jpg": require("../assets/data/45_SupplyBuilding.jpg"),
-    "47_CollegeOfTechnologyBuilding(1).jpg": require("../assets/data/47_CollegeOfTechnologyBuilding(1).jpg"),
-    "48_EngineeringDesignFabricationLaboratory(1).jpg": require("../assets/data/48_EngineeringDesignFabricationLaboratory(1).jpg"),
+    "01_ArtsAndCulture(1).jpg": require("../assets/images/buildingImages/01_ArtsAndCulture(1).jpg"),
+    "02_ModularClassroom(1).jpg": require("../assets/images/buildingImages/02_ModularClassroom(1).jpg"),
+    "03_CollegeOfMedicine(2).jpg": require("../assets/images/buildingImages/03_CollegeOfMedicine(2).jpg"),
+    "04_BuildingsAndGroundMaintenanceUnit(1).jpg": require("../assets/images/buildingImages/04_BuildingsAndGroundMaintenanceUnit(1).jpg"),
+    "05_OldEngineeringBuilding(2).jpg": require("../assets/images/buildingImages/05_OldEngineeringBuilding(2).jpg"),
+    "06_ChildMindingBuilding(1).jpg": require("../assets/images/buildingImages/06_ChildMindingBuilding(1).jpg"),
+    "09_ICTBuilding(1).jpg": require("../assets/images/buildingImages/09_ICTBuilding(1).jpg"),
+    "10_AdministrationBuilding(1).jpg": require("../assets/images/buildingImages/10_AdministrationBuilding(1).jpg"),
+    "14_FinanceAndAccounting(1).jpg": require("../assets/images/buildingImages/14_FinanceAndAccounting(1).jpg"),
+    "15_GymnasiumLobby(1).jpg": require("../assets/images/buildingImages/15_GymnasiumLobby(1).jpg"),
+    "16_DRERMemorialHall.jpg": require("../assets/images/buildingImages/16_DRERMemorialHall.jpg"),
+    "18_CulinaryBuilding.jpg": require("../assets/images/buildingImages/18_CulinaryBuilding.jpg"),
+    "19_ROTCBuilding(1).jpg": require("../assets/images/buildingImages/19_ROTCBuilding(1).jpg"),
+    "20_CafeteriaBuilding(1).jpg": require("../assets/images/buildingImages/20_CafeteriaBuilding(1).jpg"),
+    "21_GuardHouse(1).jpg": require("../assets/images/buildingImages/21_GuardHouse(1).jpg"),
+    "23_LearningResourceCenter(1).jpg": require("../assets/images/buildingImages/23_LearningResourceCenter(1).jpg"),
+    "24_FoodTradeBuilding(1).jpg": require("../assets/images/buildingImages/24_FoodTradeBuilding(1).jpg"),
+    "25_FoodInnovationCenter(2).jpg": require("../assets/images/buildingImages/25_FoodInnovationCenter(2).jpg"),
+    "28_OldScienceBuilding(1).jpg": require("../assets/images/buildingImages/28_OldScienceBuilding(1).jpg"),
+    "36_MakeshiftFabricationLaboratory(1).jpg": require("../assets/images/buildingImages/36_MakeshiftFabricationLaboratory(1).jpg"),
+    "41_ScienceComplexBuilding(1).jpg": require("../assets/images/buildingImages/41_ScienceComplexBuilding(1).jpg"),
+    "42_EngineeringComplexA(1).jpg": require("../assets/images/buildingImages/42_EngineeringComplexA(1).jpg"),
+    "43_EngineeringComplexB(1).jpg": require("../assets/images/buildingImages/43_EngineeringComplexB(1).jpg"),
+    "45_SupplyBuilding.jpg": require("../assets/images/buildingImages/45_SupplyBuilding.jpg"),
+    "47_CollegeOfTechnologyBuilding(1).jpg": require("../assets/images/buildingImages/47_CollegeOfTechnologyBuilding(1).jpg"),
+    "48_EngineeringDesignFabricationLaboratory(1).jpg": require("../assets/images/buildingImages/48_EngineeringDesignFabricationLaboratory(1).jpg"),
   };
 
   // SEARCH BAR FUNCTIONALITY ================================================================
