@@ -3,7 +3,7 @@
     {
       "building_key": "01",
       "building_name": "Arts and Culture",
-      "building_description": "The Arts and Culture building is located on the easternmost of the campus.",
+      "building_description": "The Arts and Culture building is located on the easternmost side of the campus.",
       "building_image": "01_ArtsAndCulture(1).jpg",
       "floors": [
         {
@@ -20,8 +20,8 @@
     },
     {
       "building_key": "03",
-      "building_name": "College of Medicine / Integrated Technology Building",
-      "building_description": "College of Medicine is currently under renovation. Located on the eastern side of the campus.",
+      "building_name": "College of Medicine / Integrated Technology Building (ITB)",
+      "building_description": "College of Medicine is currently under renovation. Located on the easternmost side of the campus.",
       "building_image": "03_CollegeOfMedicine(2).jpg",
       "floors": [
         {
@@ -44,7 +44,7 @@
             },
             {
               "room_id": null,
-              "room_name": "Audio Visual Room (AVR)",
+              "room_name": "Audio Visual Room (ITB AVR)",
               "room_type": "audio visual room"
             }
           ]
@@ -139,7 +139,7 @@
     },
     {
       "building_key": "09",
-      "building_name": "Information Communication Technology Building",
+      "building_name": "Information Communication Technology Building (CITC)",
       "building_description": "ICT building is the home for College of Information Technology and Computing. Located behind Administration Building.",
       "building_image": "09_ICTBuilding(1).jpg",
       "floors": [
@@ -208,17 +208,17 @@
             },
             {
               "room_id": "09-205",
-              "room_name": "Research Laboratory / Data Science Faculty Office",
+              "room_name": "Research Laboratory / Data Science (DS) Faculty Office",
               "room_type": "office"
             },
             {
               "room_id": "09-206",
-              "room_name": "Computer Science / Technology Communication Management Faculty Office",
+              "room_name": "Computer Science / Technology Communication Management (TCM) Faculty Office",
               "room_type": "office"
             },
             {
               "room_id": "09-207",
-              "room_name": "Digital Transformation Office",
+              "room_name": "Digital Transformation Office (DTO)",
               "room_type": "office"
             }
           ]
@@ -283,7 +283,7 @@
             },
             {
               "room_id": "09-312",
-              "room_name": "Information Communication Technology Office",
+              "room_name": "Information Communication Technology (ICT) Office",
               "room_type": "office"
             }
           ]
@@ -308,17 +308,17 @@
             },
             {
               "room_id": "09-404",
-              "room_name": "ICT Audio Visual Room",
+              "room_name": "ICT Audio Visual Room (ICT AVR)",
               "room_type": "audio visual room"
             },
             {
               "room_id": "09-405",
-              "room_name": "ICT Audio Visual Room",
+              "room_name": "ICT Audio Visual Room (ICT AVR)",
               "room_type": "audio visual room"
             },
             {
               "room_id": "09-406",
-              "room_name": "Information Technology Faculty Office",
+              "room_name": "Information Technology (IT) Faculty Office",
               "room_type": "office"
             }
           ]
@@ -395,7 +395,7 @@
     },
     {
       "building_key": "14",
-      "building_name": "Finance and Accounting Building / Senior High Building",
+      "building_name": "Finance and Accounting Building / Senior High Building (SHS)",
       "building_description": "This building is located and connected with the gym lobby.",
       "building_image": "14_FinanceAndAccounting(1).jpg",
       "floors": [
@@ -424,12 +424,12 @@
             },
             {
               "room_id": "14-105",
-              "room_name": "Senior High Faculty",
+              "room_name": "Senior High (SHS) Faculty",
               "room_type": "office"
             },
             {
               "room_id": "14-106",
-              "room_name": "Senior High Faculty",
+              "room_name": "Senior High (SHS) Faculty",
               "room_type": "office"
             },
             {
@@ -474,7 +474,7 @@
             },
             {
               "room_id": null,
-              "room_name": "Commission on Audit Office",
+              "room_name": "Commission on Audit (COA) Office",
               "room_type": "office"
             },
             {
@@ -521,7 +521,7 @@
     },
     {
       "building_key": "16",
-      "building_name": "DRER Memorial Hall",
+      "building_name": "DRER Memorial Hall (Gymnasium)",
       "building_description": "Dr. Ricardo E. Rotoras Memorial Hall is a multi-purpose gymnasium for most academic and non-academic events involving large crowds. It is the landmark of USTP, you cannot miss it!",
       "building_image": "16_DRERMemorialHall.jpg",
       "floors": [
@@ -540,7 +540,7 @@
             },
             {
               "room_id": null,
-              "room_name": "USTP Physical Education Faculty Office",
+              "room_name": "USTP Physical Education (PE) Faculty Office",
               "room_type": "office"
             },
             {
@@ -596,12 +596,12 @@
           "rooms": [
             {
               "room_id": null,
-              "room_name": "National Service Training Program Faculty Office",
+              "room_name": "National Service Training Program (NSTP) Faculty Office",
               "room_type": "office"
             },
             {
               "room_id": null,
-              "room_name": "Reserve Officer Training Corps Office",
+              "room_name": "Reserve Officer Training Corps (ROTC) Office",
               "room_type": "office"
             },
             {
@@ -651,7 +651,7 @@
     },
     {
       "building_key": "23",
-      "building_name": "Learning Resource Center",
+      "building_name": "Learning Resource Center (LRC)",
       "building_description": "The Learning Resource Center is located at the back of the Food Innovation Building.",
       "building_image": "23_LearningResourceCenter(1).jpg",
       "floors": [
@@ -665,7 +665,7 @@
             },
             {
               "room_id": "23-102",
-              "room_name": "Center for Artificial Intelligence Office",
+              "room_name": "Center for Artificial Intelligence (AI) Office",
               "room_type": "office"
             },
             {
@@ -685,7 +685,7 @@
             },
             {
               "room_id": "23-106",
-              "room_name": "Department of Technology Communication Management Office",
+              "room_name": "Department of Technology Communication Management (TCM) Office",
               "room_type": "office"
             },
             {
@@ -981,7 +981,7 @@
     },
     {
       "building_key": "41",
-      "building_name": "Science Complex Building",
+      "building_name": "Science Complex Building (CSM)",
       "building_description": "Science Complex is located besides the gymnasium.",
       "building_image": "41_ScienceComplexBuilding(1).jpg",
       "floors": [
@@ -1010,7 +1010,7 @@
             },
             {
               "room_id": "41-105",
-              "room_name": "College of Science and Mathematics Library",
+              "room_name": "College of Science and Mathematics (CSM) Library",
               "room_type": "office"
             },
             {
@@ -1180,7 +1180,7 @@
             },
             {
               "room_id": "41-507",
-              "room_name": "Dean of College of Science and Mathematics",
+              "room_name": "Dean of College of Science and Mathematics (CSM)",
               "room_type": "office"
             }
           ]
@@ -1189,7 +1189,7 @@
     },
     {
       "building_key": "42",
-      "building_name": "Engineering Complex A",
+      "building_name": "Engineering Complex A (CEA)",
       "building_description": "Engineering Complex A is the huge building that can be seen outside the campus. It is located on the right wing.",
       "building_image": "42_EngineeringComplexA(1).jpg",
       "floors": [
@@ -1298,7 +1298,7 @@
           "rooms": [
             {
               "room_id": "42-501",
-              "room_name": "Dean of College of Science and Technology Education",
+              "room_name": "Dean of College of Science and Technology Education (CSTE)",
               "room_type": "office"
             },
             {
@@ -1323,7 +1323,7 @@
           "rooms": [
             {
               "room_id": null,
-              "room_name": "Performing Arts Theater Audio Visual Room",
+              "room_name": "Performing Arts Theater Audio Visual Room (PAT AVR)",
               "room_type": "audio visual room"
             }
           ]
@@ -1332,7 +1332,7 @@
     },
     {
       "building_key": "43",
-      "building_name": "Engineering Complex B",
+      "building_name": "Engineering Complex B (CEA)",
       "building_description": "Engineering Complex B is the wing extension and can be located right after entering the gate on the right side.",
       "building_image": "43_EngineeringComplexB(1).jpg",
       "floors": [
@@ -1513,7 +1513,7 @@
     },
     {
       "building_key": "47",
-      "building_name": "College of Technology Building",
+      "building_name": "College of Technology Building (COT)",
       "building_description": "College of Technology is located on the northernmost part of the campus.",
       "building_image": "47_CollegeOfTechnologyBuilding(1).jpg",
       "floors": [
@@ -1542,7 +1542,7 @@
             },
             {
               "room_id": null,
-              "room_name": "Dean of College of Technology",
+              "room_name": "Dean of College of Technology (COT)",
               "room_type": "office"
             }
           ]
@@ -1617,12 +1617,12 @@
             },
             {
               "room_id": "47-304",
-              "room_name": "College of Technology Library",
+              "room_name": "College of Technology (COT) Library",
               "room_type": "library"
             },
             {
               "room_id": null,
-              "room_name": "College of Technology Audio Visual Room",
+              "room_name": "College of Technology Audio Visual Room (COT AVR)",
               "room_type": "audio visual room"
             },
             {
