@@ -22,6 +22,7 @@ import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { addDoc, collection } from "firebase/firestore";
 import { auth, db } from "../.firebase/firebaseConfig";
 import { useAssets } from "expo-asset";
+import { readAsStringAsync } from "expo-file-system";
 
 export default function InteractiveMap({ navigation }) {
   const { width, height } = Dimensions.get("window");
@@ -43,7 +44,17 @@ export default function InteractiveMap({ navigation }) {
   const [isUserPopupVisible, setUserPopupVisible] = useState(false);
 
   // WEBVIEW =================================================================================
-  const IndexHTML = require("../assets/maps/index.html");
+  const [index, indexLoadingError] = useAssets(
+    require("../assets/musicsheetview/index.html")
+  );
+
+  const [html, setHtml] = useState("");
+
+  if (index) {
+    readAsStringAsync(index[0].localUri).then((data) => {
+        setHtml(data);
+    });
+  }
 
   // BOTTOM SHEET ============================================================================
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -240,7 +251,7 @@ export default function InteractiveMap({ navigation }) {
     <GestureHandlerRootView style={styles.container}>
       <WebView
         originWhitelist={["*"]}
-        source={{html: IndexHTML}}
+        source={{html}}
         javaScriptEnabled={true}
         domStorageEnabled={true}
         onMessage={handleWebViewMessage}
