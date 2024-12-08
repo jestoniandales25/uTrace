@@ -20,10 +20,12 @@
     "@react-navigation/native-stack": "^6.11.0",
     "@types/react": "~18.2.79",
     "expo": "~51.0.39",
+    "expo-application": "~5.9.1",
     "expo-auth-session": "~5.5.2",
     "expo-build-properties": "~0.12.5",
     "expo-font": "~12.0.10",
     "expo-location": "~17.0.1",
+    "expo-random": "~14.0.1",
     "expo-status-bar": "~1.12.1",
     "expo-system-ui": "^3.0.7",
     "firebase": "^11.0.2",
@@ -46,9 +48,7 @@
     "react-native-svg": "^15.2.0",
     "react-native-svg-transformer": "^1.5.0",
     "react-native-web": "~0.19.10",
-    "react-native-webview": "13.8.6",
-    "expo-application": "~5.9.1",
-    "expo-random": "~14.0.1"
+    "react-native-webview": "13.8.6"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",

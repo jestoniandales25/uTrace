@@ -24,6 +24,7 @@
         "ACCESS_NETWORK_STATE",
         "INTERNET"
       ],
+      "softwareKeyboardLayoutMode": "pan",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/Favicon.png",
         "backgroundColor": "#ffffff"

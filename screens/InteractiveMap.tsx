@@ -198,22 +198,10 @@ export default function InteractiveMap({ navigation }) {
     };
 
     try {
-      const userRef = doc(db, "users", user.uid);
-      const userDoc = await getDoc(userRef);
-
-      // If the user's document exists, update the history array
-      if (userDoc.exists()) {
-        const userData = userDoc.data();
-        const updatedHistory = userData.history
-          ? [...userData.history, historyData] // Append to existing history
-          : [historyData]; // If history is not set, start with this entry
-
-        // Update the user's document with the new history
-        await updateDoc(userRef, { history: updatedHistory });
-        console.log("History saved successfully.");
-      } else {
-        console.log("User document not found.");
-      }
+      const historyRef = collection(db, "users", user.uid, "history");
+      await addDoc(historyRef, historyData);
+      
+      console.log("History saved successfully.");
     } catch (error) {
       console.error("Error saving search history: ", error.message);
     }
