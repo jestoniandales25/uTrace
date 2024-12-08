@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo, useCallback } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import {
   Text,
   TextInput,
@@ -9,7 +9,6 @@ import {
   FlatList,
   Image,
   Keyboard,
-  TouchableWithoutFeedback,
 } from "react-native";
 import { WebView } from "react-native-webview";
 import styles from "../styles/InteractiveMapStyles";
@@ -19,24 +18,15 @@ import LogoutScreen from "./LogoutScreen";
 import BuildingIcon from "../assets/images/building-solid.svg";
 import RoomIcon from "../assets/images/door-closed-solid.svg";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import BottomSheet, {
-  BottomSheetFlatList,
-  BottomSheetView,
-} from "@gorhom/bottom-sheet";
-import {
-  addDoc,
-  collection,
-  doc,
-  getDoc,
-  Timestamp,
-  updateDoc,
-} from "firebase/firestore";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import { addDoc, collection } from "firebase/firestore";
 import { auth, db } from "../.firebase/firebaseConfig";
-import { getAuth } from "firebase/auth";
-
-const { width, height } = Dimensions.get("window");
+import { useAssets } from "expo-asset";
 
 export default function InteractiveMap({ navigation }) {
+  const { width, height } = Dimensions.get("window");
+
+  // SEARCH BAR ==============================================================================
   const [isFocused, setIsFocused] = useState(false);
   const searchContainerWidthAnim = useRef(
     new Animated.Value(width - 48 - 48)
@@ -44,31 +34,62 @@ export default function InteractiveMap({ navigation }) {
   const userContainerAnim = useRef(new Animated.Value(1)).current;
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [isUserPopupVisible, setUserPopupVisible] = useState(false);
-  const inputRef = useRef(null); // Ref for the TextInput
-  const [selection, setSelection] = useState({ start: 0, end: 0 }); // Controlled selection
+  const inputRef = useRef(null);
+  const [selection, setSelection] = useState({ start: 0, end: 0 });
   const [selectedItem, setSelectedItem] = useState(null);
-  const [isSearchActive, setIsSearchActive] = useState(false); // Track if search suggestion was clicked
+  const [isSearchActive, setIsSearchActive] = useState(false);
 
-  const openBottomSheet = () => {
-    bottomSheetRef.current.snapToIndex(0); // Open the BottomSheet
-  };
+  // USER ACCOUNT ============================================================================
+  const [isUserPopupVisible, setUserPopupVisible] = useState(false);
 
-  const closeBottomSheet = () => {
-    bottomSheetRef.current.close(); // Close the BottomSheet
-  };
+  // WEBVIEW =================================================================================
+  const IndexHTML = require("../assets/maps/index.html");
 
+  // BOTTOM SHEET ============================================================================
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const snapPoints = useMemo(() => ["25%", "50%"], []);
+
+  // CAMPUS BUILDINGS AND ROOMS DATA =========================================================
   const data = require("../assets/data/campus_buildings.json");
-  // Handle search
+
+  const imageMap = {
+    "01_ArtsAndCulture(1).jpg": require("../assets/data/01_ArtsAndCulture(1).jpg"),
+    "02_ModularClassroom(1).jpg": require("../assets/data/02_ModularClassroom(1).jpg"),
+    "03_CollegeOfMedicine(2).jpg": require("../assets/data/03_CollegeOfMedicine(2).jpg"),
+    "04_BuildingsAndGroundMaintenanceUnit(1).jpg": require("../assets/data/04_BuildingsAndGroundMaintenanceUnit(1).jpg"),
+    "05_OldEngineeringBuilding(2).jpg": require("../assets/data/05_OldEngineeringBuilding(2).jpg"),
+    "06_ChildMindingBuilding(1).jpg": require("../assets/data/06_ChildMindingBuilding(1).jpg"),
+    "09_ICTBuilding(1).jpg": require("../assets/data/09_ICTBuilding(1).jpg"),
+    "10_AdministrationBuilding(1).jpg": require("../assets/data/10_AdministrationBuilding(1).jpg"),
+    "14_FinanceAndAccounting(1).jpg": require("../assets/data/14_FinanceAndAccounting(1).jpg"),
+    "15_GymnasiumLobby(1).jpg": require("../assets/data/15_GymnasiumLobby(1).jpg"),
+    "16_DRERMemorialHall.jpg": require("../assets/data/16_DRERMemorialHall.jpg"),
+    "18_CulinaryBuilding.jpg": require("../assets/data/18_CulinaryBuilding.jpg"),
+    "19_ROTCBuilding(1).jpg": require("../assets/data/19_ROTCBuilding(1).jpg"),
+    "20_CafeteriaBuilding(1).jpg": require("../assets/data/20_CafeteriaBuilding(1).jpg"),
+    "21_GuardHouse(1).jpg": require("../assets/data/21_GuardHouse(1).jpg"),
+    "23_LearningResourceCenter(1).jpg": require("../assets/data/23_LearningResourceCenter(1).jpg"),
+    "24_FoodTradeBuilding(1).jpg": require("../assets/data/24_FoodTradeBuilding(1).jpg"),
+    "25_FoodInnovationCenter(2).jpg": require("../assets/data/25_FoodInnovationCenter(2).jpg"),
+    "28_OldScienceBuilding(1).jpg": require("../assets/data/28_OldScienceBuilding(1).jpg"),
+    "36_MakeshiftFabricationLaboratory(1).jpg": require("../assets/data/36_MakeshiftFabricationLaboratory(1).jpg"),
+    "41_ScienceComplexBuilding(1).jpg": require("../assets/data/41_ScienceComplexBuilding(1).jpg"),
+    "42_EngineeringComplexA(1).jpg": require("../assets/data/42_EngineeringComplexA(1).jpg"),
+    "43_EngineeringComplexB(1).jpg": require("../assets/data/43_EngineeringComplexB(1).jpg"),
+    "45_SupplyBuilding.jpg": require("../assets/data/45_SupplyBuilding.jpg"),
+    "47_CollegeOfTechnologyBuilding(1).jpg": require("../assets/data/47_CollegeOfTechnologyBuilding(1).jpg"),
+    "48_EngineeringDesignFabricationLaboratory(1).jpg": require("../assets/data/48_EngineeringDesignFabricationLaboratory(1).jpg"),
+  };
+
+  // SEARCH BAR FUNCTIONALITY ================================================================
   const handleSearch = (text) => {
     setSearchText(text);
     setSelection({ start: text.length, end: text.length });
     const searchQuery = text.toLowerCase();
 
-    // If text is empty, clear filtered suggestions
     if (text.trim() === "") {
-      setFilteredSuggestions([]); // Clear the suggestions
-      return; // Exit early
+      setFilteredSuggestions([]);
+      return;
     }
 
     const filteredBuildings = data.buildings
@@ -111,7 +132,6 @@ export default function InteractiveMap({ navigation }) {
     );
   };
 
-  // Helper function for ordinal suffix
   const ordinalSuffixOf = (i) => {
     const j = i % 10,
       k = i % 100;
@@ -121,16 +141,12 @@ export default function InteractiveMap({ navigation }) {
     return i + "th";
   };
 
-  const bottomSheetRef = useRef<BottomSheet>(null);
-
-  const snapPoints = useMemo(() => ["25%", "50%"], []);
-
   const handleFocus = () => {
     setIsFocused(true);
-    setSearchText(""); // Clear the search input
-    setFilteredSuggestions([]); // Clear suggestions on focus
-    setSelection({ start: 0, end: 0 }); // Reset cursor to the start
-    closeBottomSheet(); // Close bottom sheet if no search suggestion was clicked
+    setSearchText("");
+    setFilteredSuggestions([]);
+    setSelection({ start: 0, end: 0 });
+    closeBottomSheet();
 
     Animated.timing(searchContainerWidthAnim, {
       toValue: width - 48,
@@ -150,13 +166,12 @@ export default function InteractiveMap({ navigation }) {
     setFilteredSuggestions([]);
     setSelection({ start: 0, end: 0 });
     if (inputRef.current) {
-      inputRef.current.blur(); // Ensure blur is triggered
+      inputRef.current.blur();
     }
     setTimeout(() => {
-      Keyboard.dismiss(); // Ensure keyboard is dismissed
+      Keyboard.dismiss();
     }, 100);
 
-    //Default for adjustments
     Animated.timing(searchContainerWidthAnim, {
       toValue: width - 48 - 48,
       duration: 300,
@@ -172,80 +187,60 @@ export default function InteractiveMap({ navigation }) {
     openBottomSheet();
   };
 
+  // USER ACCOUNT FUNCTIONALITY ==============================================================
   const toggleUserPopup = () => {
     setUserPopupVisible(!isUserPopupVisible);
   };
 
-  //LOG DATA LOCATION TEST, will be removed after debugging
-  const handleWebViewMessage = (event: any) => {
-    const data = JSON.parse(event.nativeEvent.data);
-    console.log(`Latitude: ${data.lat}, Longitude: ${data.lng}`);
-  };
-  // ============================================================
-
   const logSelectionHistory = async (selection) => {
-    const user = auth.currentUser; // Get the currently authenticated user
+    const user = auth.currentUser;
 
-    // If no user is logged in, return
     if (!user) {
       console.log("No user logged in. History not saved.");
       return;
     }
 
     const historyData = {
-      searchTerm: selection.name, // Store the name of the selected building or room
-      timestamp: new Date().toISOString(), // Store the timestamp of when the selection was made
+      searchTerm: selection.name,
+      timestamp: new Date().toISOString(),
     };
 
     try {
       const historyRef = collection(db, "users", user.uid, "history");
       await addDoc(historyRef, historyData);
-      
+
       console.log("History saved successfully.");
     } catch (error) {
       console.error("Error saving search history: ", error.message);
     }
   };
 
+  // WEBVIEW FUNCTIONALITY ===================================================================
+  // LOG DATA LOCATION TEST, will be removed after debugging
+  const handleWebViewMessage = (event: any) => {
+    const data = JSON.parse(event.nativeEvent.data);
+    console.log(`Latitude: ${data.lat}, Longitude: ${data.lng}`);
+  };
+  // ============================================================
+
   const handleWebViewClick = () => {
-    // Prevent the keyboard from showing when interacting with WebView
     Keyboard.dismiss();
   };
 
-  const imageMap = {
-    "01_ArtsAndCulture(1).jpg": require("../assets/data/01_ArtsAndCulture(1).jpg"),
-    "02_ModularClassroom(1).jpg": require("../assets/data/02_ModularClassroom(1).jpg"),
-    "03_CollegeOfMedicine(2).jpg": require("../assets/data/03_CollegeOfMedicine(2).jpg"),
-    "04_BuildingsAndGroundMaintenanceUnit(1).jpg": require("../assets/data/04_BuildingsAndGroundMaintenanceUnit(1).jpg"),
-    "05_OldEngineeringBuilding(2).jpg": require("../assets/data/05_OldEngineeringBuilding(2).jpg"),
-    "06_ChildMindingBuilding(1).jpg": require("../assets/data/06_ChildMindingBuilding(1).jpg"),
-    "09_ICTBuilding(1).jpg": require("../assets/data/09_ICTBuilding(1).jpg"),
-    "10_AdministrationBuilding(1).jpg": require("../assets/data/10_AdministrationBuilding(1).jpg"),
-    "14_FinanceAndAccounting(1).jpg": require("../assets/data/14_FinanceAndAccounting(1).jpg"),
-    "15_GymnasiumLobby(1).jpg": require("../assets/data/15_GymnasiumLobby(1).jpg"),
-    "16_DRERMemorialHall.jpg": require("../assets/data/16_DRERMemorialHall.jpg"),
-    "18_CulinaryBuilding.jpg": require("../assets/data/18_CulinaryBuilding.jpg"),
-    "19_ROTCBuilding(1).jpg": require("../assets/data/19_ROTCBuilding(1).jpg"),
-    "20_CafeteriaBuilding(1).jpg": require("../assets/data/20_CafeteriaBuilding(1).jpg"),
-    "21_GuardHouse(1).jpg": require("../assets/data/21_GuardHouse(1).jpg"),
-    "23_LearningResourceCenter(1).jpg": require("../assets/data/23_LearningResourceCenter(1).jpg"),
-    "24_FoodTradeBuilding(1).jpg": require("../assets/data/24_FoodTradeBuilding(1).jpg"),
-    "25_FoodInnovationCenter(2).jpg": require("../assets/data/25_FoodInnovationCenter(2).jpg"),
-    "28_OldScienceBuilding(1).jpg": require("../assets/data/28_OldScienceBuilding(1).jpg"),
-    "36_MakeshiftFabricationLaboratory(1).jpg": require("../assets/data/36_MakeshiftFabricationLaboratory(1).jpg"),
-    "41_ScienceComplexBuilding(1).jpg": require("../assets/data/41_ScienceComplexBuilding(1).jpg"),
-    "42_EngineeringComplexA(1).jpg": require("../assets/data/42_EngineeringComplexA(1).jpg"),
-    "43_EngineeringComplexB(1).jpg": require("../assets/data/43_EngineeringComplexB(1).jpg"),
-    "45_SupplyBuilding.jpg": require("../assets/data/45_SupplyBuilding.jpg"),
-    "47_CollegeOfTechnologyBuilding(1).jpg": require("../assets/data/47_CollegeOfTechnologyBuilding(1).jpg"),
-    "48_EngineeringDesignFabricationLaboratory(1).jpg": require("../assets/data/48_EngineeringDesignFabricationLaboratory(1).jpg"),
+  // BOTTOM SHEET FUNCTIONALITY ==============================================================
+  const openBottomSheet = () => {
+    bottomSheetRef.current.snapToIndex(0);
+  };
+
+  const closeBottomSheet = () => {
+    bottomSheetRef.current.close();
   };
 
   return (
     <GestureHandlerRootView style={styles.container}>
       <WebView
         originWhitelist={["*"]}
-        source={require("../assets/maps/maps.html")}
+        source={{html: IndexHTML}}
         javaScriptEnabled={true}
         domStorageEnabled={true}
         onMessage={handleWebViewMessage}
@@ -255,10 +250,7 @@ export default function InteractiveMap({ navigation }) {
       />
       <View style={styles.topContainer}>
         <Animated.View
-          style={[
-            styles.searchContainer,
-            { width: searchContainerWidthAnim }, // Animated width
-          ]}
+          style={[styles.searchContainer, { width: searchContainerWidthAnim }]}
         >
           <View style={styles.searchIconContainer}>
             <SearchIcon />
@@ -293,13 +285,13 @@ export default function InteractiveMap({ navigation }) {
                       : `${item.name}`;
 
                   setSearchText(formattedText);
-                  setFilteredSuggestions([]); // Clear suggestions after selection
-                  inputRef.current?.blur(); // Blur the input field
+                  setFilteredSuggestions([]);
+                  inputRef.current?.blur();
                   setIsSearchActive(true);
                   openBottomSheet();
 
                   logSelectionHistory({
-                    name: formattedText, // Use the formatted selection name
+                    name: formattedText,
                   });
 
                   if (item.type === "building") {
@@ -319,8 +311,6 @@ export default function InteractiveMap({ navigation }) {
                       image: item.image,
                       room_type: item.room_type,
                     });
-
-                    // Log the selection history to Firestore
                     logSelectionHistory({
                       type: item.type,
                       name: item.name,
@@ -332,11 +322,7 @@ export default function InteractiveMap({ navigation }) {
               >
                 <View style={styles.suggestionContent}>
                   <View style={styles.suggestionIconContainer}>
-                    {item.type === "building" ? (
-                      <BuildingIcon /> // Use your building icon here
-                    ) : (
-                      <RoomIcon /> // Use your room icon here
-                    )}
+                    {item.type === "building" ? <BuildingIcon /> : <RoomIcon />}
                   </View>
                   <View style={styles.suggestionTextsContainer}>
                     <Text
@@ -393,28 +379,23 @@ export default function InteractiveMap({ navigation }) {
         handleStyle={styles.handleStyle}
       >
         <BottomSheetView style={styles.contentContainer}>
-          {/* Main Text */}
           <Text style={styles.mainText}>
             {selectedItem
               ? selectedItem.type === "building"
-                ? selectedItem.name // Display building name
+                ? selectedItem.name
                 : selectedItem.id
-                ? `${selectedItem.id} | ${selectedItem.name}` // Display room info with ID
-                : selectedItem.name // Display room name only if ID is null
+                ? `${selectedItem.id} | ${selectedItem.name}`
+                : selectedItem.name
               : "Select a building or room"}
           </Text>
-
-          {/* Sub Text */}
           {selectedItem && selectedItem.type === "building" ? (
-            <Text style={styles.subText}>Building {selectedItem.key}</Text> // Show building key
+            <Text style={styles.subText}>Building {selectedItem.key}</Text>
           ) : (
             selectedItem &&
             selectedItem.type === "room" && (
-              <Text style={styles.subText}>{selectedItem.location}</Text> // Show room location
+              <Text style={styles.subText}>{selectedItem.location}</Text>
             )
           )}
-
-          {/* Image */}
 
           {selectedItem && selectedItem.image && (
             <TouchableOpacity
@@ -424,19 +405,21 @@ export default function InteractiveMap({ navigation }) {
               style={styles.imageWrapper}
             >
               <Image
-                source={imageMap[selectedItem.image]} // Use the mapped image
+                source={imageMap[selectedItem.image]}
                 style={styles.image}
               />
             </TouchableOpacity>
           )}
 
-          {/* Description Text */}
           {selectedItem && selectedItem.type === "building" ? (
-            <Text style={styles.description}>{selectedItem.description}</Text> // Show building description
+            <Text style={styles.description}>{selectedItem.description}</Text>
           ) : (
             selectedItem &&
             selectedItem.type === "room" && (
-              <Text style={styles.description}>This {selectedItem.room_type} is located on the {selectedItem.location}.</Text> // Show room type (or other details)
+              <Text style={styles.description}>
+                This {selectedItem.room_type} is located on the{" "}
+                {selectedItem.location}.
+              </Text>
             )
           )}
         </BottomSheetView>
