@@ -51,7 +51,6 @@ export default function LoginScreens({ navigation }) {
       }
     }
   };
-
   const Divider = () => (
     <View style={styles.dividerContainer}>
       <View style={styles.line} />
