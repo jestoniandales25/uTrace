@@ -86,7 +86,6 @@ export default function LogoutScreen({onClose, navigation}) {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      // Redirect to Login screen
       navigation.replace("loginScreens");
     } catch (error) {
       console.error("Error logging out:", error.message);

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import styles from "../styles/LoginSystemStyles";
 import Logo from "../assets/images/Logo.svg";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { db, auth } from "../.firebase/firebaseConfig"; // Update the path based on your file structure
+import { db, auth } from "../.firebase/firebaseConfig";
 import { doc, setDoc } from "firebase/firestore";
 
 
@@ -29,23 +29,16 @@ export default function SigningRegister({ navigation }) {
     }
     setIsLoading(true);
     try {
-      
-      // Create the user with Firebase Authentication
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-  
-      // Create a user document in Firestore
       await setDoc(doc(db, "users", user.uid), {
         email: user.email,
         createdAt: new Date().toISOString(),
       });
-  
       Alert.alert("Success", "Account created successfully!");
-
       setEmail("");
       setPassword("");
       setConfirmPassword("");
-  
       navigation.push("loginScreens");
     } catch (error) {
       Alert.alert("Error", error.message);
@@ -53,6 +46,7 @@ export default function SigningRegister({ navigation }) {
       setIsLoading(false);
     }
   };
+  
   return (
     <View style={styles.wrapper}>
       <Logo width={240} height={86} />

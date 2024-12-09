@@ -3,8 +3,6 @@ import { initializeApp } from "firebase/app";
 import { getFirestore, writeBatch } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
-
-
 export const firebaseConfig = {
     apiKey: "AIzaSyAY0kmXv_OBt6aPC4Gl35nHiXHpanrupxY",
     authDomain: "utrace-60950.firebaseapp.com",
@@ -18,7 +16,5 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 const batch = writeBatch(db);
-
-
 
 export { db, auth, app, batch };

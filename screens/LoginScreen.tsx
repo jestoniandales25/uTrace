@@ -2,38 +2,29 @@ import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import styles from "../styles/LoginSystemStyles";
 import Logo from "../assets/images/Logo.svg";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { firebaseConfig } from "../.firebase/firebaseConfig";
 import { initializeApp } from "firebase/app";
 import React, { useState } from "react";
 
 
-
 const app = initializeApp(firebaseConfig);
 
 export default function LoginScreens({ navigation }) {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const auth = getAuth(app);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
-
+  // Login =================================================================
   const handleLogin = async () => {
     if (email === "" || password === "") {
       Alert.alert("Error", "Please enter both email and password.");
       return;
     }
-
     try {
       await signInWithEmailAndPassword(auth, email, password);
-
       setEmail("");
       setPassword("");
-
       navigation.replace("InteractiveMap");
     } catch (error) {
       switch (error.code) {
@@ -51,6 +42,7 @@ export default function LoginScreens({ navigation }) {
       }
     }
   };
+  // Divider ===============================================================
   const Divider = () => (
     <View style={styles.dividerContainer}>
       <View style={styles.line} />
@@ -58,9 +50,11 @@ export default function LoginScreens({ navigation }) {
       <View style={styles.line} />
     </View>
   );
+  // Signup ===============================================================
   const handleSignUp = () => {
     navigation.push("Registration");
   };
+  
   return (
     <View style={styles.wrapper}>
       <Logo width={240} height={86} />
