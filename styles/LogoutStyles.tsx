@@ -77,6 +77,8 @@ const styles = StyleSheet.create({
         alignSelf: "stretch",
         paddingLeft: 20,
         paddingRight: 20,
+        paddingTop: 2,
+        paddingBottom: 2,
       },
     historyText: {
         marginHorizontal: 10,

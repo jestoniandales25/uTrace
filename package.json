@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@devvie/bottom-sheet": "^0.4.3",
-    "@expo/config-plugins": "^9.0.10",
+    "@expo/config-plugins": "~8.0.0",
     "@expo/metro-runtime": "~3.2.3",
     "@gorhom/bottom-sheet": "^5.0.4",
     "@maplibre/maplibre-react-native": "^10.0.0-alpha.26",
@@ -55,7 +55,7 @@
     "@expo/metro-config": "~0.18.11",
     "@types/leaflet": "^1.9.14",
     "metro": "~0.80.8",
-    "typescript": "^5.7.2"
+    "typescript": "~5.3.3"
   },
   "private": true
 }

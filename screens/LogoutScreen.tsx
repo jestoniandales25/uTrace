@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, TouchableOpacity, Alert, ScrollView } from "react-native";
 import styles from "../styles/LogoutStyles";
-import UserIcon from "../assets/images/circle-user-solid.svg";
+import UserIcon from "../assets/images/icons/circle-user-solid.svg";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { signOut } from "firebase/auth";
 import { auth } from "../.firebase/firebaseConfig";
