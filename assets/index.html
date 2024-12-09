@@ -61,10 +61,14 @@
       var map = L.map("map", {
         center: [8.485666189342737, 124.65650567039847],
         zoom: 18,
-        minZoom: 14,
+        minZoom: 14, //17
         maxZoom: 19,
         zoomControl: false,
         crs: L.CRS.Simple,
+        //maxBounds: [
+        //  [8.482920572161674, 124.65331426635385], // Bottom-left corner (lat, lng)
+        //  [8.48949408531189, 124.65996752679348], // Top-right corner (lat, lng)
+        //],
       });
 
       const bounds = [
@@ -72,7 +76,7 @@
         [8.488068785899669, 124.6586974617094], // Top-right corner (lat, lng)
       ];
 
-      L.imageOverlay("maps.png", bounds).addTo(map);
+      L.imageOverlay("./maps/maps.png", bounds).addTo(map);
 
       map.on("click", function (e) {
         const lat = e.latlng.lat;
@@ -245,20 +249,24 @@
 
       L.control
         .locate({
-          position: "topleft", // Where to place the button
-          drawCircle: true, // Draw a circle around the location
-          showPopup: true, // Show a popup with location info
-          flyTo: true, // Fly the map to the user's location
-          locateOptions: {
-            enableHighAccuracy: true, // Enable high-accuracy GPS
-          },
+          setView: true,
+          watch: true,
+          flyTo: true,
+          enableHighAccuracy: true,
+          showPopup: false,
         })
         .addTo(map);
 
-      // Handle errors or user denial of location
-      map.on("locationerror", function (e) {
-        alert("Failed to get location.", e.message);
-      });
+      navigator.geolocation.getCurrentPosition(
+        (position) =>
+          console.log(
+            "Lat:",
+            position.coords.latitude,
+            "Lng:",
+            position.coords.longitude
+          ),
+        (error) => console.error(error)
+      );
     </script>
   </body>
 </html>

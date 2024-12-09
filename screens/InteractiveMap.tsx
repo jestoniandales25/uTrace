@@ -42,21 +42,6 @@ export default function InteractiveMap({ navigation }) {
   const [isUserPopupVisible, setUserPopupVisible] = useState(false);
 
   // WEBVIEW =================================================================================
-  const [index, indexLoadingError] = useAssets(require("../assets/index.html"));
-  const [maps, mapsLoadingError] = useAssets(
-    require("../assets/maps/maps.png")
-  );
-  const [html, setHtml] = useState("");
-
-  useEffect(() => {
-    if (index && maps) {
-      const mapUri = maps[0].localUri;
-      FileSystem.readAsStringAsync(index[0].localUri).then((data) => {
-        const updatedHtml = data.replace("maps.png", mapUri);
-        setHtml(updatedHtml);
-      });
-    }
-  }, [index, maps]);
 
   // BOTTOM SHEET ============================================================================
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -222,10 +207,6 @@ export default function InteractiveMap({ navigation }) {
     const data = JSON.parse(event.nativeEvent.data);
     console.log(`Latitude: ${data.lat}, Longitude: ${data.lng}`);
   };
-
-  const handleMessage = (event) => {
-    console.log(event.nativeEvent.data);
- }
   // ============================================================
 
   const handleWebViewClick = () => {
@@ -245,15 +226,15 @@ export default function InteractiveMap({ navigation }) {
     <GestureHandlerRootView style={styles.container}>
       <WebView
         originWhitelist={["*"]}
-        source={{ html }}
+        source={require("../assets/index.html")}
         allowFileAccess={true}
         javaScriptEnabled={true}
         domStorageEnabled={true}
-        onMessage={handleMessage}
+        onMessage={handleWebViewMessage}
         style={styles.map}
         debuggingEnabled={true}
         onTouchStart={handleWebViewClick}
-        nativeConfig={{props: {webContentsDebuggingEnabled: true}}}
+        nativeConfig={{ props: { webContentsDebuggingEnabled: true } }}
       />
       <View style={styles.topContainer}>
         <Animated.View
