@@ -21,7 +21,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { addDoc, collection } from "firebase/firestore";
 import { auth, db } from "../.firebase/firebaseConfig";
-import { Asset } from "expo-asset";
+import { useAssets } from "expo-asset";
 import * as FileSystem from "expo-file-system";
 
 export default function InteractiveMap({ navigation }) {
@@ -42,30 +42,21 @@ export default function InteractiveMap({ navigation }) {
   const [isUserPopupVisible, setUserPopupVisible] = useState(false);
 
   // WEBVIEW =================================================================================
+  const [index, indexLoadingError] = useAssets(require("../assets/index.html"));
+  const [maps, mapsLoadingError] = useAssets(
+    require("../assets/maps/maps.png")
+  );
   const [html, setHtml] = useState("");
 
   useEffect(() => {
-    const resolveAssets = async () => {
-      try {
-        const htmlAsset = Asset.fromModule(require("../assets/index.html"));
-        const mapAsset = Asset.fromModule(require("../assets/maps/maps.png"));
-
-        await htmlAsset.downloadAsync();
-        await mapAsset.downloadAsync();
-
-        const htmlContent = await FileSystem.readAsStringAsync(
-          htmlAsset.localUri
-        );
-
-        const updatedHtml = htmlContent.replace("maps.png", mapAsset.localUri);
+    if (index && maps) {
+      const mapUri = maps[0].localUri;
+      FileSystem.readAsStringAsync(index[0].localUri).then((data) => {
+        const updatedHtml = data.replace("maps.png", mapUri);
         setHtml(updatedHtml);
-      } catch (error) {
-        console.error("Error loading assets:", error);
-      }
-    };
-
-    resolveAssets();
-  }, []);
+      });
+    }
+  }, [index, maps]);
 
   // BOTTOM SHEET ============================================================================
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -207,7 +198,6 @@ export default function InteractiveMap({ navigation }) {
 
     if (!user) {
       console.log("No user logged in. History not saved.");
-      console.log(selection);
       return;
     }
 
@@ -235,7 +225,7 @@ export default function InteractiveMap({ navigation }) {
 
   const handleMessage = (event) => {
     console.log(event.nativeEvent.data);
-  };
+ }
   // ============================================================
 
   const handleWebViewClick = () => {
@@ -263,7 +253,7 @@ export default function InteractiveMap({ navigation }) {
         style={styles.map}
         debuggingEnabled={true}
         onTouchStart={handleWebViewClick}
-        nativeConfig={{ props: { webContentsDebuggingEnabled: true } }}
+        nativeConfig={{props: {webContentsDebuggingEnabled: true}}}
       />
       <View style={styles.topContainer}>
         <Animated.View
@@ -305,6 +295,10 @@ export default function InteractiveMap({ navigation }) {
                   setFilteredSuggestions([]);
                   inputRef.current?.blur();
 
+                  logSelectionHistory({
+                    name: formattedText,
+                  });
+
                   if (item.type === "building") {
                     setSelectedItem({
                       type: "building",
@@ -312,9 +306,6 @@ export default function InteractiveMap({ navigation }) {
                       key: item.key,
                       image: item.image,
                       description: item.description,
-                    });
-                    logSelectionHistory({
-                      name: formattedText,
                     });
                   } else {
                     setSelectedItem({

@@ -16,6 +16,14 @@
       integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
       crossorigin=""
     ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.82.0/dist/L.Control.Locate.min.css"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.82.0/dist/L.Control.Locate.min.js"
+      charset="utf-8"
+    ></script>
     <style>
       html,
       body {
@@ -53,15 +61,10 @@
       var map = L.map("map", {
         center: [8.485666189342737, 124.65650567039847],
         zoom: 18,
-        minZoom: 17,
+        minZoom: 14,
         maxZoom: 19,
         zoomControl: false,
         crs: L.CRS.Simple,
-        maxBounds: [
-          [8.482920572161674, 124.65331426635385], // Bottom-left corner (lat, lng)
-          [8.48949408531189, 124.65996752679348], // Top-right corner (lat, lng)
-        ],
-        maxBoundsViscosity: 0.3,
       });
 
       const bounds = [
@@ -240,123 +243,22 @@
       map.on("zoomend", updateLabelsVisibility);
       updateLabelsVisibility();
 
-      // Define the coordinates of the campus boundary (use a polygon for campus area)
-      const campusBoundary = [
-        [8.4845, 124.655], // Coordinates of the campus boundary (sample points)
-        [8.485, 124.658],
-        [8.486, 124.659],
-        // Add all the relevant coordinates that form the campus boundary
-      ];
-
-      // Fallback location for the guard house
-      const fallbackLocation = {
-        latitude: 8.484939575195312,
-        longitude: 124.65656566619873,
-      };
-
-      // Function to check if the user's location is inside the campus
-      function isInsideCampus(lat, lng) {
-        const campusPolygon = L.polygon(campusBoundary);
-        return campusPolygon.contains(L.latLng(lat, lng));
-      }
-
-      // Check if geolocation is available
-      // Get the user's geolocation
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-
-            // Check if the user's location is within the campus boundary
-            if (isInsideCampus(latitude, longitude)) {
-              // Center the map on the user's location
-              map.setView([latitude, longitude], 18);
-
-              // Add a marker for the user's location
-              const userMarker = L.marker([latitude, longitude])
-                .addTo(map)
-                .bindPopup(
-                  `<b>Your Location</b><br>Lat: ${latitude}<br>Lng: ${longitude}`
-                )
-                .openPopup();
-            } else {
-              // If outside the campus, center the map on the fallback location (guard house)
-              map.setView(
-                [fallbackLocation.latitude, fallbackLocation.longitude],
-                18
-              );
-
-              // Add a marker for the fallback location
-              const fallbackMarker = L.marker([
-                fallbackLocation.latitude,
-                fallbackLocation.longitude,
-              ])
-                .addTo(map)
-                .bindPopup(
-                  `<b>Guard House</b><br>Lat: ${fallbackLocation.latitude}<br>Lng: ${fallbackLocation.longitude}`
-                )
-                .openPopup();
-            }
+      L.control
+        .locate({
+          position: "topleft", // Where to place the button
+          drawCircle: true, // Draw a circle around the location
+          showPopup: true, // Show a popup with location info
+          flyTo: true, // Fly the map to the user's location
+          locateOptions: {
+            enableHighAccuracy: true, // Enable high-accuracy GPS
           },
-          (error) => {
-            console.error("Geolocation error:", error.message);
+        })
+        .addTo(map);
 
-            // If geolocation fails, set the map to the fallback location
-            map.setView(
-              [fallbackLocation.latitude, fallbackLocation.longitude],
-              18
-            );
-
-            // Add a marker for the fallback location
-            const fallbackMarker = L.marker([
-              fallbackLocation.latitude,
-              fallbackLocation.longitude,
-            ])
-              .addTo(map)
-              .bindPopup(
-                `<b>Guard House</b><br>Lat: ${fallbackLocation.latitude}<br>Lng: ${fallbackLocation.longitude}`
-              )
-              .openPopup();
-          }
-        );
-      } else {
-        alert("Geolocation is not supported by your browser.");
-
-        // If geolocation is not supported, set the map to the fallback location
-        map.setView(
-          [fallbackLocation.latitude, fallbackLocation.longitude],
-          18
-        );
-
-        // Add a marker for the fallback location
-        const fallbackMarker = L.marker([
-          fallbackLocation.latitude,
-          fallbackLocation.longitude,
-        ])
-          .addTo(map)
-          .bindPopup(
-            `<b>Guard House</b><br>Lat: ${fallbackLocation.latitude}<br>Lng: ${fallbackLocation.longitude}`
-          )
-          .openPopup();
-      }
-
-      navigator.geolocation.watchPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          map.setView([latitude, longitude]);
-
-          if (userMarker) {
-            userMarker.setLatLng([latitude, longitude]);
-          }
-        },
-        (error) => {
-          console.error("Geolocation error:", error.message);
-        },
-        {
-          enableHighAccuracy: true, // Improve accuracy
-          maximumAge: 0, // No caching
-        }
-      );
+      // Handle errors or user denial of location
+      map.on("locationerror", function (e) {
+        alert("Failed to get location.", e.message);
+      });
     </script>
   </body>
 </html>
