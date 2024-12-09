@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo, useEffect } from "react";
 import {
   Text,
   TextInput,
@@ -22,13 +22,12 @@ import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { addDoc, collection } from "firebase/firestore";
 import { auth, db } from "../.firebase/firebaseConfig";
 import { useAssets } from "expo-asset";
-import { readAsStringAsync } from "expo-file-system";
+import * as FileSystem from "expo-file-system";
 
 export default function InteractiveMap({ navigation }) {
   const { width, height } = Dimensions.get("window");
 
   // SEARCH BAR ==============================================================================
-  const [isFocused, setIsFocused] = useState(false);
   const searchContainerWidthAnim = useRef(
     new Animated.Value(width - 48 - 48)
   ).current;
@@ -38,27 +37,32 @@ export default function InteractiveMap({ navigation }) {
   const inputRef = useRef(null);
   const [selection, setSelection] = useState({ start: 0, end: 0 });
   const [selectedItem, setSelectedItem] = useState(null);
-  const [isSearchActive, setIsSearchActive] = useState(false);
 
   // USER ACCOUNT ============================================================================
   const [isUserPopupVisible, setUserPopupVisible] = useState(false);
 
   // WEBVIEW =================================================================================
-  const [index, indexLoadingError] = useAssets(
-    require("../assets/musicsheetview/index.html")
+  const [index, indexLoadingError] = useAssets(require("../assets/index.html"));
+  const [maps, mapsLoadingError] = useAssets(
+    require("../assets/maps/maps.png")
   );
-
   const [html, setHtml] = useState("");
 
-  if (index) {
-    readAsStringAsync(index[0].localUri).then((data) => {
-        setHtml(data);
-    });
-  }
+  useEffect(() => {
+    if (index && maps) {
+      // Get the absolute URI for the map image
+      const mapUri = maps[0].localUri;
+      FileSystem.readAsStringAsync(index[0].localUri).then((data) => {
+        const updatedHtml = data.replace("./maps/maps.png", mapUri);
+        setHtml(updatedHtml);
+      });
+    }
+  }, [index, maps]);
 
   // BOTTOM SHEET ============================================================================
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ["25%", "50%"], []);
+  const snapPoints = useMemo(() => [1, "25%", "50%"], []);
+  const [snap, setSnap] = useState(-1);
 
   // CAMPUS BUILDINGS AND ROOMS DATA =========================================================
   const data = require("../assets/data/campus_buildings.json");
@@ -153,11 +157,9 @@ export default function InteractiveMap({ navigation }) {
   };
 
   const handleFocus = () => {
-    setIsFocused(true);
-    setSearchText("");
-    setFilteredSuggestions([]);
-    setSelection({ start: 0, end: 0 });
     closeBottomSheet();
+    setSearchText("");
+    setSelection({ start: 0, end: 0 });
 
     Animated.timing(searchContainerWidthAnim, {
       toValue: width - 48,
@@ -173,15 +175,7 @@ export default function InteractiveMap({ navigation }) {
   };
 
   const handleBlur = () => {
-    setIsFocused(false);
-    setFilteredSuggestions([]);
-    setSelection({ start: 0, end: 0 });
-    if (inputRef.current) {
-      inputRef.current.blur();
-    }
-    setTimeout(() => {
-      Keyboard.dismiss();
-    }, 100);
+    openBottomSheet();
 
     Animated.timing(searchContainerWidthAnim, {
       toValue: width - 48 - 48,
@@ -194,8 +188,6 @@ export default function InteractiveMap({ navigation }) {
       duration: 300,
       useNativeDriver: true,
     }).start();
-
-    openBottomSheet();
   };
 
   // USER ACCOUNT FUNCTIONALITY ==============================================================
@@ -232,6 +224,10 @@ export default function InteractiveMap({ navigation }) {
     const data = JSON.parse(event.nativeEvent.data);
     console.log(`Latitude: ${data.lat}, Longitude: ${data.lng}`);
   };
+
+  const handleMessage = (event) => {
+    console.log(event.nativeEvent.data);
+ }
   // ============================================================
 
   const handleWebViewClick = () => {
@@ -240,7 +236,7 @@ export default function InteractiveMap({ navigation }) {
 
   // BOTTOM SHEET FUNCTIONALITY ==============================================================
   const openBottomSheet = () => {
-    bottomSheetRef.current.snapToIndex(0);
+    bottomSheetRef.current.snapToIndex(1);
   };
 
   const closeBottomSheet = () => {
@@ -251,13 +247,15 @@ export default function InteractiveMap({ navigation }) {
     <GestureHandlerRootView style={styles.container}>
       <WebView
         originWhitelist={["*"]}
-        source={{html}}
+        source={{ html }}
+        allowFileAccess={true}
         javaScriptEnabled={true}
         domStorageEnabled={true}
-        onMessage={handleWebViewMessage}
+        onMessage={handleMessage}
         style={styles.map}
         debuggingEnabled={true}
         onTouchStart={handleWebViewClick}
+        nativeConfig={{props: {webContentsDebuggingEnabled: true}}}
       />
       <View style={styles.topContainer}>
         <Animated.View
@@ -298,8 +296,6 @@ export default function InteractiveMap({ navigation }) {
                   setSearchText(formattedText);
                   setFilteredSuggestions([]);
                   inputRef.current?.blur();
-                  setIsSearchActive(true);
-                  openBottomSheet();
 
                   logSelectionHistory({
                     name: formattedText,
@@ -388,6 +384,7 @@ export default function InteractiveMap({ navigation }) {
         index={-1}
         backgroundStyle={styles.bottomSheet}
         handleStyle={styles.handleStyle}
+        enablePanDownToClose={true}
       >
         <BottomSheetView style={styles.contentContainer}>
           <Text style={styles.mainText}>
