@@ -21,7 +21,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { addDoc, collection } from "firebase/firestore";
 import { auth, db } from "../.firebase/firebaseConfig";
-import { useAssets } from "expo-asset";
+import { Asset } from "expo-asset";
 import * as FileSystem from "expo-file-system";
 
 export default function InteractiveMap({ navigation }) {
@@ -42,27 +42,34 @@ export default function InteractiveMap({ navigation }) {
   const [isUserPopupVisible, setUserPopupVisible] = useState(false);
 
   // WEBVIEW =================================================================================
-  const [index, indexLoadingError] = useAssets(require("../assets/index.html"));
-  const [maps, mapsLoadingError] = useAssets(
-    require("../assets/maps/maps.png")
-  );
   const [html, setHtml] = useState("");
 
   useEffect(() => {
-    if (index && maps) {
-      // Get the absolute URI for the map image
-      const mapUri = maps[0].localUri;
-      FileSystem.readAsStringAsync(index[0].localUri).then((data) => {
-        const updatedHtml = data.replace("./maps/maps.png", mapUri);
+    const resolveAssets = async () => {
+      try {
+        const htmlAsset = Asset.fromModule(require("../assets/index.html"));
+        const mapAsset = Asset.fromModule(require("../assets/maps/maps.png"));
+
+        await htmlAsset.downloadAsync();
+        await mapAsset.downloadAsync();
+
+        const htmlContent = await FileSystem.readAsStringAsync(
+          htmlAsset.localUri
+        );
+
+        const updatedHtml = htmlContent.replace("maps.png", mapAsset.localUri);
         setHtml(updatedHtml);
-      });
-    }
-  }, [index, maps]);
+      } catch (error) {
+        console.error("Error loading assets:", error);
+      }
+    };
+
+    resolveAssets();
+  }, []);
 
   // BOTTOM SHEET ============================================================================
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => [1, "25%", "50%"], []);
-  const [snap, setSnap] = useState(-1);
+  const snapPoints = useMemo(() => ["1%", "25%", "50%"], []);
 
   // CAMPUS BUILDINGS AND ROOMS DATA =========================================================
   const data = require("../assets/data/campus_buildings.json");
@@ -228,7 +235,7 @@ export default function InteractiveMap({ navigation }) {
 
   const handleMessage = (event) => {
     console.log(event.nativeEvent.data);
- }
+  };
   // ============================================================
 
   const handleWebViewClick = () => {
@@ -256,7 +263,7 @@ export default function InteractiveMap({ navigation }) {
         style={styles.map}
         debuggingEnabled={true}
         onTouchStart={handleWebViewClick}
-        nativeConfig={{props: {webContentsDebuggingEnabled: true}}}
+        nativeConfig={{ props: { webContentsDebuggingEnabled: true } }}
       />
       <View style={styles.topContainer}>
         <Animated.View

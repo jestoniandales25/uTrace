@@ -69,7 +69,7 @@
         [8.488068785899669, 124.6586974617094], // Top-right corner (lat, lng)
       ];
 
-      L.imageOverlay("./maps/maps.png", bounds).addTo(map);
+      L.imageOverlay("maps.png", bounds).addTo(map);
 
       map.on("click", function (e) {
         const lat = e.latlng.lat;
