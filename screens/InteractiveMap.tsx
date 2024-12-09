@@ -14,7 +14,7 @@ import { WebView } from "react-native-webview";
 import styles from "../styles/InteractiveMapStyles";
 import SearchIcon from "../assets/images/icons/magnifying-glass-solid.svg";
 import UserIcon from "../assets/images/icons/circle-user-solid.svg";
-import LogoutScreen from "./LogoutScreen";
+import LogoutScreen from "./AccountSettingsPopUp";
 import BuildingIcon from "../assets/images/icons/building-solid.svg";
 import RoomIcon from "../assets/images/icons/door-closed-solid.svg";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -200,6 +200,7 @@ export default function InteractiveMap({ navigation }) {
 
     if (!user) {
       console.log("No user logged in. History not saved.");
+      console.log(selection);
       return;
     }
 
@@ -297,10 +298,6 @@ export default function InteractiveMap({ navigation }) {
                   setFilteredSuggestions([]);
                   inputRef.current?.blur();
 
-                  logSelectionHistory({
-                    name: formattedText,
-                  });
-
                   if (item.type === "building") {
                     setSelectedItem({
                       type: "building",
@@ -308,6 +305,9 @@ export default function InteractiveMap({ navigation }) {
                       key: item.key,
                       image: item.image,
                       description: item.description,
+                    });
+                    logSelectionHistory({
+                      name: formattedText,
                     });
                   } else {
                     setSelectedItem({

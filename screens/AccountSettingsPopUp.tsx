@@ -5,7 +5,7 @@ import UserIcon from "../assets/images/icons/circle-user-solid.svg";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { signOut } from "firebase/auth";
 import { auth } from "../.firebase/firebaseConfig";
-import { collection, doc, getDoc, getDocs, orderBy, query, setDoc, Timestamp } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../.firebase/firebaseConfig";
 
 
@@ -32,20 +32,18 @@ export default function LogoutScreen({onClose, navigation}) {
       const [username, setUsername] = useState<string | null>(null);
       const [history, setHistory] = useState<{ searchTerm: string; timestamp: string }[]>([]);
 
-      // Helper function to format timestamp
       const getFormattedDate = (timestamp) => {
         const date = new Date(timestamp);
         const today = new Date();
         const yesterday = new Date(today);
         yesterday.setDate(today.getDate() - 1);
       
-        // Check if the timestamp is today or yesterday
         if (date.toDateString() === today.toDateString()) {
           return "Today";
         } else if (date.toDateString() === yesterday.toDateString()) {
           return "Yesterday";
         } else {
-          return date.toLocaleDateString(); // Fallback to the date in a readable format
+          return date.toLocaleDateString(); 
         }
       };
 
@@ -137,7 +135,7 @@ export default function LogoutScreen({onClose, navigation}) {
                 )}
 
                 {/* Show "Yesterday" label and list yesterday's history entries */}
-                {history.some((entry) => getFormattedDate(entry.timestamp) === "Yesterday") && (
+                {history.some((entry) => getFormattedDate(entry.timestamp) === "Yesterday" ) && (
                   <View style={styles.popupHistoryContainer}>
                     <Text style={styles.historyText}>Yesterday - {formattedYesterday}</Text>
                     {history.filter((entry) => getFormattedDate(entry.timestamp) === "Yesterday").map((entry, index) => (
