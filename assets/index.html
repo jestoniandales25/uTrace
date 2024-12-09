@@ -24,6 +24,13 @@
       src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.82.0/dist/L.Control.Locate.min.js"
       charset="utf-8"
     ></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"
+    />
+    <script
+      src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"
+    ></script>
     <style>
       html,
       body {
@@ -258,15 +265,29 @@
         .addTo(map);
 
       navigator.geolocation.getCurrentPosition(
-        (position) =>
-          console.log(
-            "Lat:",
-            position.coords.latitude,
-            "Lng:",
-            position.coords.longitude
-          ),
-        (error) => console.error(error)
-      );
+    (position) => {
+      const userLat = position.coords.latitude;
+      const userLng = position.coords.longitude;
+
+      console.log("User Location:", userLat, userLng);
+      map.setView([userLat, userLng], 18);
+      initializeRouting(userLat, userLng);
+    },
+    (error) => {
+      console.error("Geolocation error:", error.message);
+      alert("Could not determine your location. Using default location.");
+      initializeRouting(8.485770096071064, 124.65670230146497);
+    }
+  );
+
+    function initializeRouting(userLat, userLng) {
+      L.Routing.control({
+        waypoints: [
+          L.latLng(userLat, userLng), // User's current position
+          L.latLng(8.485770096071064, 124.65655957348645), // Destination
+        ]
+        }).addTo(map);
+      }
     </script>
   </body>
 </html>
