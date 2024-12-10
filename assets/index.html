@@ -259,12 +259,13 @@
 
       navigator.geolocation.getCurrentPosition(
         (position) =>
-          console.log(
+          alert(
             "Lat:",
             position.coords.latitude,
             "Lng:",
             position.coords.longitude
           ),
+
         (error) => console.error(error)
       );
     </script>
