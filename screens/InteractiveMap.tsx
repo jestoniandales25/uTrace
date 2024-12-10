@@ -9,6 +9,7 @@ import {
   FlatList,
   Image,
   Keyboard,
+  Pressable,
 } from "react-native";
 import { WebView } from "react-native-webview";
 import styles from "../styles/InteractiveMapStyles";
@@ -409,6 +410,7 @@ export default function InteractiveMap({ navigation }) {
               </Text>
             )
           )}
+          <Pressable><Text>Favorite</Text></Pressable>
         </BottomSheetView>
       </BottomSheet>
     </GestureHandlerRootView>

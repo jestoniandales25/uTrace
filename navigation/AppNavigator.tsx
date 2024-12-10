@@ -6,8 +6,8 @@
   import SigningAs from "../screens/SigningAsScreen";
   import LoginScreens from "../screens/LoginScreen";
   import Registration from "../screens/RegisterScreen";
-
-
+  import AccountSettingsPopUp from "../screens/AccountSettingsPopUp";
+  import FeedbackOption from "../screens/FeedbackOption";
 
   const Stack = createNativeStackNavigator();
 
@@ -33,6 +33,8 @@
         <Stack.Screen name="SigningAs" component={SigningAs} />
         <Stack.Screen name="loginScreens" component={LoginScreens} />
         <Stack.Screen name="Registration" component={Registration} />
+        <Stack.Screen name="AccountSettingsPopUp" component={AccountSettingsPopUp} />
+        <Stack.Screen name="FeedbackOption" component={FeedbackOption} />
       </Stack.Navigator>
     );
   }

@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
       },
     
     logoutButton: {
-        marginTop: 30,
         padding: 10,
         backgroundColor: "#FDB218",
         borderRadius: 5,
@@ -109,6 +108,22 @@ const styles = StyleSheet.create({
       textAlign: "center",
       marginVertical: 10,
       fontSize: 16,
+    },
+    feedbackButton: {
+      padding: 10,
+      backgroundColor: '#fff',
+      borderRadius: 5,
+      alignItems: 'center',
+      width: '100%',
+      marginTop: 10,
+      marginBottom: 10,
+    },
+    submitButtonText: {
+      fontSize: 15,
+      textAlign: "center",
+      textTransform: "uppercase",
+      fontWeight: "bold",
+      letterSpacing: 10,
     },
 });
 
