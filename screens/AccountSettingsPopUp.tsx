@@ -93,8 +93,12 @@ export default function LogoutScreen({onClose, navigation}) {
     }
   };
 
+  const handleFeedback = () => {
+    navigation.push("FeedbackOption");
+  };
+
   return (
-      <View style={styles.popupContainer}>
+    <View style={styles.popupContainer}>
       <View style={styles.popupContent}>
         <View style= {styles.popupHeaderContainer}>
           <Text style={styles.popupHeaderText}>Account Settings</Text>
@@ -139,6 +143,9 @@ export default function LogoutScreen({onClose, navigation}) {
           )}
         </ScrollView>
           <Divider /> 
+          <TouchableOpacity style={styles.feedbackButton} onPress={handleFeedback}>
+            <Text style={styles.submitButtonText}>Feedback</Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
             <Text style={styles.logoutButtonText}>Log Out</Text>
           </TouchableOpacity>

@@ -9,7 +9,11 @@ import {
   FlatList,
   Image,
   Keyboard,
+<<<<<<< HEAD
   Alert,
+=======
+  Pressable,
+>>>>>>> 56fb2c5b1b192c8619bac2f60f365cf35863501c
 } from "react-native";
 import { WebView } from "react-native-webview";
 import styles from "../styles/InteractiveMapStyles";
@@ -411,6 +415,7 @@ export default function InteractiveMap({ navigation }) {
               </Text>
             )
           )}
+          <Pressable><Text>Favorite</Text></Pressable>
         </BottomSheetView>
       </BottomSheet>
     </GestureHandlerRootView>
