@@ -106,7 +106,6 @@ export default function InteractiveMap({ navigation }) {
         name: building.building_name,
         image: building.building_image,
         description: building.building_description,
-        coordinates: building.coordinates,
       }));
 
     const filteredRooms = data.buildings.flatMap((building) =>
@@ -224,53 +223,20 @@ export default function InteractiveMap({ navigation }) {
     bottomSheetRef.current.close();
   };
 
-  // Assuming your search and WebView components are already in place
-
-  const handleItemSelect = (item) => {
-    // Ensure the selected item has valid coordinates
-    if (item.coordinates) {
-      // Prepare the navigation data
-      const navigationData = {
-        start: { lat: 8.485666, lng: 124.656505 }, // Your predefined starting point
-        end: item.coordinates,
-      };
-
-      console.log("Sending navigation data:", navigationData);
-
-      // Send the navigation data to the WebView
-      if (webViewRef.current) {
-        webViewRef.current.postMessage(JSON.stringify(navigationData));
-      } else {
-        Alert.alert("Error", "WebView not loaded yet!");
-      }
-    } else {
-      Alert.alert("Error", "Selected item does not have valid coordinates.");
-      console.error("Selected item does not have valid coordinates.");
-    }
-  };
-
-  
-  
-
-  const sendNavigationData = (destination) => {
-    const startingPoint = { lat: 8.485666, lng: 124.656505 }; // Example starting point
-  
+  const sendNavigationData = () => {
     const navigationData = {
-      start: startingPoint,
-      end: destination, // Use the destination passed from handleItemSelect
+      start: { lat: 8.485666, lng: 124.656505 },
+      end: { lat: 8.486551, lng: 124.655820 },
     };
-  
-    console.log("Sending navigation data:", navigationData);
-  
+
+    console.log("Sending data to WebView:", navigationData);
+
     if (webViewRef.current) {
       webViewRef.current.postMessage(JSON.stringify(navigationData));
     } else {
       Alert.alert("Error", "WebView not loaded yet!");
     }
   };
-  
-  
-  
   
   return (
     <GestureHandlerRootView style={styles.container}>
@@ -463,7 +429,7 @@ export default function InteractiveMap({ navigation }) {
               </Text>
             )
           )}
-          <Pressable onPress={handleItemSelect}><Text>Navigate</Text></Pressable>
+          <Pressable><Text>Favorite</Text></Pressable>
         </BottomSheetView>
       </BottomSheet>
     </GestureHandlerRootView>
