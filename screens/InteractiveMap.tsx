@@ -9,9 +9,6 @@ import {
   FlatList,
   Image,
   Keyboard,
-  Pressable,
-  Button,
-  Alert,
 } from "react-native";
 import { WebView } from "react-native-webview";
 import styles from "../styles/InteractiveMapStyles";
@@ -278,7 +275,6 @@ export default function InteractiveMap({ navigation }) {
         nativeConfig={{ props: { webContentsDebuggingEnabled: true } }}
         startInLoadingState={true}
       />
-      <Button title="Start Navigation" />
       <View style={styles.topContainer}>
         <Animated.View
           style={[styles.searchContainer, { width: searchContainerWidthAnim }]}
