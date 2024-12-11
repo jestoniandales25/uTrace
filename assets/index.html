@@ -28,9 +28,7 @@
       rel="stylesheet"
       href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"
     />
-    <script
-      src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"
-    ></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
     <style>
       html,
       body {
@@ -47,7 +45,7 @@
       /* FONT DOESNT WORK*/
       @font-face {
         font-family: "HankenGrotesk-Regular";
-        src: url("../fonts/HankenGrotesk-Regular.ttf") format("truetype");
+        src: url("./fonts/HankenGrotesk-Regular.ttf") format("truetype");
       }
       .leaflet-tooltip {
         font-family: "HankenGrotesk-Regular", sans-serif !important;
@@ -83,7 +81,7 @@
         [8.488068785899669, 124.6586974617094], // Top-right corner (lat, lng)
       ];
 
-      L.imageOverlay("./maps/maps.png", bounds).addTo(map);
+      L.imageOverlay("./leaflet_map/maps.png", bounds).addTo(map);
 
       map.on("click", function (e) {
         const lat = e.latlng.lat;
@@ -261,31 +259,32 @@
           flyTo: true,
           enableHighAccuracy: true,
           showPopup: false,
+          position: "bottomleft",
         })
         .addTo(map);
 
       navigator.geolocation.getCurrentPosition(
-    (position) => {
-      const userLat = position.coords.latitude;
-      const userLng = position.coords.longitude;
+        (position) => {
+          const userLat = position.coords.latitude;
+          const userLng = position.coords.longitude;
 
-      console.log("User Location:", userLat, userLng);
-      map.setView([userLat, userLng], 18);
-      initializeRouting(userLat, userLng);
-    },
-    (error) => {
-      console.error("Geolocation error:", error.message);
-      alert("Could not determine your location. Using default location.");
-      initializeRouting(8.485770096071064, 124.65670230146497);
-    }
-  );
+          console.log("User Location:", userLat, userLng);
+          map.setView([userLat, userLng], 18);
+          initializeRouting(userLat, userLng);
+        },
+        (error) => {
+          console.error("Geolocation error:", error.message);
+          alert("Could not determine your location. Using default location.");
+          initializeRouting(8.485770096071064, 124.65670230146497);
+        }
+      );
 
-    function initializeRouting(userLat, userLng) {
-      L.Routing.control({
-        waypoints: [
-          L.latLng(userLat, userLng), // User's current position
-          L.latLng(8.485770096071064, 124.65655957348645), // Destination
-        ]
+      function initializeRouting(userLat, userLng) {
+        L.Routing.control({
+          waypoints: [
+            L.latLng(userLat, userLng), // User's current position
+            L.latLng(8.485770096071064, 124.65655957348645), // Destination
+          ],
         }).addTo(map);
       }
     </script>

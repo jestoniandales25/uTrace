@@ -9,6 +9,7 @@ import {
   FlatList,
   Image,
   Keyboard,
+  Alert,
 } from "react-native";
 import { WebView } from "react-native-webview";
 import styles from "../styles/InteractiveMapStyles";
@@ -21,8 +22,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { addDoc, collection } from "firebase/firestore";
 import { auth, db } from "../.firebase/firebaseConfig";
-import { useAssets } from "expo-asset";
-import * as FileSystem from "expo-file-system";
+import * as Location from "expo-location";
 
 export default function InteractiveMap({ navigation }) {
   const { width, height } = Dimensions.get("window");
@@ -42,6 +42,8 @@ export default function InteractiveMap({ navigation }) {
   const [isUserPopupVisible, setUserPopupVisible] = useState(false);
 
   // WEBVIEW =================================================================================
+  const webViewRef = useRef(null);
+  const [permissionGranted, setPermissionGranted] = useState(false);
 
   // BOTTOM SHEET ============================================================================
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -203,10 +205,7 @@ export default function InteractiveMap({ navigation }) {
 
   // WEBVIEW FUNCTIONALITY ===================================================================
   // LOG DATA LOCATION TEST, will be removed after debugging
-  const handleWebViewMessage = (event: any) => {
-    const data = JSON.parse(event.nativeEvent.data);
-    console.log(`Latitude: ${data.lat}, Longitude: ${data.lng}`);
-  };
+  const handleWebViewMessage = (event: any) => {};
   // ============================================================
 
   const handleWebViewClick = () => {
@@ -225,6 +224,7 @@ export default function InteractiveMap({ navigation }) {
   return (
     <GestureHandlerRootView style={styles.container}>
       <WebView
+        ref={webViewRef}
         originWhitelist={["*"]}
         source={require("../assets/index.html")}
         allowFileAccess={true}
@@ -233,8 +233,10 @@ export default function InteractiveMap({ navigation }) {
         onMessage={handleWebViewMessage}
         style={styles.map}
         debuggingEnabled={true}
+        geolocationEnabled={true}
         onTouchStart={handleWebViewClick}
         nativeConfig={{ props: { webContentsDebuggingEnabled: true } }}
+        startInLoadingState={true}
       />
       <View style={styles.topContainer}>
         <Animated.View
