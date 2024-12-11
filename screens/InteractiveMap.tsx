@@ -106,6 +106,7 @@ export default function InteractiveMap({ navigation }) {
         name: building.building_name,
         image: building.building_image,
         description: building.building_description,
+        coordinates: building.coordinates,
       }));
 
     const filteredRooms = data.buildings.flatMap((building) =>
@@ -125,6 +126,7 @@ export default function InteractiveMap({ navigation }) {
             )} floor`,
             image: building.building_image,
             room_type: room.room_type,
+            coordinates: building.coordinates,
           }))
       )
     );
@@ -223,18 +225,39 @@ export default function InteractiveMap({ navigation }) {
     bottomSheetRef.current.close();
   };
 
-  const sendNavigationData = () => {
-    const navigationData = {
-      start: { lat: 8.485666, lng: 124.656505 },
-      end: { lat: 8.486551, lng: 124.655820 },
+
+  const [startCoordinates, setStartCoordinates] = useState({ lat: 0, lng: 0 });
+
+  useEffect(() => {
+    const getLocation = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync(); 
+      if (status !== 'granted') {
+        console.log('Permission to access location was denied');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setStartCoordinates({
+        lat: location.coords.latitude,
+        lng: location.coords.longitude,
+      });
     };
 
-    console.log("Sending data to WebView:", navigationData);
+    getLocation();
+  }, []);
 
-    if (webViewRef.current) {
+  // Function to send navigation data to WebView
+  const sendNavigationData = () => {
+    if (webViewRef.current && startCoordinates.lat && startCoordinates.lng && selectedItem?.coordinates) {
+      const navigationData = {
+        start: startCoordinates,
+        end: selectedItem.coordinates, // Assuming selectedItem holds the destination's coordinates
+      };
+
       webViewRef.current.postMessage(JSON.stringify(navigationData));
+      console.log("Sending data to WebView:", navigationData);
     } else {
-      Alert.alert("Error", "WebView not loaded yet!");
+      console.error("Missing start or end coordinates");
     }
   };
   
@@ -255,7 +278,7 @@ export default function InteractiveMap({ navigation }) {
         nativeConfig={{ props: { webContentsDebuggingEnabled: true } }}
         startInLoadingState={true}
       />
-      <Button title="Start Navigation" onPress={sendNavigationData} />
+      <Button title="Start Navigation" />
       <View style={styles.topContainer}>
         <Animated.View
           style={[styles.searchContainer, { width: searchContainerWidthAnim }]}
@@ -307,6 +330,7 @@ export default function InteractiveMap({ navigation }) {
                       key: item.key,
                       image: item.image,
                       description: item.description,
+                      coordinates: item.coordinates || { lat: 0, lng: 0 },
                     });
                   } else {
                     setSelectedItem({
@@ -322,6 +346,7 @@ export default function InteractiveMap({ navigation }) {
                       name: item.name,
                       location: item.location,
                       room_type: item.room_type,
+                      coordinates: item.coordinates,
                     });
                   }
                 }}
@@ -429,7 +454,7 @@ export default function InteractiveMap({ navigation }) {
               </Text>
             )
           )}
-          <Pressable><Text>Favorite</Text></Pressable>
+          <TouchableOpacity onPress={sendNavigationData}><Text>Navigate</Text></TouchableOpacity>
         </BottomSheetView>
       </BottomSheet>
     </GestureHandlerRootView>
