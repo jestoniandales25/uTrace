@@ -23,6 +23,7 @@
       "building_key": "03",
       "building_name": "College of Medicine / Integrated Technology Building (ITB)",
       "building_description": "College of Medicine is currently under renovation. Located on the easternmost side of the campus.",
+      "coordinates": { "lat": 8.48602294921875, "lng": 124.658203125 },
       "building_image": "03_CollegeOfMedicine(2).jpg",
       "floors": [
         {
