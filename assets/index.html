@@ -275,18 +275,43 @@
         (error) => {
           console.error("Geolocation error:", error.message);
           alert("Could not determine your location. Using default location.");
-          initializeRouting(8.485770096071064, 124.65670230146497);
+          initializeRouting(8.484918809495866, 124.65655957348645);
         }
       );
 
       function initializeRouting(userLat, userLng) {
         L.Routing.control({
           waypoints: [
-            L.latLng(userLat, userLng), // User's current position
-            L.latLng(8.485770096071064, 124.65655957348645), // Destination
+            L.latLng(userLat, userLng), 
+            L.latLng(8.485770096071064, 124.65655957348645), 
           ],
+          router: L.Routing.osrmv1({
+            serviceUrl: 'https://router.project-osrm.org/route/v1',
+            profile: 'foot',
+          }),
+          routeWhileDragging: true,
+          showAlternatives: false,
+          fitSelectedRoutes: true, 
         }).addTo(map);
       }
+      // Listen for messages from React Native
+      document.addEventListener("message", function (event) {
+        try {
+          const data = JSON.parse(event.data);
+          console.log("Data received in WebView:", data);
+
+          if (data.start && data.end) {
+            initializeRouting(data.start, data.end);
+          } else {
+            console.error("Invalid data structure:", data);
+          }
+        } catch (e) {
+          console.error("Failed to parse message:", e);
+        }
+      });
+
+      // Post a message back to React Native to confirm the WebView is ready
+      window.ReactNativeWebView.postMessage(JSON.stringify({ ready: true }));
     </script>
   </body>
 </html>

@@ -10,6 +10,8 @@ import {
   Image,
   Keyboard,
   Pressable,
+  Button,
+  Alert,
 } from "react-native";
 import { WebView } from "react-native-webview";
 import styles from "../styles/InteractiveMapStyles";
@@ -104,6 +106,7 @@ export default function InteractiveMap({ navigation }) {
         name: building.building_name,
         image: building.building_image,
         description: building.building_description,
+        coordinates: building.coordinates,
       }));
 
     const filteredRooms = data.buildings.flatMap((building) =>
@@ -221,6 +224,54 @@ export default function InteractiveMap({ navigation }) {
     bottomSheetRef.current.close();
   };
 
+  // Assuming your search and WebView components are already in place
+
+  const handleItemSelect = (item) => {
+    // Ensure the selected item has valid coordinates
+    if (item.coordinates) {
+      // Prepare the navigation data
+      const navigationData = {
+        start: { lat: 8.485666, lng: 124.656505 }, // Your predefined starting point
+        end: item.coordinates,
+      };
+
+      console.log("Sending navigation data:", navigationData);
+
+      // Send the navigation data to the WebView
+      if (webViewRef.current) {
+        webViewRef.current.postMessage(JSON.stringify(navigationData));
+      } else {
+        Alert.alert("Error", "WebView not loaded yet!");
+      }
+    } else {
+      Alert.alert("Error", "Selected item does not have valid coordinates.");
+      console.error("Selected item does not have valid coordinates.");
+    }
+  };
+
+  
+  
+
+  const sendNavigationData = (destination) => {
+    const startingPoint = { lat: 8.485666, lng: 124.656505 }; // Example starting point
+  
+    const navigationData = {
+      start: startingPoint,
+      end: destination, // Use the destination passed from handleItemSelect
+    };
+  
+    console.log("Sending navigation data:", navigationData);
+  
+    if (webViewRef.current) {
+      webViewRef.current.postMessage(JSON.stringify(navigationData));
+    } else {
+      Alert.alert("Error", "WebView not loaded yet!");
+    }
+  };
+  
+  
+  
+  
   return (
     <GestureHandlerRootView style={styles.container}>
       <WebView
@@ -238,6 +289,7 @@ export default function InteractiveMap({ navigation }) {
         nativeConfig={{ props: { webContentsDebuggingEnabled: true } }}
         startInLoadingState={true}
       />
+      <Button title="Start Navigation" onPress={sendNavigationData} />
       <View style={styles.topContainer}>
         <Animated.View
           style={[styles.searchContainer, { width: searchContainerWidthAnim }]}
@@ -411,7 +463,7 @@ export default function InteractiveMap({ navigation }) {
               </Text>
             )
           )}
-          <Pressable><Text>Favorite</Text></Pressable>
+          <Pressable onPress={handleItemSelect}><Text>Navigate</Text></Pressable>
         </BottomSheetView>
       </BottomSheet>
     </GestureHandlerRootView>

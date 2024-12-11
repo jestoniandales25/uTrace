@@ -4,6 +4,7 @@
       "building_key": "01",
       "building_name": "Arts and Culture",
       "building_description": "The Arts and Culture building is located on the easternmost side of the campus.",
+      "coordinates": { "lat": 8.486217498779297, "lng": 124.65845108032227 },
       "building_image": "01_ArtsAndCulture(1).jpg",
       "floors": [
         {
@@ -636,6 +637,7 @@
       "building_name": "Guard House / Gate",
       "building_description": "The Guard House, of course, is located right in front of the campus. The only entrance to enter the premises.",
       "building_image": "21_GuardHouse(1).jpg",
+
       "floors": [
         {
           "floor_number": 1,
