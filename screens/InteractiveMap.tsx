@@ -10,6 +10,7 @@ import {
   Image,
   Keyboard,
   Pressable,
+  Alert,
 } from "react-native";
 import { WebView } from "react-native-webview";
 import styles from "../styles/InteractiveMapStyles";
@@ -22,7 +23,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { addDoc, collection } from "firebase/firestore";
 import { auth, db } from "../.firebase/firebaseConfig";
-import * as Location from "expo-location";
+import * as Location from 'expo-location';
 
 export default function InteractiveMap({ navigation }) {
   const { width, height } = Dimensions.get("window");
@@ -43,11 +44,10 @@ export default function InteractiveMap({ navigation }) {
 
   // WEBVIEW =================================================================================
   const webViewRef = useRef(null);
-  const [permissionGranted, setPermissionGranted] = useState(false);
 
   // BOTTOM SHEET ============================================================================
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ["1%", "25%", "50%"], []);
+  const snapPoints = useMemo(() => ["25%", "50%"], []);
 
   // CAMPUS BUILDINGS AND ROOMS DATA =========================================================
   const data = require("../assets/data/campus_buildings.json");
@@ -204,17 +204,48 @@ export default function InteractiveMap({ navigation }) {
   };
 
   // WEBVIEW FUNCTIONALITY ===================================================================
-  // LOG DATA LOCATION TEST, will be removed after debugging
-  const handleWebViewMessage = (event: any) => {};
-  // ============================================================
+
+  const handleWebViewMessage = (event: any) => {
+    const data = JSON.parse(event.nativeEvent.data);
+    if (data.type === "building") {
+      setSelectedItem(data);
+      openBottomSheet(); // Open the bottom sheet
+      setSearchText("");
+    } else if (data.lat && data.lng) {
+      console.log(`Latitude: ${data.lat}, Longitude: ${data.lng}`);
+    }
+  };
 
   const handleWebViewClick = () => {
     Keyboard.dismiss();
   };
 
+  // MIRACLE CODE - MAKES THE WEBVIEW DETECT THE LOCATION PERMISSION FOR SOME REASON
+
+  const [location, setLocation] = useState<Location.LocationObject | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function getCurrentLocation() {
+      
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+    }
+
+    getCurrentLocation();
+  }, []);
+
+  // MIRACLE CODE - MAKES THE WEBVIEW DETECT THE LOCATION PERMISSION FOR SOME REASON
+
   // BOTTOM SHEET FUNCTIONALITY ==============================================================
   const openBottomSheet = () => {
-    bottomSheetRef.current.snapToIndex(1);
+    bottomSheetRef.current.snapToIndex(0);
   };
 
   const closeBottomSheet = () => {
@@ -237,6 +268,11 @@ export default function InteractiveMap({ navigation }) {
         onTouchStart={handleWebViewClick}
         nativeConfig={{ props: { webContentsDebuggingEnabled: true } }}
         startInLoadingState={true}
+        onLoadEnd={() => {
+          if (webViewRef.current) {
+            webViewRef.current.postMessage(JSON.stringify(data));
+          }
+        }}
       />
       <View style={styles.topContainer}>
         <Animated.View
@@ -411,7 +447,6 @@ export default function InteractiveMap({ navigation }) {
               </Text>
             )
           )}
-          <Pressable><Text>Favorite</Text></Pressable>
         </BottomSheetView>
       </BottomSheet>
     </GestureHandlerRootView>
