@@ -347,6 +347,54 @@
           });
         });
       });
+
+      // Add user marker (Point A)
+      const userLocation = [8.4559331, 124.630568]; // Replace with dynamic Point A if needed
+      const userMarker = L.marker(userLocation)
+        .addTo(map)
+        .bindPopup("You are here");
+
+      // Initialize a global routing control
+      let routingControl = null;
+
+      // Function to handle navigation to Point B
+      function navigateToPointB(buildingLat, buildingLng) {
+        // Remove existing routing control if it exists
+        if (routingControl) {
+          map.removeControl(routingControl);
+        }
+
+        // Add a new routing control
+        routingControl = L.Routing.control({
+          waypoints: [
+            L.latLng(userLocation[0], userLocation[1]), // Point A: User Location
+            L.latLng(buildingLat, buildingLng), // Point B: Destination
+          ],
+          router: L.Routing.osrmv1({
+            serviceUrl: "https://router.project-osrm.org/route/v1",
+            profile: "foot",
+          }),
+          routeWhileDragging: true,
+          fitSelectedRoutes: true,
+        }).addTo(map);
+      }
+
+      // Listen for messages from React Native
+      document.addEventListener("message", function (event) {
+        try {
+          const data = JSON.parse(event.data);
+          console.log("Received navigation data:", data);
+
+          if (data.start && data.end) {
+            const { start, end } = data;
+            navigateToPointB(end.lat, end.lng); // Update Point B dynamically
+          } else {
+            console.error("Invalid data format for navigation:", data);
+          }
+        } catch (error) {
+          console.error("Error parsing message:", error);
+        }
+      });
     </script>
   </body>
 </html>

@@ -9,8 +9,6 @@ import {
   FlatList,
   Image,
   Keyboard,
-  Pressable,
-  Alert,
 } from "react-native";
 import { WebView } from "react-native-webview";
 import styles from "../styles/InteractiveMapStyles";
@@ -104,6 +102,7 @@ export default function InteractiveMap({ navigation }) {
         name: building.building_name,
         image: building.building_image,
         description: building.building_description,
+        coordinates: building.coordinates,
       }));
 
     const filteredRooms = data.buildings.flatMap((building) =>
@@ -123,6 +122,7 @@ export default function InteractiveMap({ navigation }) {
             )} floor`,
             image: building.building_image,
             room_type: room.room_type,
+            coordinates: building.coordinates,
           }))
       )
     );
@@ -252,6 +252,42 @@ export default function InteractiveMap({ navigation }) {
     bottomSheetRef.current.close();
   };
 
+
+  const [startCoordinates, setStartCoordinates] = useState({ lat: 0, lng: 0 });
+
+  useEffect(() => {
+    const getLocation = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync(); 
+      if (status !== 'granted') {
+        console.log('Permission to access location was denied');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setStartCoordinates({
+        lat: location.coords.latitude,
+        lng: location.coords.longitude,
+      });
+    };
+
+    getLocation();
+  }, []);
+
+  // Function to send navigation data to WebView
+  const sendNavigationData = () => {
+    if (webViewRef.current && startCoordinates.lat && startCoordinates.lng && selectedItem?.coordinates) {
+      const navigationData = {
+        start: startCoordinates,
+        end: selectedItem.coordinates, // Assuming selectedItem holds the destination's coordinates
+      };
+
+      webViewRef.current.postMessage(JSON.stringify(navigationData));
+      console.log("Sending data to WebView:", navigationData);
+    } else {
+      console.error("Missing start or end coordinates");
+    }
+  };
+  
   return (
     <GestureHandlerRootView style={styles.container}>
       <WebView
@@ -325,6 +361,7 @@ export default function InteractiveMap({ navigation }) {
                       key: item.key,
                       image: item.image,
                       description: item.description,
+                      coordinates: item.coordinates || { lat: 0, lng: 0 },
                     });
                   } else {
                     setSelectedItem({
@@ -340,6 +377,7 @@ export default function InteractiveMap({ navigation }) {
                       name: item.name,
                       location: item.location,
                       room_type: item.room_type,
+                      coordinates: item.coordinates,
                     });
                   }
                 }}
