@@ -5,6 +5,12 @@
       "building_name": "Arts and Culture",
       "building_description": "The Arts and Culture building is located on the easternmost side of the campus.",
       "building_image": "01_ArtsAndCulture(1).jpg",
+      "coordinates": [
+        [8.486259460449219, 124.65847396850586],
+        [8.486255645751953, 124.65842819213867],
+        [8.486156463623047, 124.65840911865234],
+        [8.486166000366211, 124.65848731994629]
+      ],
       "floors": [
         {
           "floor_number": 1,
@@ -23,6 +29,14 @@
       "building_name": "College of Medicine / Integrated Technology Building (ITB)",
       "building_description": "College of Medicine is currently under renovation. Located on the easternmost side of the campus.",
       "building_image": "03_CollegeOfMedicine(2).jpg",
+      "coordinates": [
+        [8.486239433288574, 124.65798330307007],
+        [8.486248016357422, 124.65812492370605],
+        [8.486075401306152, 124.65814161300659],
+        [8.486102104187012, 124.6584677696228],
+        [8.48597240447998, 124.65847539901733],
+        [8.48592758178711, 124.65800857543945]
+      ],
       "floors": [
         {
           "floor_number": 1,
@@ -56,6 +70,12 @@
       "building_name": "Buildings and Ground Maintenance Unit",
       "building_description": "This building contains 2 rooms, and is beside old engineering building.",
       "building_image": "04_BuildingsAndGroundMaintenanceUnit(1).jpg",
+      "coordinates": [
+        [8.485875522717834, 124.65799324493855],
+        [8.485862171277404, 124.65793411713094],
+        [8.485688602551818, 124.65795891266316],
+        [8.485694324597716, 124.65801613312215]
+      ],
       "floors": [
         {
           "floor_number": 1,
@@ -79,6 +99,12 @@
       "building_name": "Old College of Engineering and Architecture Building",
       "building_description": "The Old Engineering Building is a one-story building, near ICT Building.",
       "building_image": "05_OldEngineeringBuilding(2).jpg",
+      "coordinates": [
+        [8.485859814099967, 124.65788773912936],
+        [8.485748291015625, 124.65719318389893],
+        [8.485589981079102, 124.65721321105957],
+        [8.485701560974121, 124.65790779609233]
+      ],
       "floors": [
         {
           "floor_number": 1,
@@ -142,6 +168,14 @@
       "building_name": "Information Communication Technology Building (CITC)",
       "building_description": "ICT building is the home for College of Information Technology and Computing. Located behind Administration Building.",
       "building_image": "09_ICTBuilding(1).jpg",
+      "coordinates": [
+        [8.48637866973877, 124.6571483798325],
+        [8.48624038696289, 124.65742683410645],
+        [8.486021041870117, 124.65757751464844],
+        [8.48590087890625, 124.65751075744629],
+        [8.486143112182617, 124.65732192993164],
+        [8.486257553100586, 124.65707778930664]
+      ],
       "floors": [
         {
           "floor_number": 1,
@@ -330,6 +364,12 @@
       "building_name": "Administration Building",
       "building_description": "The Administration building contains offices of the USTP management. Located beside the gymnasium on the right side.",
       "building_image": "10_AdministrationBuilding(1).jpg",
+      "coordinates": [
+        [8.486062987707555, 124.65717047546059],
+        [8.485961898230016, 124.65734785888344],
+        [8.48587606754154, 124.65730398986489],
+        [8.485965712927282, 124.6571189770475]
+      ],
       "floors": [
         {
           "floor_number": 1,
@@ -398,6 +438,14 @@
       "building_name": "Finance and Accounting Building / Senior High Building (SHS)",
       "building_description": "This building is located and connected with the gym lobby.",
       "building_image": "14_FinanceAndAccounting(1).jpg",
+      "coordinates": [
+        [8.486408233642578, 124.65685192681849],
+        [8.486135482788086, 124.65696144104004],
+        [8.486083984375, 124.65684700012207],
+        [8.486230850219727, 124.65678151603788],
+        [8.486190795898438, 124.65666326042265],
+        [8.486207962036133, 124.65647634025663]
+      ],
       "floors": [
         {
           "floor_number": 1,
@@ -491,6 +539,12 @@
       "building_name": "Gymnasium Lobby / Human Resource Management Building",
       "building_description": "On top of the gym lobby is the Human Resources Management Building.",
       "building_image": "15_GymnasiumLobby(1).jpg",
+      "coordinates": [
+        [8.486166954040527, 124.6566104888916],
+        [8.486138343811035, 124.6563892364502],
+        [8.485967636108398, 124.65645599365234],
+        [8.486045837402344, 124.65665626525879]
+      ],
       "floors": [
         {
           "floor_number": 2,
@@ -524,6 +578,12 @@
       "building_name": "DRER Memorial Hall (Gymnasium)",
       "building_description": "Dr. Ricardo E. Rotoras Memorial Hall is a multi-purpose gymnasium for most academic and non-academic events involving large crowds. It is the landmark of USTP, you cannot miss it!",
       "building_image": "16_DRERMemorialHall.jpg",
+      "coordinates": [
+        [8.48593797069043, 124.65639376081526],
+        [8.486093419604003, 124.65679525770247],
+        [8.485577481798828, 124.65698980726302],
+        [8.485420227050781, 124.65659809112549]
+      ],
       "floors": [
         {
           "floor_number": 1,
@@ -562,6 +622,12 @@
       "building_name": "Culinary Building",
       "building_description": "The Culinary Building is located in front of the Cafeteria.",
       "building_image": "18_CulinaryBuilding.jpg",
+      "coordinates": [
+        [8.485223662108183, 124.65721747186035],
+        [8.48520840331912, 124.65710112359375],
+        [8.485456358641386, 124.65708014275879],
+        [8.485473524779081, 124.65720030572265]
+      ],
       "floors": [
         {
           "floor_number": 1,
@@ -590,6 +656,12 @@
       "building_name": "ROTC Building",
       "building_description": "The ROTC Building is located near Culinary building and Engineering Complex.",
       "building_image": "19_ROTCBuilding(1).jpg",
+      "coordinates": [
+        [8.485174179077148, 124.65714073181152],
+        [8.485189437866211, 124.65722846984863],
+        [8.484987258911133, 124.65724563598633],
+        [8.484956741333008, 124.65715789794922]
+      ],
       "floors": [
         {
           "floor_number": 1,
@@ -618,6 +690,12 @@
       "building_name": "Cafeteria Building",
       "building_description": "The Cafeteria is located right after the entrance at the gate.",
       "building_image": "20_CafeteriaBuilding(1).jpg",
+      "coordinates": [
+        [8.485369682312012, 124.6567735671997],
+        [8.485308647155762, 124.65663242340088],
+        [8.484928131103516, 124.65676879882812],
+        [8.48499870300293, 124.65692138671875]
+      ],
       "floors": [
         {
           "floor_number": 1,
@@ -636,6 +714,12 @@
       "building_name": "Guard House / Gate",
       "building_description": "The Guard House, of course, is located right in front of the campus. The only entrance to enter the premises.",
       "building_image": "21_GuardHouse(1).jpg",
+      "coordinates": [
+        [8.48495412338525, 124.6565088108182],
+        [8.48496747482568, 124.65662134438753],
+        [8.484868292696774, 124.65662325173616],
+        [8.484868292696774, 124.65650499612093]
+      ],
       "floors": [
         {
           "floor_number": 1,
@@ -654,6 +738,12 @@
       "building_name": "Learning Resource Center (LRC)",
       "building_description": "The Learning Resource Center is located at the back of the Food Innovation Building.",
       "building_image": "23_LearningResourceCenter(1).jpg",
+      "coordinates": [
+        [8.486597061157227, 124.65558433532715],
+        [8.48674201965332, 124.6559829711914],
+        [8.486532211303711, 124.65605735778809],
+        [8.486394882202148, 124.65566825866699]
+      ],
       "floors": [
         {
           "floor_number": 1,
@@ -807,6 +897,12 @@
       "building_name": "Girls Trade / Food Trade Building",
       "building_description": "Food Trade Building is located at the westernmost side of the campus, near medical building and food innovation building.",
       "building_image": "24_FoodTradeBuilding(1).jpg",
+      "coordinates": [
+        [8.486620903015137, 124.65539169311523],
+        [8.486550331115723, 124.65521812438965],
+        [8.486030578613281, 124.65542984008789],
+        [8.486101150512695, 124.65561103820801]
+      ],
       "floors": [
         {
           "floor_number": 1,
@@ -855,6 +951,12 @@
       "building_name": "Food Innovation Center",
       "building_description": "Food Innovation Center is located near the flagpole and can be seen from the guard house.",
       "building_image": "25_FoodInnovationCenter(2).jpg",
+      "coordinates": [
+        [8.486136436462402, 124.65578095149249],
+        [8.486227035522461, 124.65606498718262],
+        [8.486343383789062, 124.65601921081543],
+        [8.486242294311523, 124.65575981140137]
+      ],
       "floors": [
         {
           "floor_number": 1,
@@ -893,6 +995,12 @@
       "building_name": "Old Science Building",
       "building_description": "Old Science Building is located in front of flagpole.",
       "building_image": "28_OldScienceBuilding(1).jpg",
+      "coordinates": [
+        [8.485838890075684, 124.65556144714355],
+        [8.485719680786133, 124.65560913085938],
+        [8.48597526550293, 124.65622329711914],
+        [8.486088752746582, 124.65618467330933]
+      ],
       "floors": [
         {
           "floor_number": 1,
@@ -966,6 +1074,12 @@
       "building_name": "Makeshift Fabrication Laboratory",
       "building_description": "This building is located on the westernmost part of the campus.",
       "building_image": "36_MakeshiftFabricationLaboratory(1).jpg",
+      "coordinates": [
+        [8.486289024353027, 124.65523719787598],
+        [8.486193656921387, 124.65500450134277],
+        [8.48586654663086, 124.6551456451416],
+        [8.485963821411133, 124.65536308288574]
+      ],
       "floors": [
         {
           "floor_number": 1,
@@ -984,6 +1098,12 @@
       "building_name": "Science Complex Building (CSM)",
       "building_description": "Science Complex is located besides the gymnasium.",
       "building_image": "41_ScienceComplexBuilding(1).jpg",
+      "coordinates": [
+        [8.48578929901123, 124.65628208592534],
+        [8.485572814941406, 124.65575408935547],
+        [8.485452651977539, 124.65584564208984],
+        [8.48564624786377, 124.65634202957153]
+      ],
       "floors": [
         {
           "floor_number": 1,
@@ -1192,6 +1312,12 @@
       "building_name": "Engineering Complex A (CEA)",
       "building_description": "Engineering Complex A is the huge building that can be seen outside the campus. It is located on the right wing.",
       "building_image": "42_EngineeringComplexA(1).jpg",
+      "coordinates": [
+        [8.484915270470083, 124.65667770244181],
+        [8.484919085167348, 124.65692375041544],
+        [8.484768404625356, 124.65688941814005],
+        [8.484779848717153, 124.65665099956095]
+      ],
       "floors": [
         {
           "floor_number": 1,
@@ -1335,6 +1461,12 @@
       "building_name": "Engineering Complex B (CEA)",
       "building_description": "Engineering Complex B is the wing extension and can be located right after entering the gate on the right side.",
       "building_image": "43_EngineeringComplexB(1).jpg",
+      "coordinates": [
+        [8.484870910644531, 124.65725517272949],
+        [8.484622955322266, 124.65727806091309],
+        [8.48471450805664, 124.65688705444336],
+        [8.484919085167348, 124.65692375041544]
+      ],
       "floors": [
         {
           "floor_number": 1,
@@ -1498,6 +1630,12 @@
       "building_name": "Supply Building",
       "building_description": "Supply building is located on the easternmost part of the campus, behind child minding building.",
       "building_image": "45_SupplyBuilding.jpg",
+      "coordinates": [
+        [8.485934351570904, 124.65839299373329],
+        [8.485961054451764, 124.65859517268836],
+        [8.485900019295514, 124.6586028020829],
+        [8.48587713111192, 124.65838917903602]
+      ],
       "floors": [
         {
           "floor_number": 1,
@@ -1516,6 +1654,12 @@
       "building_name": "College of Technology Building (COT)",
       "building_description": "College of Technology is located on the northernmost part of the campus.",
       "building_image": "47_CollegeOfTechnologyBuilding(1).jpg",
+      "coordinates": [
+        [8.486839294433594, 124.65511798858643],
+        [8.487014770507812, 124.65553283691406],
+        [8.486804962158203, 124.65561103820801],
+        [8.486656188964844, 124.65518760681152]
+      ],
       "floors": [
         {
           "floor_number": 1,
@@ -1639,6 +1783,12 @@
       "building_name": "Engineering Design Fabrication Laboratory",
       "building_description": "College of Technology is located on the northernmost part of the campus.",
       "building_image": "48_EngineeringDesignFabricationLaboratory(1).jpg",
+      "coordinates": [
+        [8.486640930175781, 124.6550235748291],
+        [8.486560821533203, 124.65481185913086],
+        [8.486257553100586, 124.65493583679199],
+        [8.486331939697266, 124.6551342010498]
+      ],
       "floors": [
         {
           "floor_number": 1,
@@ -1682,6 +1832,12 @@
       "building_name": "Child Minding Building",
       "building_description": "Child Minding Building is located at the back of the College of Medicine Building.",
       "building_image": "06_ChildMindingBuilding(1).jpg",
+      "coordinates": [
+        [8.48592758178711, 124.65827894210815],
+        [8.485929489135742, 124.65835905075073],
+        [8.485876083374023, 124.65837240219116],
+        [8.48587417602539, 124.65826177597046]
+      ],
       "floors": [
         {
           "floor_number": 1,
@@ -1699,7 +1855,13 @@
       "building_key": "2",
       "building_name": "Modular Classroom / Moving Classroom",
       "building_description": "Modular Classrooms are located near Food Innovation.",
-      "building_image": "2_ModularClassroom(1).jpg",
+      "building_image": "02_ModularClassroom(1).jpg",
+      "coordinates": [
+        [8.486408233642578, 124.65629005432129],
+        [8.486454010009766, 124.65639877319336],
+        [8.486377716064453, 124.65645790100098],
+        [8.486331939697266, 124.65632629394531]
+      ],
       "floors": [
         {
           "floor_number": 1,
@@ -1717,7 +1879,13 @@
       "building_key": "2",
       "building_name": "Modular Classroom  / Moving Classroom",
       "building_description": "Modular Classrooms are located near Food Innovation.",
-      "building_image": "2_ModularClassroom(1).jpg",
+      "building_image": "02_ModularClassroom(1).jpg",
+      "coordinates": [
+        [8.486472606658936, 124.65645130630583],
+        [8.486522197723389, 124.65657909866422],
+        [8.486457347869873, 124.65661724563688],
+        [8.486402034759521, 124.65648563858122]
+      ],
       "floors": [
         {
           "floor_number": 1,
