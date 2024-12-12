@@ -18,10 +18,10 @@
     ></script>
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.82.0/dist/L.Control.Locate.min.css"
+      href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@latest/dist/L.Control.Locate.min.css"
     />
     <script
-      src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.82.0/dist/L.Control.Locate.min.js"
+      src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@latest/dist/L.Control.Locate.min.js"
       charset="utf-8"
     ></script>
     <link
@@ -56,6 +56,7 @@
         color: #151515;
         font-size: 12px;
       }
+
       /* ================================================ */
     </style>
   </head>
@@ -252,41 +253,100 @@
       map.on("zoomend", updateLabelsVisibility);
       updateLabelsVisibility();
 
+      const campusBoundary = L.polygon([
+        [8.484518051147461, 124.65730285644531],
+        [8.485470294952393, 124.65721035003662],
+        [8.485488414764404, 124.65776062011719],
+        [8.48555040359497, 124.65804919600487],
+        [8.485870838165283, 124.65800532698631],
+        [8.485860347747803, 124.65826893318444],
+        [8.485883235931396, 124.65861225593835],
+        [8.486255645751953, 124.65863990783691],
+        [8.486321449279785, 124.65794086456299],
+        [8.486542701721191, 124.65701921004802],
+        [8.486573219299316, 124.65693528670818],
+        [8.487167358398438, 124.65684509277344],
+        [8.487598252482712, 124.65655096713454],
+        [8.487491440959275, 124.65642985049635],
+        [8.487317872233689, 124.6563859814778],
+        [8.487411332316697, 124.65618952456862],
+        [8.48779010772705, 124.65632820129395],
+        [8.487876892089844, 124.65597152709961],
+        [8.487266540527344, 124.65587043762207],
+        [8.487093925476074, 124.65617609024048],
+        [8.486834526062012, 124.65603256225586],
+        [8.486940383911133, 124.65560340881348],
+        [8.487113952636719, 124.6555643081665],
+        [8.48686695098877, 124.65491247177124],
+        [8.48653793334961, 124.65468502044678],
+        [8.485764503479004, 124.65506935119629],
+        [8.485007992014289, 124.65551853179932],
+        [8.484765758737922, 124.65649604797363],
+      ]);
+      campusBoundary.addTo(map);
+
+      const defaultLocation = [8.484945297241211, 124.65657806396484];
+
       L.control
         .locate({
-          setView: true,
-          watch: true,
           flyTo: true,
           enableHighAccuracy: true,
           showPopup: false,
           position: "bottomleft",
+          drawCircle: false,
+          markerStyle: {
+            fillColor: "#FDB218",
+          },
+          followCompassStyle: {
+            fillColor: "#FDB218",
+          },
         })
         .addTo(map);
 
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const userLat = position.coords.latitude;
-          const userLng = position.coords.longitude;
+      // navigator.geolocation.getCurrentPosition(
+      //   (position) => {
+      //     const userLat = position.coords.latitude;
+      //     const userLng = position.coords.longitude;
 
-          console.log("User Location:", userLat, userLng);
-          map.setView([userLat, userLng], 18);
-          initializeRouting(userLat, userLng);
-        },
-        (error) => {
-          console.error("Geolocation error:", error.message);
-          alert("Could not determine your location. Using default location.");
-          initializeRouting(8.485770096071064, 124.65670230146497);
-        }
-      );
+      //     console.log("User Location:", userLat, userLng);
+      //     map.setView([userLat, userLng], 18);
+      //     initializeRouting(userLat, userLng);
+      //   },
+      //   (error) => {
+      //     console.error("Geolocation error:", error.message);
+      //     alert("Could not determine your location. Using default location.");
+      //     initializeRouting(8.485770096071064, 124.65670230146497);
+      //   }
+      // );
 
-      function initializeRouting(userLat, userLng) {
-        L.Routing.control({
-          waypoints: [
-            L.latLng(userLat, userLng), // User's current position
-            L.latLng(8.485770096071064, 124.65655957348645), // Destination
-          ],
-        }).addTo(map);
-      }
+      // function initializeRouting(userLat, userLng) {
+      //   L.Routing.control({
+      //     waypoints: [
+      //       L.latLng(userLat, userLng), // User's current position
+      //       L.latLng(8.485770096071064, 124.65655957348645), // Destination
+      //     ],
+      //   }).addTo(map);
+      // }
+
+      document.addEventListener("message", function (event) {
+        const data = JSON.parse(event.data);
+        data.buildings.forEach((building) => {
+          const polygon = L.polygon(building.coordinates, {
+            color: "transparent",
+          }).addTo(map);
+
+          polygon.on("click", function () {
+            const buildingData = {
+              type: "building",
+              name: building.building_name,
+              key: building.building_key,
+              description: building.building_description,
+              image: building.building_image,
+            };
+            window.ReactNativeWebView.postMessage(JSON.stringify(buildingData));
+          });
+        });
+      });
     </script>
   </body>
 </html>
