@@ -328,6 +328,10 @@
             L.latLng(userLat, userLng), // User's current position
             L.latLng(8.485770096071064, 124.65655957348645), // Destination
           ],
+          routeWhileDragging: false,
+          createMarker: function (i, waypoint, n) {
+            return L.marker(waypoint.latLng, { draggable: false });
+          }
         }).addTo(map);
       }
 
@@ -377,7 +381,7 @@
             serviceUrl: "https://router.project-osrm.org/route/v1",
             profile: "foot",
           }),
-          routeWhileDragging: true,
+          routeWhileDragging: false,
           fitSelectedRoutes: true,
         }).addTo(map);
       }
