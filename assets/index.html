@@ -306,21 +306,31 @@
         })
         .addTo(map);
 
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const userLat = position.coords.latitude;
-          const userLng = position.coords.longitude;
+        navigator.geolocation.getCurrentPosition(
+  (position) => {
+    const userLat = position.coords.latitude;
+    const userLng = position.coords.longitude;
 
-          console.log("User Location:", userLat, userLng);
-          map.setView([userLat, userLng], 18);
-          initializeRouting(userLat, userLng);
-        },
-        (error) => {
-          console.error("Geolocation error:", error.message);
-          alert("Could not determine your location. Using default location.");
-          initializeRouting(8.484918809495866, 124.65655957348645);
-        }
-      );
+    const mapBounds = L.latLngBounds(bounds); // Convert bounds array to LatLngBounds
+    const userLocation = L.latLng(userLat, userLng);
+
+    if (mapBounds.contains(userLocation)) {
+      console.log("User is within bounds:", userLat, userLng);
+      map.setView(userLocation, 18);
+      initializeRouting(userLat, userLng);
+    } else {
+      console.warn("User is outside bounds. Using default location.");
+      map.setView(defaultLocation, 18);
+      initializeRouting(defaultLocation[0], defaultLocation[1]);
+    }
+  },
+  (error) => {
+    console.error("Geolocation error:", error.message);
+    alert("Could not determine your location. Using default location.");
+    map.setView(defaultLocation, 18);
+    initializeRouting(defaultLocation[0], defaultLocation[1]);
+  }
+);
 
       function initializeRouting(userLat, userLng) {
         L.Routing.control({
