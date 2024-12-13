@@ -67,27 +67,27 @@
       var map = L.map("map", {
         center: [8.485666189342737, 124.65650567039847],
         zoom: 18,
-        minZoom: 14, //17
+        minZoom: 17,
         maxZoom: 19,
         zoomControl: false,
         crs: L.CRS.Simple,
-        //maxBounds: [
-        //  [8.482920572161674, 124.65331426635385], // Bottom-left corner (lat, lng)
-        //  [8.48949408531189, 124.65996752679348], // Top-right corner (lat, lng)
-        //],
+        maxBounds: [
+          [8.482920572161674, 124.65331426635385], // Bottom-left corner (lat, lng)
+          [8.48949408531189, 124.65996752679348], // Top-right corner (lat, lng)
+        ],
       });
 
-      const bounds = [
+      const campusBounds = [
         [8.484328889112989, 124.65466990222923], // Bottom-left corner (lat, lng)
         [8.488068785899669, 124.6586974617094], // Top-right corner (lat, lng)
       ];
 
       const allowedBounds = L.latLngBounds(
         [8.484328889112989, 124.65466990222923], // Bottom-left corner
-        [8.488068785899669, 124.6586974617094]  // Top-right corner
+        [8.488068785899669, 124.6586974617094] // Top-right corner
       );
 
-      L.imageOverlay("./leaflet_map/maps.png", bounds).addTo(map);
+      L.imageOverlay("./leaflet_map/maps.svg", campusBounds).addTo(map);
 
       map.on("click", function (e) {
         const lat = e.latlng.lat;
@@ -105,124 +105,134 @@
 
       const labels = [
         {
-          coords: [8.486217498779297, 124.65845108032227],
-          name: "Arts and Culture",
+          coords: [8.486267044208944, 124.65850348677486],
+          name: "<b>01</b> - Arts and Culture",
           minZoom: 19,
         },
         {
-          coords: [8.48602294921875, 124.658203125],
-          name: "College of Medicine",
-          minZoom: 17,
-        },
-        {
-          coords: [8.485736152157187, 124.65754575282335],
-          name: "<center>Old College of<br> Engineering and<br> Architecture<center/>",
-          minZoom: 17,
-        },
-        {
-          coords: [8.486184849403799, 124.65736460592598],
-          name: "<center>Information Communication<br> Technology Building<center/>",
-          minZoom: 17,
-        },
-        {
-          coords: [8.485967411659658, 124.65722727682441],
-          name: "Administration Building",
+          coords: [8.486083984375, 124.65823364257812],
+          name: "<center><b>03</b> - College of Medicine /<br>Integrated Technology <br> Building (ITB)</center>",
           minZoom: 18,
         },
         {
-          coords: [8.486304983496666, 124.6567681049928],
-          name: "Building 14",
-          minZoom: 18,
-        },
-        {
-          coords: [8.48607908654958, 124.65652301069349],
-          name: "Gymnasium Lobby",
-          minZoom: 17,
-        },
-        {
-          coords: [8.485770096071064, 124.65670230146497],
-          name: "DRER Memorial Hall",
-          minZoom: 17,
-        },
-        {
-          coords: [8.485339194536209, 124.65715148672462],
-          name: "Culinary Building",
-          minZoom: 18,
-        },
-        {
-          coords: [8.48506835103035, 124.65719344839454],
-          name: "Building 19",
+          coords: [8.485857486724854, 124.65800938382745],
+          name: "<center><b>04</b> - Buildings and <br> Ground Maintenance Unit</center>",
           minZoom: 19,
         },
         {
-          coords: [8.485168671235442, 124.65677652601153],
-          name: "Cafeteria Building",
-          minZoom: 17,
-        },
-        {
-          coords: [8.484918809495866, 124.65655957348645],
-          name: "Guard House",
+          coords: [8.485775094479322, 124.6575617082417],
+          name: "<center><b>05</b> - Old College of<br> Engineering and<br> Architecture Building</center>",
           minZoom: 18,
         },
         {
-          coords: [8.48655108641833, 124.65582003444433],
-          name: "Learning Resource Center",
+          coords: [8.486260835081339, 124.65738481655717],
+          name: "<center><b>09</b> - Information Communication<br> Technology Building (CITC)</center>",
           minZoom: 17,
         },
         {
-          coords: [8.486314575187862, 124.65539198275656],
-          name: "Girls Trade",
+          coords: [8.48600959777832, 124.65725040435791],
+          name: "<b>10</b> - Administration Building",
           minZoom: 18,
         },
         {
-          coords: [8.486245976760983, 124.65590948238969],
-          name: "<center>Food Innovation<br> Center<center/>",
-          minZoom: 17,
-        },
-        {
-          coords: [8.485913344658911, 124.65589855052531],
-          name: "Old Science Building",
+          coords: [8.486369320191443, 124.65678215026855],
+          name: "<center><b>14</b> - Finance and Accounting Building / <br> Senior High Building (SHS)</center>",
           minZoom: 18,
         },
         {
-          coords: [8.486458119004965, 124.65496782027185],
-          name: "<center>Makeshift<br> Fabrication Laboratory<center/>",
+          coords: [8.486150741577148, 124.65653610229492],
+          name: "<center><b>15</b> - Gymnasium Lobby / <br> HRM Building</center>",
+          minZoom: 18,
+        },
+        {
+          coords: [8.485830917954445, 124.6566798016429],
+          name: "<center><b>16</b> - DRER Memorial Hall <br> (Gymnasium)</center>",
           minZoom: 17,
         },
         {
-          coords: [8.485623427666724, 124.65606458671391],
-          name: "<center>Science Complex<br> Building<center/>",
+          coords: [8.485389709472656, 124.65717887878418],
+          name: "<b>18</b> - Culinary Building",
+          minZoom: 18,
+        },
+        {
+          coords: [8.485090143978596, 124.65722263604403],
+          name: "<b>19</b> - ROTC Building",
+          minZoom: 19,
+        },
+        {
+          coords: [8.485198974609375, 124.65678405761719],
+          name: "<b>20</b> - Cafeteria Building",
+          minZoom: 17,
+        },
+        {
+          coords: [8.484945297241211, 124.65657043457031],
+          name: "<center><b>21</b> - Guard House / <br> Gate</center>",
+          minZoom: 18,
+        },
+        {
+          coords: [8.486645698547363, 124.65580368041992],
+          name: "<center><b>23</b> - Learning Resource <br> Center (LRC)</center>",
+          minZoom: 17,
+        },
+        {
+          coords: [8.486452102661133, 124.65535736083984],
+          name: "<center><b>24</b> - Girls Trade / <br> Food Trade Building</center>",
+          minZoom: 18,
+        },
+        {
+          coords: [8.486324310302734, 124.65591526031494],
+          name: "<center><b>25</b> - Food Innovation<br> Center</center>",
+          minZoom: 18,
+        },
+        {
+          coords: [8.486008737236261, 124.65590372309089],
+          name: "<b>28</b> - Old Science Building",
+          minZoom: 18,
+        },
+        {
+          coords: [8.486177444458008, 124.65511703491211],
+          name: "<center><b>36</b> - Makeshift<br> Fabrication Laboratory</center>",
+          minZoom: 18,
+        },
+        {
+          coords: [8.485698617994785, 124.65604782104492],
+          name: "<center><b>41</b> - Science Complex<br> Building (CSM)</center>",
           minZoom: 17,
         },
         {
           coords: [8.484849496744573, 124.6567744705826],
-          name: "Engineering Complex A",
+          name: "<center><b>42</b> - Engineering Complex A <br> (CEA)</center>",
           minZoom: 19,
         },
         {
           coords: [8.48478655423969, 124.65708098560572],
-          name: "Engineering Complex B",
+          name: "<center><b>43</b> - Engineering Complex B <br> (CEA)</center>",
           minZoom: 17,
         },
         {
-          coords: [8.486816207878292, 124.6553538357839],
-          name: "<center>College of<br> Technology Building<center/>",
-          minZoom: 18,
-        },
-        {
-          coords: [8.485903210937977, 124.65834086760879],
-          name: "Child Minding Building",
+          coords: [8.48597526550293, 124.65858268737793],
+          name: "<center><b>45</b> - Supply Building</center>",
           minZoom: 19,
         },
         {
-          coords: [8.486390530131757, 124.65637742262334],
-          name: "Modular Classroom 1",
+          coords: [8.486923217773438, 124.65528869628906],
+          name: "<center><b>47</b> - College of Technology <br> Building (COT)</center>",
+          minZoom: 17,
+        },
+        {
+          coords: [8.486541748046875, 124.65492630004883],
+          name: "<center><b>48</b> - Engineering Design <br> Fabrication Laboratory</center>",
           minZoom: 18,
         },
         {
-          coords: [8.486461102031171, 124.65653382521123],
-          name: "Modular Classroom 1",
+          coords: [8.4859624132514, 124.65836276207119],
+          name: "<b>06</b> - Child Minding Building",
           minZoom: 19,
+        },
+        {
+          coords: [8.486515045166016, 124.65641403198242],
+          name: "<center><b>02</b> - Modular Classrooms / <br> Moving Classrooms</center>",
+          minZoom: 18,
         },
       ];
 
@@ -260,34 +270,35 @@
 
       const campusBoundary = L.polygon(
         [
-          [8.484518051147461, 124.65730285644531],
-          [8.485470294952393, 124.65721035003662],
-          [8.485488414764404, 124.65776062011719],
-          [8.48555040359497, 124.65804919600487],
-          [8.485870838165283, 124.65800532698631],
-          [8.485860347747803, 124.65826893318444],
-          [8.485883235931396, 124.65861225593835],
-          [8.486255645751953, 124.65863990783691],
-          [8.486321449279785, 124.65794086456299],
-          [8.486542701721191, 124.65701921004802],
-          [8.486573219299316, 124.65693528670818],
-          [8.487167358398438, 124.65684509277344],
-          [8.487598252482712, 124.65655096713454],
-          [8.487491440959275, 124.65642985049635],
-          [8.487317872233689, 124.6563859814778],
-          [8.487411332316697, 124.65618952456862],
-          [8.48779010772705, 124.65632820129395],
-          [8.487876892089844, 124.65597152709961],
-          [8.487266540527344, 124.65587043762207],
-          [8.487093925476074, 124.65617609024048],
-          [8.486834526062012, 124.65603256225586],
-          [8.486940383911133, 124.65560340881348],
-          [8.487113952636719, 124.6555643081665],
-          [8.48686695098877, 124.65491247177124],
-          [8.48653793334961, 124.65468502044678],
-          [8.485764503479004, 124.65506935119629],
-          [8.485007992014289, 124.65551853179932],
-          [8.484765758737922, 124.65649604797363],
+          [8.484536170959473, 124.65731906890869],
+          [8.485510349273682, 124.65723705291748],
+          [8.485532283782959, 124.65779781341553],
+          [8.485589981079102, 124.6580982208252],
+          [8.485930919647217, 124.65804767608643],
+          [8.48592233657837, 124.6583251953125],
+          [8.48594331741333, 124.65866279602051],
+          [8.486320495605469, 124.6586971282959],
+          [8.486398696899414, 124.65799045562744],
+          [8.48662549443543, 124.65705013275146],
+          [8.487274946644902, 124.6568660736084],
+          [8.48771830368787, 124.65656576771289],
+          [8.487616260536015, 124.65644846577197],
+          [8.487478931434453, 124.65642367023975],
+          [8.487431247718632, 124.65639887470752],
+          [8.487517078407109, 124.65620241779834],
+          [8.48791637364775, 124.65633754525334],
+          [8.48801460210234, 124.65597896371037],
+          [8.487677001394331, 124.65587405953556],
+          [8.487667105160654, 124.65592217165977],
+          [8.48736002203077, 124.65592026431113],
+          [8.487197875976562, 124.65617752075195],
+          [8.486928939819336, 124.65603256225586],
+          [8.487038612365723, 124.65559720993042],
+          [8.487223625183105, 124.65555906295776],
+          [8.486959457397461, 124.65488910675049],
+          [8.486627101898193, 124.65467262268066],
+          [8.485810683108866, 124.65506084170192],
+          [8.48497621808201, 124.65550239291042],
         ],
         { color: "transparent" }
       );
@@ -301,13 +312,13 @@
             L.latLng(userLat, userLng),
             L.latLng(8.485770096071064, 124.65655957348645),
           ],
-        routeWhileDragging: false,
-        createMarker: function (i, waypoint, n) {
-          if (i === 0) return null;
-          return L.marker(waypoint.latLng, { draggable: false });
-        },
-      }).addTo(map);
-    }
+          routeWhileDragging: false,
+          createMarker: function (i, waypoint, n) {
+            if (i === 0) return null;
+            return L.marker(waypoint.latLng, { draggable: false });
+          },
+        }).addTo(map);
+      }
 
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -320,24 +331,29 @@
             map.setView([userLat, userLng], 18);
 
             const userCircleMarker = L.circleMarker([userLat, userLng], {
-              color: '#4287f5',
-              fillColor: '#4287f5',
+              color: "#4287f5",
+              fillColor: "#4287f5",
               fillOpacity: 0.5,
-              radius: 6
+              radius: 6,
             }).addTo(map);
-            
+
             initializeRouting(userLat, userLng);
           } else {
             console.error("User is outside the allowed bounds.");
-            alert("User is outside the allowed bounds. Using default location.");
+            alert(
+              "User is outside the allowed bounds. Using default location."
+            );
             map.setView(defaultLocation, 18);
 
-            const userCircleMarker = L.circleMarker([defaultLocation[0], defaultLocation[1]], {
-              color: '#4287f5',
-              fillColor: '#4287f5',
-              fillOpacity: 0.5,
-              radius: 6
-            }).addTo(map);
+            const userCircleMarker = L.circleMarker(
+              [defaultLocation[0], defaultLocation[1]],
+              {
+                color: "#4287f5",
+                fillColor: "#4287f5",
+                fillOpacity: 0.5,
+                radius: 6,
+              }
+            ).addTo(map);
 
             initializeRouting(defaultLocation[0], defaultLocation[1]);
           }
@@ -347,36 +363,52 @@
           alert("Could not determine your location. Using default location.");
           map.setView(defaultLocation, 18);
 
-            const userCircleMarker = L.circleMarker(defaultLocation[0], defaultLocation[1], {
-              color: '#4287f5',
-              fillColor: '#4287f5',
+          const userCircleMarker = L.circleMarker(
+            defaultLocation[0],
+            defaultLocation[1],
+            {
+              color: "#4287f5",
+              fillColor: "#4287f5",
               fillOpacity: 0.5,
-              radius: 6
-            }).addTo(map);
+              radius: 6,
+            }
+          ).addTo(map);
 
-            initializeRouting(defaultLocation[0], defaultLocation[1]);
+          initializeRouting(defaultLocation[0], defaultLocation[1]);
         }
       );
 
-      document.addEventListener("message", function (event) {
-        const data = JSON.parse(event.data);
-        data.buildings.forEach((building) => {
-          const polygon = L.polygon(building.coordinates, {
-            color: "transparent",
-          }).addTo(map);
+      fetch("./data/campus_buildings.json")
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          // Assuming `buildings` is the key in the JSON file containing an array of building objects
+          data.buildings.forEach((building) => {
+            const polygon = L.polygon(building.coordinates, {
+              color: "transparent",
+            }).addTo(map);
 
-          polygon.on("click", function () {
-            const buildingData = {
-              type: "building",
-              name: building.building_name,
-              key: building.building_key,
-              description: building.building_description,
-              image: building.building_image,
-            };
-            window.ReactNativeWebView.postMessage(JSON.stringify(buildingData));
+            polygon.on("click", function () {
+              const buildingData = {
+                type: "building",
+                name: building.building_name,
+                key: building.building_key,
+                description: building.building_description,
+                image: building.building_image,
+              };
+              window.ReactNativeWebView.postMessage(
+                JSON.stringify(buildingData)
+              );
+            });
           });
+        })
+        .catch((error) => {
+          console.error("Error fetching the JSON file:", error);
         });
-      });
 
       /* Add user marker (Point A)
       const userLocation = [8.4559331, 124.630568]; // Replace with dynamic Point A if needed

@@ -212,7 +212,7 @@ export default function InteractiveMap({ navigation }) {
       openBottomSheet(); // Open the bottom sheet
       setSearchText("");
     } else if (data.lat && data.lng) {
-      console.log(`Latitude: ${data.lat}, Longitude: ${data.lng}`);
+      console.log(`[${data.lat}, ${data.lng}],`);
     }
   };
 
@@ -304,11 +304,6 @@ export default function InteractiveMap({ navigation }) {
         onTouchStart={handleWebViewClick}
         nativeConfig={{ props: { webContentsDebuggingEnabled: true } }}
         startInLoadingState={true}
-        onLoadEnd={() => {
-          if (webViewRef.current) {
-            webViewRef.current.postMessage(JSON.stringify(data));
-          }
-        }}
       />
       <View style={styles.topContainer}>
         <Animated.View
