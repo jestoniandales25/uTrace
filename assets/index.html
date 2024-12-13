@@ -82,6 +82,11 @@
         [8.488068785899669, 124.6586974617094], // Top-right corner (lat, lng)
       ];
 
+      const allowedBounds = L.latLngBounds(
+        [8.484328889112989, 124.65466990222923], // Bottom-left corner
+        [8.488068785899669, 124.6586974617094]  // Top-right corner
+      );
+
       L.imageOverlay("./leaflet_map/maps.png", bounds).addTo(map);
 
       map.on("click", function (e) {
@@ -290,50 +295,68 @@
 
       const defaultLocation = [8.484918809495866, 124.65655957348645];
 
-      L.control
-        .locate({
-          flyTo: true,
-          enableHighAccuracy: true,
-          showPopup: false,
-          position: "bottomleft",
-          drawCircle: false,
-          markerStyle: {
-            fillColor: "#FDB218",
-          },
-          followCompassStyle: {
-            fillColor: "#FDB218",
-          },
-        })
-        .addTo(map);
+      function initializeRouting(userLat, userLng) {
+        L.Routing.control({
+          waypoints: [
+            L.latLng(userLat, userLng),
+            L.latLng(8.485770096071064, 124.65655957348645),
+          ],
+        routeWhileDragging: false,
+        createMarker: function (i, waypoint, n) {
+          if (i === 0) return null;
+          return L.marker(waypoint.latLng, { draggable: false });
+        },
+      }).addTo(map);
+    }
 
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const userLat = position.coords.latitude;
           const userLng = position.coords.longitude;
+          const userLocation = L.latLng(userLat, userLng);
 
-          console.log("User Location:", userLat, userLng);
-          map.setView([userLat, userLng], 18);
-          initializeRouting(userLat, userLng);
+          if (allowedBounds.contains(userLocation)) {
+            console.log("User is within bounds:", userLat, userLng);
+            map.setView([userLat, userLng], 18);
+
+            const userCircleMarker = L.circleMarker([userLat, userLng], {
+              color: '#4287f5',
+              fillColor: '#4287f5',
+              fillOpacity: 0.5,
+              radius: 6
+            }).addTo(map);
+            
+            initializeRouting(userLat, userLng);
+          } else {
+            console.error("User is outside the allowed bounds.");
+            alert("Could not determine your location. Using default location.");
+            map.setView(defaultLocation, 18);
+
+            const userCircleMarker = L.circleMarker([defaultLocation[0], defaultLocation[1]], {
+              color: '#4287f5',
+              fillColor: '#4287f5',
+              fillOpacity: 0.5,
+              radius: 6
+            }).addTo(map);
+
+            initializeRouting(defaultLocation[0], defaultLocation[1]);
+          }
         },
         (error) => {
           console.error("Geolocation error:", error.message);
           alert("Could not determine your location. Using default location.");
-          initializeRouting(8.484918809495866, 124.65655957348645);
+          map.setView(defaultLocation, 18);
+
+            const userCircleMarker = L.circleMarker(defaultLocation[0], defaultLocation[1], {
+              color: '#4287f5',
+              fillColor: '#4287f5',
+              fillOpacity: 0.5,
+              radius: 6
+            }).addTo(map);
+
+            initializeRouting(defaultLocation[0], defaultLocation[1]);
         }
       );
-
-      function initializeRouting(userLat, userLng) {
-        L.Routing.control({
-          waypoints: [
-            L.latLng(userLat, userLng), // User's current position
-            L.latLng(8.485770096071064, 124.65655957348645), // Destination
-          ],
-          routeWhileDragging: false,
-          createMarker: function (i, waypoint, n) {
-            return L.marker(waypoint.latLng, { draggable: false });
-          }
-        }).addTo(map);
-      }
 
       document.addEventListener("message", function (event) {
         const data = JSON.parse(event.data);
