@@ -329,7 +329,7 @@
             initializeRouting(userLat, userLng);
           } else {
             console.error("User is outside the allowed bounds.");
-            alert("Could not determine your location. Using default location.");
+            alert("User is outside the allowed bounds. Using default location.");
             map.setView(defaultLocation, 18);
 
             const userCircleMarker = L.circleMarker([defaultLocation[0], defaultLocation[1]], {
