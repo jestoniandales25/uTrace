@@ -306,31 +306,21 @@
         })
         .addTo(map);
 
-        navigator.geolocation.getCurrentPosition(
-  (position) => {
-    const userLat = position.coords.latitude;
-    const userLng = position.coords.longitude;
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLat = position.coords.latitude;
+          const userLng = position.coords.longitude;
 
-    const mapBounds = L.latLngBounds(bounds); // Convert bounds array to LatLngBounds
-    const userLocation = L.latLng(userLat, userLng);
-
-    if (mapBounds.contains(userLocation)) {
-      console.log("User is within bounds:", userLat, userLng);
-      map.setView(userLocation, 18);
-      initializeRouting(userLat, userLng);
-    } else {
-      console.warn("User is outside bounds. Using default location.");
-      map.setView(defaultLocation, 18);
-      initializeRouting(defaultLocation[0], defaultLocation[1]);
-    }
-  },
-  (error) => {
-    console.error("Geolocation error:", error.message);
-    alert("Could not determine your location. Using default location.");
-    map.setView(defaultLocation, 18);
-    initializeRouting(defaultLocation[0], defaultLocation[1]);
-  }
-);
+          console.log("User Location:", userLat, userLng);
+          map.setView([userLat, userLng], 18);
+          initializeRouting(userLat, userLng);
+        },
+        (error) => {
+          console.error("Geolocation error:", error.message);
+          alert("Could not determine your location. Using default location.");
+          initializeRouting(8.484918809495866, 124.65655957348645);
+        }
+      );
 
       function initializeRouting(userLat, userLng) {
         L.Routing.control({
@@ -365,11 +355,11 @@
         });
       });
 
-      // Add user marker (Point A)
+      /* Add user marker (Point A)
       const userLocation = [8.4559331, 124.630568]; // Replace with dynamic Point A if needed
       const userMarker = L.marker(userLocation)
         .addTo(map)
-        .bindPopup("You are here");
+        .bindPopup("You are here"); */
 
       // Initialize a global routing control
       let routingControl = null;
