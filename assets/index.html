@@ -288,7 +288,7 @@
       );
       campusBoundary.addTo(map);
 
-      const defaultLocation = [8.484945297241211, 124.65657806396484];
+      const defaultLocation = [8.484918809495866, 124.65655957348645];
 
       L.control
         .locate({
@@ -318,7 +318,7 @@
         (error) => {
           console.error("Geolocation error:", error.message);
           alert("Could not determine your location. Using default location.");
-          initializeRouting(8.485770096071064, 124.65670230146497);
+          initializeRouting(8.484918809495866, 124.65655957348645);
         }
       );
 
