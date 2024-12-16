@@ -273,18 +273,20 @@ export default function InteractiveMap({ navigation }) {
     getLocation();
   }, []);
 
-  // Function to send navigation data to WebView
+  useEffect(() => {
+    if (selectedItem?.coordinates) {
+      sendNavigationData();  // Call sendNavigationData when coordinates are available
+    }
+  }, [selectedItem]);  
   const sendNavigationData = () => {
-    if (webViewRef.current && startCoordinates.lat && startCoordinates.lng && selectedItem?.coordinates) {
+    if (webViewRef.current) {
       const navigationData = {
-        start: startCoordinates,
-        end: selectedItem.coordinates, // Assuming selectedItem holds the destination's coordinates
+        end: selectedItem?.coordinates || null, // Send null if no destination is selected
       };
-
       webViewRef.current.postMessage(JSON.stringify(navigationData));
       console.log("Sending data to WebView:", navigationData);
     } else {
-      console.error("Missing start or end coordinates");
+      console.error("Missing start coordinates");
     }
   };
   
@@ -375,6 +377,7 @@ export default function InteractiveMap({ navigation }) {
                       coordinates: item.coordinates,
                     });
                   }
+                  sendNavigationData();
                 }}
               >
                 <View style={styles.suggestionContent}>
