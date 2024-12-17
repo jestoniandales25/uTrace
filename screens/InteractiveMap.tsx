@@ -368,6 +368,7 @@ export default function InteractiveMap({ navigation }) {
                       location: item.location,
                       image: item.image,
                       room_type: item.room_type,
+                      coordinates: item.coordinates || { lat: 0, lng: 0 },
                     });
                     logSelectionHistory({
                       type: item.type,
