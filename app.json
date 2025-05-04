@@ -2,7 +2,7 @@
   "expo": {
     "name": "uTrace",
     "slug": "uTrace",
-    "scheme": "uTrace",
+    "scheme": "utrace",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/Favicon.png",
