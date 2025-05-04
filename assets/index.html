@@ -58,6 +58,9 @@
       }
 
       /* ================================================ */
+      .leaflet-control-attribution {
+        display: none;
+      }
     </style>
   </head>
 
@@ -343,103 +346,61 @@
       });
 
       function initializeRouting(buildingLat, buildingLng) {
-        // Use provided building coordinates or fallback to the default location for the destination
-        const destination =
-          buildingLat && buildingLng
-            ? [buildingLat, buildingLng]
-            : defaultLocation;
+  // Use provided building coordinates or fallback to the default location for the destination
+  const destination =
+    buildingLat && buildingLng
+      ? [buildingLat, buildingLng]
+      : defaultLocation;
 
-        // Remove existing routing control if it exists
-        if (routingControl) {
-          map.removeControl(routingControl);
-        }
+  // Remove existing routing control if it exists
+  if (routingControl) {
+    map.removeControl(routingControl);
+  }
 
-        // Add new routing control
-        routingControl = L.Routing.control({
-          waypoints: [
-            L.latLng(defaultLocation[0], defaultLocation[1]), // Default starting point
-            L.latLng(destination[0], destination[1]), // Destination
-          ],
-          routeWhileDragging: false,
-          createMarker: function (i, waypoint, n) {
-            if (i === 0) return null; // Skip marker for the starting point
-            return L.marker(
-              waypoint.latLng,
-              { icon: destinationIcon },
-              { draggable: false }
-            );
-          },
-          lineOptions: {
-            styles: [
-              {
-                color: "#FDB218",
-                weight: 3,
-                opacity: 1,
-                dashArray: "1, 5",
-              },
-            ],
-          },
-          show: false,
-        }).addTo(map);
-      }
+  // Smoothly zoom and pan the map to the destination
+  const zoomLevel = 18; // Adjust zoom level if necessary
+  map.flyTo(L.latLng(destination[0], destination[1]), zoomLevel, {
+    duration: 1, // Duration in seconds for the animation
+    easeLinearity: 0.25, // Smoothness of the animation
+  });
 
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const userLat = position.coords.latitude;
-          const userLng = position.coords.longitude;
-          const userLocation = L.latLng(userLat, userLng);
+  L.circleMarker(defaultLocation, {
+    radius: 7,
+    color: "#FDB218", // Border color
+    fillColor: "#FDB218", // Fill color
+    fillOpacity: 0.5,
+  })
+    .addTo(map)
+    .bindPopup("Start Location");
 
-          if (allowedBounds.contains(userLocation)) {
-            console.log("User is within bounds:", userLat, userLng);
-            map.setView([userLat, userLng], 18);
-
-            const userCircleMarker = L.circleMarker([userLat, userLng], {
-              color: "#FDB218",
-              fillColor: "#FDB218",
-              fillOpacity: 0.5,
-              radius: 6,
-            }).addTo(map);
-
-            initializeRouting(userLat, userLng);
-          } else {
-            console.error("User is outside the allowed bounds.");
-            alert(
-              "User is outside the allowed bounds. Using default location."
-            );
-            map.setView(defaultLocation, 18);
-
-            const userCircleMarker = L.circleMarker(
-              [defaultLocation[0], defaultLocation[1]],
-              {
-                color: "#FDB218",
-                fillColor: "#FDB218",
-                fillOpacity: 0.5,
-                radius: 6,
-              }
-            ).addTo(map);
-
-            initializeRouting(defaultLocation[0], defaultLocation[1]);
-          }
-        },
-        (error) => {
-          console.error("Geolocation error:", error.message);
-          alert("Could not determine your location. Using default location.");
-          map.setView(defaultLocation, 18);
-
-          const userCircleMarker = L.circleMarker(
-            defaultLocation[0],
-            defaultLocation[1],
-            {
-              color: "#FDB218",
-              fillColor: "#FDB218",
-              fillOpacity: 0.5,
-              radius: 6,
-            }
-          ).addTo(map);
-
-          initializeRouting(defaultLocation[0], defaultLocation[1]);
-        }
+  // Add new routing control
+  routingControl = L.Routing.control({
+    waypoints: [
+      L.latLng(defaultLocation[0], defaultLocation[1]), // Default starting point
+      L.latLng(destination[0], destination[1]), // Destination
+    ],
+    routeWhileDragging: false,
+    createMarker: function (i, waypoint, n) {
+      if (i === 0) return null; // Skip marker for the starting point
+      return L.marker(
+        waypoint.latLng,
+        { icon: destinationIcon },
+        { draggable: false }
       );
+    },
+    lineOptions: {
+      styles: [
+        {
+          color: "#FDB218",
+          weight: 3,
+          opacity: 1,
+          dashArray: "1, 5",
+        },
+      ],
+    },
+    show: false,
+  }).addTo(map);
+}
 
       fetch("./data/campus_buildings.json")
         .then((response) => {
