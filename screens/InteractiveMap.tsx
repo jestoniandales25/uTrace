@@ -295,7 +295,7 @@ export default function InteractiveMap({ navigation }) {
       <WebView
         ref={webViewRef}
         originWhitelist={["*"]}
-        source={require("../assets/index.html")}
+        source={{ uri: "https://utrace.netlify.app/" }}
         allowFileAccess={true}
         javaScriptEnabled={true}
         domStorageEnabled={true}

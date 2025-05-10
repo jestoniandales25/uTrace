@@ -27,7 +27,8 @@
     "react-native-screens": "~4.10.0",
     "react-native-svg": "^15.2.0",
     "react-native-svg-transformer": "^1.5.0",
-    "react-native-webview": "13.13.5"
+    "react-native-webview": "13.13.5",
+    "expo-dev-client": "~5.1.8"
   },
   "devDependencies": {
     "@types/leaflet": "^1.9.14",
