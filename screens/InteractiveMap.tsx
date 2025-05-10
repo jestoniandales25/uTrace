@@ -21,7 +21,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { addDoc, collection } from "firebase/firestore";
 import { auth, db } from "../.firebase/firebaseConfig";
-import * as Location from 'expo-location';
+import * as Location from "expo-location";
 
 export default function InteractiveMap({ navigation }) {
   const { width, height } = Dimensions.get("window");
@@ -80,56 +80,48 @@ export default function InteractiveMap({ navigation }) {
   };
 
   // SEARCH BAR FUNCTIONALITY ================================================================
-  const handleSearch = (text) => {
+  const handleSearch = async (text) => {
     setSearchText(text);
     setSelection({ start: text.length, end: text.length });
-    const searchQuery = text.toLowerCase();
 
     if (text.trim() === "") {
       setFilteredSuggestions([]);
       return;
     }
 
-    const filteredBuildings = data.buildings
-      .filter(
-        (building) =>
-          building.building_key.toLowerCase().includes(searchQuery) ||
-          building.building_name.toLowerCase().includes(searchQuery)
-      )
-      .map((building) => ({
-        type: "building",
-        key: building.building_key,
-        name: building.building_name,
-        image: building.building_image,
-        description: building.building_description,
-        coordinates: building.coordinates,
-      }));
+    try {
+      const response = await fetch("http://<YOUR_BACKEND_URL>/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ query: text }),
+      });
 
-    const filteredRooms = data.buildings.flatMap((building) =>
-      building.floors.flatMap((floor) =>
-        floor.rooms
-          .filter(
-            (room) =>
-              room.room_id?.toLowerCase().includes(searchQuery) ||
-              room.room_name.toLowerCase().includes(searchQuery)
-          )
-          .map((room) => ({
-            type: "room",
-            id: room.room_id,
-            name: room.room_name,
-            location: `${building.building_name} | ${ordinalSuffixOf(
-              floor.floor_number
-            )} floor`,
-            image: building.building_image,
-            room_type: room.room_type,
-            coordinates: building.coordinates,
-          }))
-      )
-    );
+      const results = await response.json();
 
-    setFilteredSuggestions(
-      [...filteredBuildings, ...filteredRooms].slice(0, 7)
-    );
+      // Format the results for display
+      const formattedResults = results.slice(0, 10).map((item) => {
+        if (item.type === "building") {
+          return {
+            ...item,
+            displayText: `Building ${item.key} | ${item.name}`,
+          };
+        } else if (item.type === "room") {
+          const roomIdPart = item.id ? `Room ${item.id} | ` : "Room ";
+          return {
+            ...item,
+            displayText: `${roomIdPart}${item.name}\n${item.location}`,
+          };
+        }
+        return item; // fallback
+      });
+
+      setFilteredSuggestions(formattedResults);
+    } catch (error) {
+      console.error("Error fetching semantic search results:", error);
+      setFilteredSuggestions([]);
+    }
   };
 
   const ordinalSuffixOf = (i) => {
@@ -222,15 +214,16 @@ export default function InteractiveMap({ navigation }) {
 
   // MIRACLE CODE - MAKES THE WEBVIEW DETECT THE LOCATION PERMISSION FOR SOME REASON
 
-  const [location, setLocation] = useState<Location.LocationObject | null>(null);
+  const [location, setLocation] = useState<Location.LocationObject | null>(
+    null
+  );
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   useEffect(() => {
     async function getCurrentLocation() {
-      
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
         return;
       }
 
@@ -252,14 +245,13 @@ export default function InteractiveMap({ navigation }) {
     bottomSheetRef.current.close();
   };
 
-
   const [startCoordinates, setStartCoordinates] = useState({ lat: 0, lng: 0 });
 
   useEffect(() => {
     const getLocation = async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync(); 
-      if (status !== 'granted') {
-        console.log('Permission to access location was denied');
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
         return;
       }
 
@@ -275,9 +267,9 @@ export default function InteractiveMap({ navigation }) {
 
   useEffect(() => {
     if (selectedItem?.coordinates) {
-      sendNavigationData();  // Call sendNavigationData when coordinates are available
+      sendNavigationData(); // Call sendNavigationData when coordinates are available
     }
-  }, [selectedItem]);  
+  }, [selectedItem]);
   const sendNavigationData = () => {
     if (webViewRef.current) {
       const navigationData = {
@@ -289,7 +281,7 @@ export default function InteractiveMap({ navigation }) {
       console.error("Missing start coordinates");
     }
   };
-  
+
   return (
     <GestureHandlerRootView style={styles.container}>
       <WebView
